@@ -20,7 +20,6 @@
     box-shadow: 0 20px 60px rgba(0,0,0,0.9);
   }
 
-  /* ============ 顶栏 ============ */
   .top-bar {
     display: flex; justify-content: space-between; align-items: center;
     background: #0f0c08; border: 1px solid #2a2418; border-radius: 10px;
@@ -31,21 +30,15 @@
     letter-spacing: 3px;
     text-shadow: 0 0 12px rgba(212,168,87,0.5);
   }
-  .top-bar .resources {
-    display: flex; gap: 24px; font-size: 14px;
-  }
+  .top-bar .resources { display: flex; gap: 24px; font-size: 14px; }
   .top-bar .resources span { color: #b8a888; }
   .top-bar .resources b {
     color: #d4a857; font-family: monospace; font-size: 15px;
     margin-left: 4px;
   }
 
-  /* ============ 主体布局 ============ */
-  .main-layout {
-    display: flex; gap: 14px; margin-bottom: 14px;
-  }
+  .main-layout { display: flex; gap: 14px; margin-bottom: 14px; }
 
-  /* ============ 左侧地图 ============ */
   .map-area {
     flex: 0 0 900px; height: 600px;
     background: linear-gradient(180deg, #1a2418 0%, #0f1a10 50%, #1a1008 100%);
@@ -85,12 +78,9 @@
   }
 
   .disciple-dot {
-    position: absolute;
-    width: 12px; height: 12px;
-    border-radius: 50%;
+    position: absolute; width: 12px; height: 12px; border-radius: 50%;
     transition: left 1.5s linear, top 1.5s linear, opacity 0.5s;
-    transform: translate(-50%, -50%);
-    z-index: 2;
+    transform: translate(-50%, -50%); z-index: 2;
     box-shadow: 0 0 8px currentColor;
   }
   .disciple-dot.male { border-radius: 2px; }
@@ -99,19 +89,12 @@
   .disciple-dot.xuan { background: #4ec9b0; color: #4ec9b0; }
   .disciple-dot.huang { background: #888; color: #888; }
 
-  /* ============ 右侧面板 ============ */
-  .right-panel {
-    flex: 1; min-width: 480px;
-    display: flex; flex-direction: column;
-  }
-  .tabs {
-    display: flex; gap: 6px; margin-bottom: 12px;
-  }
+  .right-panel { flex: 1; min-width: 480px; display: flex; flex-direction: column; }
+  .tabs { display: flex; gap: 6px; margin-bottom: 12px; }
   .tab {
     flex: 1; text-align: center; padding: 10px 0; font-size: 13px;
     background: #241e14; border-radius: 8px; cursor: pointer;
-    color: #7a6a50; transition: all 0.2s;
-    position: relative;
+    color: #7a6a50; transition: all 0.2s; position: relative;
   }
   .tab.active { background: #8a6a2a; color: #fff; }
   .tab:hover:not(.active) { background: #2e2618; color: #b8a888; }
@@ -139,9 +122,7 @@
   .btn.red { background: #8a2a2a; } .btn.red:hover:not(:disabled) { background: #b03a3a; }
   .btn.green { background: #2a7a3a; } .btn.green:hover:not(:disabled) { background: #3a9a4a; }
 
-  .scroll-area {
-    max-height: 480px; overflow-y: auto; padding-right: 4px;
-  }
+  .scroll-area { max-height: 480px; overflow-y: auto; padding-right: 4px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-thumb { background: #3a3020; border-radius: 3px; }
 
@@ -162,6 +143,7 @@
   }
   .item button:hover { background: #a8802a; }
   .item button.red { background: #8a2a2a; }
+  .item button:disabled { background: #2a2418; color: #5a4a30; cursor: not-allowed; }
   .empty { color: #5a4a30; text-align: center; padding: 24px; font-size: 14px; }
 
   .event-card {
@@ -177,9 +159,7 @@
   }
   .event-card .evt-options button:hover { background: #2e2618; border-color: #8a6a2a; }
 
-  .filter-bar {
-    display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px;
-  }
+  .filter-bar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
   .filter-bar button {
     padding: 6px 12px; font-size: 12px; background: #241e14; color: #b8a888;
     border: 1px solid #3a3020; border-radius: 6px; cursor: pointer;
@@ -192,7 +172,6 @@
   }
   .disciples-collapse:hover { background: #2e2618; }
 
-  /* ============ 底部日志 ============ */
   #log {
     height: 180px; overflow-y: auto; background: #0f0c08;
     border: 1px solid #2a2418; border-radius: 10px;
@@ -203,14 +182,12 @@
   #log::-webkit-scrollbar { width: 6px; }
   #log::-webkit-scrollbar-thumb { background: #3a3020; border-radius: 3px; }
 
-  /* ============ 颜色 ============ */
   .rare { color: #4ec9b0; } .epic { color: #c586c0; } .legend { color: #dcdcaa; font-weight: bold; }
   .danger { color: #f14c4c; } .gold { color: #ffd700; }
   .myth { color: #ff6b6b; font-weight: bold; }
   .tian { color: #ff6b6b; } .di { color: #dcdcaa; } .xuan { color: #4ec9b0; } .huang { color: #888; }
   .male { color: #6ab0ff; } .female { color: #ff8cd8; }
 
-  /* ============ 弹窗 ============ */
   .modal-bg {
     position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 998;
     display: flex; justify-content: center; align-items: center;
@@ -220,10 +197,7 @@
     padding: 24px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto;
     box-shadow: 0 20px 60px rgba(0,0,0,0.9);
   }
-  .modal h3 {
-    color: #d4a857; font-size: 18px; margin-bottom: 14px;
-    text-align: center; letter-spacing: 3px;
-  }
+  .modal h3 { color: #d4a857; font-size: 18px; margin-bottom: 14px; text-align: center; letter-spacing: 3px; }
   .modal .row { font-size: 14px; margin: 8px 0; }
   .modal .close-btn {
     width: 100%; margin-top: 16px; padding: 10px; background: #8a6a2a; color: #fff;
@@ -240,21 +214,17 @@
   }
   @keyframes toastIn { from { opacity: 0; top: 0; } to { opacity: 1; top: 30px; } }
 
-  /* 云同步状态 */
   .sync-status {
     display: flex; justify-content: center; align-items: center;
     font-size: 12px; color: #8a7a60; margin-top: 8px; gap: 8px;
   }
-  .sync-status .dot {
-    width: 8px; height: 8px; border-radius: 50%; background: #5a4a30;
-  }
+  .sync-status .dot { width: 8px; height: 8px; border-radius: 50%; background: #5a4a30; }
   .sync-status .dot.ok { background: #4ec9b0; box-shadow: 0 0 8px #4ec9b0; }
   .sync-status .dot.err { background: #f14c4c; box-shadow: 0 0 8px #f14c4c; }
 </style>
 </head>
 <body>
 <div id="app">
-  <!-- 顶栏 -->
   <div class="top-bar">
     <div class="sect-name">宗 门 经 营 录</div>
     <div class="resources">
@@ -267,16 +237,12 @@
     </div>
   </div>
 
-  <!-- 主体 -->
   <div class="main-layout">
-    <!-- 左侧地图 -->
     <div class="map-area" id="mapArea">
       <div class="map-bg-stars"></div>
       <div class="map-bg-mountain"></div>
-      <!-- 建筑位置在这里由 JS 渲染 -->
     </div>
 
-    <!-- 右侧面板 -->
     <div class="right-panel">
       <div class="tabs">
         <div class="tab active" data-tab="main">宗门</div>
@@ -287,7 +253,6 @@
         <div class="tab" data-tab="shop">坊市</div>
       </div>
 
-      <!-- 宗门 -->
       <div class="panel active" id="panel-main">
         <div class="row"><span>宗门等级</span><span id="sectLevel">九流一阶</span></div>
         <div class="row"><span>宗门声望</span><span id="sectExp">0 / 100</span></div>
@@ -299,7 +264,6 @@
         <button class="btn" id="autoRecruitBtn">自动招募：开</button>
       </div>
 
-      <!-- 弟子 -->
       <div class="panel" id="panel-disciples">
         <div class="filter-bar" id="discipleFilter">
           <button class="active" data-filter="all">全部</button>
@@ -310,28 +274,38 @@
           <button data-filter="圣子">圣子/圣女</button>
           <button data-filter="长老">长老</button>
         </div>
+        <div class="filter-bar" id="discipleFilter2">
+          <button class="active" data-qfilter="all">所有品阶</button>
+          <button data-qfilter="天">天阶</button>
+          <button data-qfilter="地">地阶</button>
+          <button data-qfilter="玄">玄阶</button>
+          <button data-qfilter="黄">黄阶</button>
+        </div>
+        <div class="filter-bar" id="discipleFilter3">
+          <button class="active" data-lvfilter="all">所有等级</button>
+          <button data-lvfilter="0-20">Lv.0-20</button>
+          <button data-lvfilter="20-50">Lv.20-50</button>
+          <button data-lvfilter="50-80">Lv.50-80</button>
+          <button data-lvfilter="80-100">Lv.80-100</button>
+        </div>
         <div class="scroll-area" id="discipleList"></div>
         <button class="btn red" id="batchManageBtn">批量管理</button>
       </div>
 
-      <!-- 事件 -->
       <div class="panel" id="panel-events">
         <div class="row"><span>待处理事件</span><span id="eventCount">0 / 10</span></div>
         <div class="scroll-area" id="eventList"></div>
       </div>
 
-      <!-- 建筑 -->
       <div class="panel" id="panel-buildings">
         <div class="scroll-area" id="buildingList"></div>
       </div>
 
-      <!-- 功法 -->
       <div class="panel" id="panel-skills">
         <div class="row"><span>已学功法</span><span id="skillCount">0 / 16</span></div>
         <div class="scroll-area" id="skillList"></div>
       </div>
 
-      <!-- 坊市 -->
       <div class="panel" id="panel-shop">
         <div class="row"><span>累计招募</span><span id="recruitCount">0</span></div>
         <div class="row"><span>距地阶保底</span><span id="pityDi">10</span></div>
@@ -341,10 +315,8 @@
     </div>
   </div>
 
-  <!-- 日志 -->
   <div id="log"></div>
 
-  <!-- 云同步状态 -->
   <div class="sync-status">
     <span class="dot" id="syncDot"></span>
     <span id="syncText">云端：未连接</span>
@@ -355,7 +327,7 @@
 export async function onRequestGet(context) {
   const { env } = context;
   try {
-    const data = await env.XIUXIAN_KV.get(KV_KEY, { type: "json" });
+    const data = await env.zongmen_KV.get(KV_KEY, { type: "json" });
     return new Response(JSON.stringify({ state: data }), {
       headers: { "Content-Type": "application/json" },
     });
@@ -376,7 +348,7 @@ export async function onRequestPost(context) {
         headers: { "Content-Type": "application/json" },
       });
     }
-    await env.XIUXIAN_KV.put(KV_KEY, JSON.stringify(body.data));
+    await env.zongmen_KV.put(KV_KEY, JSON.stringify(body.data));
     return new Response(JSON.stringify({ ok: true }), {
       headers: { "Content-Type": "application/json" },
     });
