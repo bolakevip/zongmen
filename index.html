@@ -322,46 +322,9 @@
     <span id="syncText">云端：未连接</span>
   </div>
 </div>
- const KV_KEY = "default-save";
-
-export async function onRequestGet(context) {
-  const { env } = context;
-  try {
-    const data = await env.zongmen_KV.get(KV_KEY, { type: "json" });
-    return new Response(JSON.stringify({ state: data }), {
-      headers: { "Content-Type": "application/json" },
-    });
-  } catch (e) {
-    return new Response(JSON.stringify({ state: null }), {
-      headers: { "Content-Type": "application/json" },
-    });
-  }
-}
-
-export async function onRequestPost(context) {
-  const { request, env } = context;
-  try {
-    const body = await request.json();
-    if (!body || !body.data) {
-      return new Response(JSON.stringify({ error: "Missing data" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
-    await env.zongmen_KV.put(KV_KEY, JSON.stringify(body.data));
-    return new Response(JSON.stringify({ ok: true }), {
-      headers: { "Content-Type": "application/json" },
-    });
-  } catch (e) {
-    return new Response(JSON.stringify({ error: "Invalid JSON" }), {
-      status: 400,
-      headers: { "Content-Type": "application/json" },
-    });
-  }
-}
 
 <script>
-// ==================== 常量 ====================
+ // ==================== 常量 ====================
 const SECT_LEVELS = [
   "九流一阶","九流二阶","九流三阶","九流四阶","九流五阶","九流六阶","九流七阶","九流八阶","九流九阶",
   "八流一阶","八流二阶","八流三阶","八流四阶","八流五阶","八流六阶","八流七阶","八流八阶","八流九阶",
