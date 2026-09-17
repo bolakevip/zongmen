@@ -1410,10 +1410,12 @@ async function init() {
     } catch (e) {}
   }
 
+    // 先算离线收益（必须在 updateUI 之前，否则 TIME_KEY 会被覆盖）
+  offlineEarnings();
+
   updateUI();
   cloudReady = true;
   updateSyncStatus("ok", "云端：已同步");
-  offlineEarnings();
   setInterval(tick, 1000);
 }
 
