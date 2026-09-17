@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>宗门经营录</title>
+<title>宗门经营录 · 境界版</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -29,10 +29,10 @@
     letter-spacing: 3px;
     text-shadow: 0 0 12px rgba(212,168,87,0.5);
   }
-  .top-bar .resources { display: flex; gap: 24px; font-size: 14px; }
+  .top-bar .resources { display: flex; gap: 20px; font-size: 13px; flex-wrap: wrap; }
   .top-bar .resources span { color: #b8a888; }
   .top-bar .resources b {
-    color: #d4a857; font-family: monospace; font-size: 15px;
+    color: #d4a857; font-family: monospace; font-size: 14px;
     margin-left: 4px;
   }
   .main-layout { display: flex; gap: 14px; margin-bottom: 14px; }
@@ -63,13 +63,13 @@
     z-index: 3;
   }
   .building:hover { transform: translate(-50%, -50%) scale(1.15); filter: brightness(1.3); }
-  .building .b-icon { font-size: 48px; display: block; line-height: 1; }
+  .building .b-icon { font-size: 44px; display: block; line-height: 1; }
   .building .b-name {
-    font-size: 16px; color: #d4a857; margin-top: 4px;
+    font-size: 15px; color: #d4a857; margin-top: 4px;
     text-shadow: 0 2px 4px rgba(0,0,0,0.9);
   }
   .building .b-lv {
-    font-size: 12px; color: #b8a888; margin-top: 2px;
+    font-size: 11px; color: #b8a888; margin-top: 2px;
     text-shadow: 0 2px 4px rgba(0,0,0,0.9);
   }
   .disciple-dot {
@@ -86,20 +86,20 @@
   .right-panel { flex: 1; min-width: 480px; display: flex; flex-direction: column; }
   .tabs { display: flex; gap: 4px; margin-bottom: 12px; flex-wrap: wrap; }
   .tab {
-    flex: 1; min-width: 70px; text-align: center; padding: 10px 4px; font-size: 12px;
+    flex: 1; min-width: 64px; text-align: center; padding: 10px 2px; font-size: 12px;
     background: #241e14; border-radius: 8px; cursor: pointer;
     color: #7a6a50; transition: all 0.2s; position: relative;
   }
   .tab.active { background: #8a6a2a; color: #fff; }
   .tab:hover:not(.active) { background: #2e2618; color: #b8a888; }
   .tab .badge {
-    position: absolute; top: 4px; right: 6px;
+    position: absolute; top: 3px; right: 4px;
     background: #d44a2a; color: #fff;
-    font-size: 10px; padding: 1px 6px; border-radius: 8px;
+    font-size: 10px; padding: 1px 5px; border-radius: 8px;
   }
   .panel { display: none; flex: 1; }
   .panel.active { display: block; }
-  .row { display: flex; justify-content: space-between; font-size: 14px; margin: 8px 0; color: #b8a888; }
+  .row { display: flex; justify-content: space-between; font-size: 13px; margin: 7px 0; color: #b8a888; }
   .row span:last-child { color: #d4a857; font-weight: bold; font-family: monospace; }
   .bar-bg { height: 12px; background: #241e14; border-radius: 6px; overflow: hidden; margin: 6px 0 12px; }
   .bar-fill { height: 100%; width: 0%; transition: width 0.3s; border-radius: 6px; }
@@ -217,6 +217,28 @@
   .equip-slot.仙品 { border-color: #dcdcaa; color: #dcdcaa; }
   .equip-slot.神品 { border-color: #ff6b6b; color: #ff6b6b; }
   .equip-slot.empty { border-color: #444; color: #444; font-style: italic; }
+  .realm-tag {
+    display: inline-block; padding: 1px 6px; border-radius: 4px;
+    font-size: 11px; margin-left: 4px;
+    background: #1a1610; border: 1px solid #4a3a20;
+  }
+  .realm-tag.r0 { color: #9a8a70; border-color: #5a4a30; }
+  .realm-tag.r1 { color: #4ec9b0; border-color: #4ec9b0; }
+  .realm-tag.r2 { color: #6ab0ff; border-color: #6ab0ff; }
+  .realm-tag.r3 { color: #c586c0; border-color: #c586c0; }
+  .realm-tag.r4 { color: #dcdcaa; border-color: #dcdcaa; }
+  .realm-tag.r5 { color: #ffa500; border-color: #ffa500; }
+  .realm-tag.r6 { color: #ff6b6b; border-color: #ff6b6b; }
+  .realm-tag.r7 { color: #ff2d95; border-color: #ff2d95; }
+  .realm-tag.r8 { color: #ffd700; border-color: #ffd700; font-weight: bold; }
+  .saint-card {
+    background: linear-gradient(135deg, #2a1f10 0%, #1a1610 100%);
+    border: 1px solid #8a6a2a; border-radius: 10px;
+    padding: 14px; margin-bottom: 10px;
+  }
+  .saint-card .sc-title { color: #d4a857; font-size: 14px; font-weight: bold; margin-bottom: 6px; }
+  .saint-card .sc-desc { color: #b8a888; font-size: 12px; margin-bottom: 8px; line-height: 1.6; }
+  .saint-card .sc-opponents { font-size: 12px; color: #8a7a60; margin-bottom: 8px; }
 </style>
 </head>
 <body>
@@ -224,7 +246,7 @@
   <div class="top-bar">
     <div class="sect-name">宗 门 经 营 录</div>
     <div class="resources">
-      <span>🏯 <b id="topSect">破庙</b></span>
+      <span>🏯 <b id="topSect">九流一阶</b></span>
       <span>⭐ <b id="topExp">0</b></span>
       <span>💎 <b id="topGold">0</b></span>
       <span>🌿 <b id="topHerb">0</b></span>
@@ -243,9 +265,11 @@
       <div class="tabs">
         <div class="tab active" data-tab="main">宗门</div>
         <div class="tab" data-tab="disciples">弟子</div>
+        <div class="tab" data-tab="saint">圣子</div>
         <div class="tab" data-tab="events">事件<span class="badge" id="eventBadge" style="display:none">0</span></div>
         <div class="tab" data-tab="buildings">建筑</div>
         <div class="tab" data-tab="skills">功法</div>
+        <div class="tab" data-tab="secret">秘境</div>
         <div class="tab" data-tab="shop">坊市</div>
         <div class="tab" data-tab="craft">炼丹炼器</div>
         <div class="tab" data-tab="war">宗门战</div>
@@ -258,7 +282,8 @@
         <div class="row"><span>宗门战力</span><span id="sectPower">0</span></div>
         <div class="row"><span>传承次数</span><span id="genCount">0</span></div>
         <div class="row"><span>弟子总数</span><span id="discipleTotal">0 / 1441</span></div>
-        <button class="btn green" id="meditateBtn">全体弟子闭关修炼（1 分钟）</button>
+        <div class="row"><span>最高境界</span><span id="topRealm">—</span></div>
+        <button class="btn green" id="meditateBtn">全体弟子闭关修炼（+50% 当前层修为）</button>
         <button class="btn" id="autoRecruitBtn">自动招募：开</button>
         <button class="btn" id="manualSaveBtn">手动保存（本地 + 云端）</button>
         <button class="btn purple" id="reincarnBtn" disabled>立新掌门（传承）</button>
@@ -282,14 +307,26 @@
           <button data-qfilter="黄">黄阶</button>
         </div>
         <div class="filter-bar" id="discipleFilter3">
-          <button class="active" data-lvfilter="all">所有等级</button>
-          <button data-lvfilter="0-20">Lv.0-20</button>
-          <button data-lvfilter="20-50">Lv.20-50</button>
-          <button data-lvfilter="50-80">Lv.50-80</button>
-          <button data-lvfilter="80-100">Lv.80-100</button>
+          <button class="active" data-rfilter="all">所有境界</button>
+          <button data-rfilter="0">炼气</button>
+          <button data-rfilter="1">筑基</button>
+          <button data-rfilter="2">金丹</button>
+          <button data-rfilter="3">元婴</button>
+          <button data-rfilter="4">化神</button>
+          <button data-rfilter="5">炼虚</button>
+          <button data-rfilter="6">合体</button>
+          <button data-rfilter="7">大乘</button>
+          <button data-rfilter="8">渡劫</button>
         </div>
         <div class="scroll-area" id="discipleList"></div>
         <button class="btn red" id="batchManageBtn">批量管理</button>
+      </div>
+
+      <div class="panel" id="panel-saint">
+        <div class="row"><span>今日圣子争夺次数</span><span id="saintChances">3 / 3</span></div>
+        <div class="row"><span>下届圣子</span><span id="nextSaint">——</span></div>
+        <div class="scroll-area" id="saintList"></div>
+        <button class="btn purple" id="saintTournamentBtn">召开圣子争夺大会</button>
       </div>
 
       <div class="panel" id="panel-events">
@@ -304,6 +341,14 @@
       <div class="panel" id="panel-skills">
         <div class="row"><span>已学功法</span><span id="skillCount">0 / 16</span></div>
         <div class="scroll-area" id="skillList"></div>
+      </div>
+
+      <div class="panel" id="panel-secret">
+        <div class="row"><span>当前秘境层数</span><span id="secretFloor">1 / 5</span></div>
+        <div class="row"><span>推荐战力</span><span id="secretNeed">500</span></div>
+        <div class="row"><span>弟子体力</span><span id="secretBody">—</span></div>
+        <button class="btn green" id="exploreBtn">派遣探索（5 名弟子，各 -20 体力）</button>
+        <div class="scroll-area" id="secretLog" style="margin-top:8px;"></div>
       </div>
 
       <div class="panel" id="panel-shop">
@@ -337,6 +382,66 @@
 </div>
 
 <script>
+// ==================== 境界体系 ====================
+const REALMS = [
+  { name: "炼气",  mult: 1.0,   color: "r0" },
+  { name: "筑基",  mult: 2.0,   color: "r1" },
+  { name: "金丹",  mult: 4.0,   color: "r2" },
+  { name: "元婴",  mult: 8.0,   color: "r3" },
+  { name: "化神",  mult: 16.0,  color: "r4" },
+  { name: "炼虚",  mult: 32.0,  color: "r5" },
+  { name: "合体",  mult: 64.0,  color: "r6" },
+  { name: "大乘",  mult: 128.0, color: "r7" },
+  { name: "渡劫",  mult: 256.0, color: "r8" },
+];
+const LAYERS = ["一层","二层","三层","四层","五层","六层","七层","八层","九层"];
+
+// 每层目标耗时（秒）—— 直接查表，81 个阶段
+const LAYER_TIME = [
+  // 炼气（0-8）：2 分钟
+  120,120,120,120,120,120,120,120,120,
+  // 筑基（9-17）：8 分钟
+  480,480,480,480,480,480,480,480,480,
+  // 金丹（18-26）：45 分钟
+  2700,2700,2700,2700,2700,2700,2700,2700,2700,
+  // 元婴（27-35）：3 小时
+  10800,10800,10800,10800,10800,10800,10800,10800,10800,
+  // 化神（36-44）：10 小时
+  36000,36000,36000,36000,36000,36000,36000,36000,36000,
+  // 炼虚（45-53）：1.2 天
+  103680,103680,103680,103680,103680,103680,103680,103680,103680,
+  // 合体（54-62）：2 天
+  172800,172800,172800,172800,172800,172800,172800,172800,172800,
+  // 大乘（63-71）：3 天
+  259200,259200,259200,259200,259200,259200,259200,259200,259200,
+  // 渡劫（72-80）：4 天
+  345600,345600,345600,345600,345600,345600,345600,345600,345600,
+];
+
+const BREAKTHROUGH_COST = [
+  { gold: 1000,   herb: 200 },     // 炼气→筑基
+  { gold: 3000,   herb: 500 },     // 筑基→金丹
+  { gold: 8000,   herb: 1500 },    // 金丹→元婴
+  { gold: 20000,  herb: 4000 },    // 元婴→化神
+  { gold: 50000,  herb: 10000 },   // 化神→炼虚
+  { gold: 120000, herb: 25000 },   // 炼虚→合体
+  { gold: 300000, herb: 60000 },   // 合体→大乘
+  { gold: 800000, herb: 150000 },  // 大乘→渡劫
+];
+
+function getRealmName(d) {
+  const r = Math.min(d.realm || 0, REALMS.length - 1);
+  const l = Math.min(Math.max(d.layer || 1, 1), 9);
+  return REALMS[r].name + LAYERS[l - 1];
+}
+function getTotalLayer(d) {
+  return (d.realm || 0) * 9 + ((d.layer || 1) - 1);
+}
+function levelNeed(realm, layer) {
+  const total = realm * 9 + (layer - 1);
+  return Math.floor(LAYER_TIME[Math.min(total, LAYER_TIME.length - 1)] * 0.8);
+}
+
 // ==================== 常量 ====================
 const SECT_LEVELS = [
   "九流一阶","九流二阶","九流三阶","九流四阶","九流五阶","九流六阶","九流七阶","九流八阶","九流九阶",
@@ -350,18 +455,12 @@ const SECT_LEVELS = [
   "一流一阶","一流二阶","一流三阶","一流四阶","一流五阶","一流六阶","一流七阶","一流八阶","一流九阶",
   "超一流一阶","超一流二阶","超一流三阶","超一流四阶","超一流五阶","超一流六阶","超一流七阶","超一流八阶","超一流九阶"
 ];
-const SECT_NEED = [
-  100,150,200,300,400,500,700,900,1200,
-  1500,2000,2500,3000,4000,5000,6000,7000,9000,
-  10000,12000,15000,18000,22000,26000,30000,35000,42000,
-  50000,60000,70000,85000,100000,120000,140000,170000,200000,
-  250000,300000,360000,430000,520000,620000,750000,900000,1100000,
-  1500000,1800000,2200000,2700000,3300000,4000000,4800000,5800000,7000000,
-  10000000,12000000,15000000,18000000,22000000,27000000,33000000,40000000,50000000,
-  80000000,100000000,120000000,150000000,180000000,220000000,270000000,330000000,400000000,
-  600000000,800000000,1000000000,1200000000,1500000000,1800000000,2200000000,2700000000,3300000000,
-  5000000000,6000000000,7000000000,8500000000,10000000000,12000000000,14000000000,17000000000,20000000000
-];
+// 宗门需求：也按 3 个月拉平，前慢后快（弟子产出增长）
+const SECT_NEED = SECT_LEVELS.map((_, i) => {
+  // 基础 100，指数 1.45
+  return Math.floor(100 * Math.pow(1.45, i));
+});
+
 const QUALITIES = [
   { name: "天", color: "tian", mult: 4.0, weight: 1, taskRate: 0.01, deathMult: 0.5 },
   { name: "地", color: "di",   mult: 2.5, weight: 5, taskRate: 0.03, deathMult: 0.5 },
@@ -379,9 +478,33 @@ const SURNAME = ["李","王","张","刘","陈","杨","赵","黄","周","吴","�
 const MALE_GIVEN = ["青云","无极","浩然","子轩","宇轩","天赐","子墨","逸尘","风吟","夜白","凌风","子谦","玄机","无痕","苍梧"];
 const FEMALE_GIVEN = ["清瑶","若雪","芷若","语嫣","诗涵","梦瑶","紫嫣","雨萱","月华","流萤","冰心","妙音","凝霜","素问","璃月"];
 
+// 转职路线
+const SUBCLASSES = {
+  jian: [
+    { key: "jianxian", name: "剑仙", effect: { power: 0.30, jian: 0.20 }, desc: "战力 +30%，剑修加成 +20%" },
+    { key: "jianmo",   name: "剑魔", effect: { power: 0.50, hp: -0.20 },  desc: "战力 +50%，气血 -20%" },
+  ],
+  dan: [
+    { key: "danwang", name: "丹王", effect: { dan: 0.40 },               desc: "丹药效果 +40%" },
+    { key: "duyi",    name: "毒医", effect: { power: 0.20, gold: 0.30 }, desc: "战力 +20%，灵石 +30%" },
+  ],
+  qi: [
+    { key: "qizun",  name: "器尊", effect: { power: 0.25, forge: 0.30 }, desc: "战力 +25%，炼器品质 +30%" },
+    { key: "mozhu",  name: "魔铸", effect: { power: 0.40, hp: -0.15 },   desc: "战力 +40%，气血 -15%" },
+  ],
+  zhen: [
+    { key: "zhenjun", name: "阵君", effect: { power: 0.20, exp: 0.30 },  desc: "战力 +20%，修炼 +30%" },
+    { key: "tianji",  name: "天机", effect: { gold: 0.50, exp: 0.20 },   desc: "灵石 +50%，修炼 +20%" },
+  ],
+  ti: [
+    { key: "tizun", name: "体尊", effect: { power: 0.20, hp: 0.50 },     desc: "战力 +20%，气血 +50%" },
+    { key: "bawang",name: "霸王", effect: { power: 0.35, hp: 0.20 },     desc: "战力 +35%，气血 +20%" },
+  ],
+};
+
 const BUILDINGS = [
   { key: "main",    name: "主殿",   icon: "🏯", desc: "宗门等级上限 +1",      maxLv: 10, baseCost: 300, x: 0.30, y: 0.35 },
-  { key: "library", name: "藏经阁", icon: "📚", desc: "弟子修炼 +5%",         maxLv: 10, baseCost: 200, x: 0.55, y: 0.35 },
+  { key: "library", name: "藏经阁", icon: "📚", desc: "弟子修炼 +10%",        maxLv: 10, baseCost: 200, x: 0.55, y: 0.35 },
   { key: "dan",     name: "炼丹房", icon: "🧪", desc: "炼丹 +1/次",           maxLv: 10, baseCost: 200, x: 0.75, y: 0.35 },
   { key: "qi",      name: "炼器阁", icon: "⚒️", desc: "炼器 +1/次",           maxLv: 10, baseCost: 200, x: 0.30, y: 0.60 },
   { key: "arena",   name: "演武场", icon: "⚔️", desc: "弟子战力 +3%",         maxLv: 10, baseCost: 180, x: 0.55, y: 0.60 },
@@ -392,7 +515,7 @@ const BUILDINGS = [
 
 const SKILLS = [
   { key: "j1", name: "基础剑诀", tier: 1, basePrice: 100,  effect: { power: 0.01 }, desc: "每级战力 +1%（10 级满）" },
-  { key: "j2", name: "吐纳心法", tier: 1, basePrice: 100,  effect: { exp: 0.01 },   desc: "每级修炼 +1%（10 级满）" },
+  { key: "j2", name: "吐纳心法", tier: 1, basePrice: 100,  effect: { exp: 0.02 },   desc: "每级修炼 +2%（10 级满）" },
   { key: "j3", name: "聚财术",   tier: 1, basePrice: 120,  effect: { gold: 0.02 },  desc: "每级灵石 +2%（10 级满）" },
   { key: "j4", name: "铁骨功",   tier: 2, basePrice: 300,  effect: { hp: 0.02 },    desc: "每级气血 +2%（10 级满）" },
   { key: "j5", name: "御灵诀",   tier: 2, basePrice: 300,  effect: { power: 0.02 }, desc: "每级战力 +2%（10 级满）" },
@@ -436,6 +559,14 @@ const WEAPON_NAMES = { "剑": ["青锋剑", "赤霄剑", "诛仙剑"], "符": ["
 const ARMOR_NAMES = { "轻甲": ["布甲", "皮甲", "玄铁轻甲"], "法袍": ["青袍", "紫袍", "仙灵袍"], "重甲": ["铁甲", "玄铁重甲", "玄武重甲"] };
 const ACC_NAMES = { "玉佩": ["青玉佩", "龙纹玉佩", "太虚玉佩"], "药囊": ["草药囊", "百草囊", "仙药囊"], "炼器炉": ["小炼炉", "紫金炉", "乾坤炉"], "罗盘": ["八卦罗盘", "天机罗盘", "造化罗盘"], "护心镜": ["铜护心镜", "玄铁护心镜", "龙鳞护心镜"] };
 
+const SECRET_FLOORS = [
+  { need: 500,    reward: { gold: [500, 1500],     herb: [50, 150],       ore: [50, 150],       exp: [100, 300] } },
+  { need: 3000,   reward: { gold: [3000, 8000],    herb: [300, 800],      ore: [300, 800],      exp: [500, 1200] } },
+  { need: 20000,  reward: { gold: [20000, 50000],  herb: [2000, 5000],    ore: [2000, 5000],    exp: [2000, 5000] } },
+  { need: 150000, reward: { gold: [150000, 400000],herb: [15000, 40000],  ore: [15000, 40000],  exp: [10000, 25000] } },
+  { need: 1000000,reward: { gold: [1000000, 3000000],herb:[100000, 300000],ore:[100000, 300000],exp:[50000, 120000] } },
+];
+
 const EVENT_TEMPLATES = [
   { type: "机遇", title: "灵药现世", desc: "后山发现一株千年灵药。", opts: [
     { text: "采摘（+200 药材）", effect: () => { state.herb += 200; log("采摘灵药，药材 +200", "gold"); } },
@@ -465,12 +596,13 @@ const EVENT_TEMPLATES = [
     { text: "派弟子围杀", effect: () => { if (Math.random() < 0.7) { state.gold += 500; log("击杀妖兽，+500 灵石", "gold"); } else { const d = state.disciples.find(x => x.hp > 0 && x.role !== "长老"); if (d) { d.hp = 0; log(`弟子【${d.name}】战死`, "danger"); } } } },
     { text: "躲入主殿", effect: () => log("避其锋芒") },
   ]},
-  { type: "日常", title: "弟子突破", desc: "一名弟子闭关突破！", opts: [
-    { text: "奖赏", effect: () => { const d = state.disciples.find(x => x.hp > 0 && x.level < 100); if (d) { d.level = Math.min(100, d.level + 3); log(`弟子【${d.name}】等级 +3`, "gold"); } } },
-    { text: "让他继续苦修", effect: () => { const d = state.disciples.find(x => x.hp > 0); if (d) { d.level = Math.min(100, d.level + 1); d.loyalty = Math.max(0, d.loyalty - 5); log(`弟子【${d.name}】等级 +1，忠诚 -5`, "rare"); } } },
+  { type: "日常", title: "弟子突破", desc: "一名弟子闭关有所感悟！", opts: [
+    { text: "赐予丹药（修为 +50%）", effect: () => { const d = state.disciples.find(x => x.hp > 0 && x.role !== "长老"); if (d) { gainExp(d, Math.floor(d.expNeed * 0.5)); log(`弟子【${d.name}】修为 +50%`, "gold"); } } },
+    { text: "让他继续苦修（修为 +20%，忠诚 -3）", effect: () => { const d = state.disciples.find(x => x.hp > 0); if (d) { gainExp(d, Math.floor(d.expNeed * 0.2)); d.loyalty = Math.max(0, d.loyalty - 3); log(`弟子【${d.name}】修为 +20%，忠诚 -3`, "rare"); } } },
   ]},
 ];
 
+// ==================== 状态 ====================
 const state = {
   sectLevel: 0, sectExp: 0, gold: 0, herb: 0, ore: 0,
   disciples: [], buildings: {}, skills: {}, events: [],
@@ -480,9 +612,15 @@ const state = {
   lastTick: Date.now(), lastSave: Date.now(),
   nextWarAt: Date.now() + 3600 * 1000,
   warHistory: [],
+  secretFloor: 0,
+  saint: null,              // 当前圣子 id
+  saintChances: 3,          // 今日剩余争夺次数
+  saintResetAt: 0,          // 每日重置时间戳
+  saintHistory: [],
   _lastAutoRecruit: 0, _lastEvent: 0, _lastCultivate: 0,
   _lastGoldTick: 0, _lastHerbTick: 0, _lastLoyalty: 0,
   _lastAssign: 0, _lastPromote: 0, _lastInteraction: 0,
+  _lastBreakthrough: 0, _lastBody: 0, _lastSectExp: 0,
 };
 
 BUILDINGS.forEach(b => { state.buildings[b.key] = 0; });
@@ -492,18 +630,52 @@ let cloudSyncTimer = null;
 let lastCloudTry = 0;
 let cloudFailCount = 0;
 
-const SAVE_KEY = "zongmen_save_v3";
+const SAVE_KEY = "zongmen_save_v4";
 const TIME_KEY = "zongmen_save_time";
 
+// ==================== 工具函数 ====================
+function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+function fmt(n) {
+  const num = Number(n);
+  if (!isFinite(num)) return "0";
+  if (num >= 100000000) return (num / 100000000).toFixed(2) + "亿";
+  if (num >= 10000) return (num / 10000).toFixed(2) + "万";
+  return Math.floor(num).toLocaleString("en-US");
+}
+function log(msg, cls = "") {
+  const logEl = document.getElementById("log");
+  if (!logEl) return;
+  const div = document.createElement("div");
+  div.className = cls;
+  div.textContent = msg;
+  logEl.appendChild(div);
+  logEl.scrollTop = logEl.scrollHeight;
+  while (logEl.children.length > 120) logEl.removeChild(logEl.firstChild);
+}
+function toast(msg) {
+  const div = document.createElement("div");
+  div.className = "toast";
+  div.textContent = msg;
+  document.body.appendChild(div);
+  setTimeout(() => div.remove(), 2500);
+}
+function todayKey() {
+  const d = new Date();
+  return d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate();
+}
+
+// ==================== 存档 ====================
 function extractSaveData() {
   const d = { ...state };
   delete d._lastAutoRecruit; delete d._lastEvent; delete d._lastCultivate;
   delete d._lastGoldTick; delete d._lastHerbTick; delete d._lastLoyalty;
   delete d._lastAssign; delete d._lastPromote; delete d._lastInteraction;
+  delete d._lastBreakthrough; delete d._lastBody; delete d._lastSectExp;
+  delete d._lastCloudTick; delete d._lastLocalTick; delete d._lastFullWarn;
   d._saveTime = Date.now();
   return d;
 }
-
 function saveLocal() {
   try {
     const data = extractSaveData();
@@ -512,7 +684,6 @@ function saveLocal() {
     return true;
   } catch (e) { console.warn("本地保存失败", e); return false; }
 }
-
 function normalizeSkills(skills) {
   const out = {};
   Object.keys(skills || {}).forEach(k => {
@@ -523,38 +694,59 @@ function normalizeSkills(skills) {
   });
   return out;
 }
-
 function normalizeDisciples(list) {
-  return (list || []).map(d => ({
-    id: d.id || (Date.now() + Math.random()),
-    name: d.name || "无名",
-    gender: d.gender || "male",
-    quality: d.quality || "黄",
-    qualityMult: d.qualityMult || 1.0,
-    taskRate: typeof d.taskRate === "number" ? d.taskRate : 0.30,
-    deathMult: typeof d.deathMult === "number" ? d.deathMult : 1.0,
-    classKey: d.classKey || "jian",
-    className: d.className || "剑修",
-    classWeapon: d.classWeapon || "剑",
-    classArmor: d.classArmor || "轻甲",
-    classAccessory: d.classAccessory || "玉佩",
-    level: d.level || 1,
-    hp: typeof d.hp === "number" ? d.hp : 100,
-    maxHp: d.maxHp || 100,
-    loyalty: typeof d.loyalty === "number" ? d.loyalty : 70,
-    status: d.status || "修炼中",
-    role: d.role || "杂役",
-    task: d.task || null,
-    taskStart: d.taskStart || 0,
-    taskEnd: d.taskEnd || 0,
-    mapX: typeof d.mapX === "number" ? d.mapX : 0.30,
-    mapY: typeof d.mapY === "number" ? d.mapY : 0.80,
-    equipment: d.equipment || { weapon: null, armor: null, accessory: null },
-    partner: d.partner || null,
-    swornBrother: d.swornBrother || null,
-  }));
+  return (list || []).map(d => {
+    // 旧存档 level 转换到 realm/layer
+    let realm = typeof d.realm === "number" ? d.realm : null;
+    let layer = typeof d.layer === "number" ? d.layer : null;
+    if (realm === null) {
+      const lv = d.level || 1;
+      if (lv >= 100) {
+        // 旧满级 → 渡劫九层
+        realm = 8; layer = 9;
+      } else {
+        // 按旧等级映射到 81 阶段
+        const total = Math.min(80, Math.floor((lv - 1) / 100 * 81));
+        realm = Math.floor(total / 9);
+        layer = (total % 9) + 1;
+      }
+    }
+    return {
+      id: d.id || (Date.now() + Math.random()),
+      name: d.name || "无名",
+      gender: d.gender || "male",
+      quality: d.quality || "黄",
+      qualityMult: d.qualityMult || 1.0,
+      taskRate: typeof d.taskRate === "number" ? d.taskRate : 0.30,
+      deathMult: typeof d.deathMult === "number" ? d.deathMult : 1.0,
+      classKey: d.classKey || "jian",
+      className: d.className || "剑修",
+      classWeapon: d.classWeapon || "剑",
+      classArmor: d.classArmor || "轻甲",
+      classAccessory: d.classAccessory || "玉佩",
+      realm, layer,
+      exp: typeof d.exp === "number" ? d.exp : 0,
+      expNeed: typeof d.expNeed === "number" ? d.expNeed : levelNeed(realm, layer),
+      breakthroughReady: !!d.breakthroughReady,
+      hp: typeof d.hp === "number" ? d.hp : 100,
+      maxHp: d.maxHp || 100,
+      loyalty: typeof d.loyalty === "number" ? d.loyalty : 70,
+      status: d.status || "修炼中",
+      role: d.role || "杂役",
+      task: d.task || null,
+      taskStart: d.taskStart || 0,
+      taskEnd: d.taskEnd || 0,
+      mapX: typeof d.mapX === "number" ? d.mapX : 0.30,
+      mapY: typeof d.mapY === "number" ? d.mapY : 0.80,
+      equipment: d.equipment || { weapon: null, armor: null, accessory: null },
+      partner: d.partner || null,
+      swornBrother: d.swornBrother || null,
+      body: typeof d.body === "number" ? d.body : 100,
+      maxBody: d.maxBody || 100,
+      subclass: d.subclass || null,
+    };
+  });
 }
-
 function loadLocal() {
   const saved = localStorage.getItem(SAVE_KEY);
   if (!saved) return false;
@@ -566,27 +758,29 @@ function loadLocal() {
     state.disciples = normalizeDisciples(state.disciples);
     state.inventory = Array.isArray(state.inventory) ? state.inventory : [];
     state.warHistory = Array.isArray(state.warHistory) ? state.warHistory : [];
+    state.saintHistory = Array.isArray(state.saintHistory) ? state.saintHistory : [];
     state.buildings = state.buildings || {};
     BUILDINGS.forEach(b => { if (typeof state.buildings[b.key] !== "number") state.buildings[b.key] = 0; });
-
+    if (typeof state.secretFloor !== "number") state.secretFloor = 0;
+    if (typeof state.saintChances !== "number") state.saintChances = 3;
+    if (!state.saintResetAt) state.saintResetAt = 0;
     const hasElder = state.disciples.some(d => d.role === "长老");
     if (!hasElder) {
       const elder = generateDisciple();
       elder.name = "太上长老";
       elder.role = "长老";
-      elder.level = 100; elder.hp = 100; elder.maxHp = 100;
+      elder.realm = 8; elder.layer = 9;
+      elder.expNeed = levelNeed(8, 9);
+      elder.hp = 100; elder.maxHp = 100;
       elder.loyalty = 100; elder.status = "长老";
       state.disciples.push(elder);
       log("★ 一位太上长老自愿镇守山门，监管弟子陨落。", "legend");
     }
     state.lastTick = Date.now();
-    state._lastAutoRecruit = 0; state._lastEvent = 0; state._lastCultivate = 0;
-    state._lastGoldTick = 0; state._lastHerbTick = 0; state._lastLoyalty = 0;
-    state._lastAssign = 0; state._lastPromote = 0; state._lastInteraction = 0;
+    resetDailyIfNeeded();
     return true;
   } catch (e) { return false; }
 }
-
 async function cloudSave() {
   if (!cloudReady) return;
   if (cloudFailCount >= 3 && Date.now() - lastCloudTry < 5 * 60 * 1000) return;
@@ -601,7 +795,6 @@ async function cloudSave() {
     else { cloudFailCount++; updateSyncStatus("err", "云端：同步失败"); }
   } catch (e) { cloudFailCount++; updateSyncStatus("err", "云端：离线"); }
 }
-
 async function cloudLoad() {
   try {
     const res = await fetch("/api/sync");
@@ -612,46 +805,19 @@ async function cloudLoad() {
   } catch (e) {}
   return null;
 }
-
 function updateSyncStatus(cls, text) {
   const dot = document.getElementById("syncDot");
   const txt = document.getElementById("syncText");
   if (dot) dot.className = "dot " + cls;
   if (txt) txt.textContent = text;
 }
-
 function scheduleCloudSave() {
   if (!cloudReady) return;
   if (cloudSyncTimer) clearTimeout(cloudSyncTimer);
   cloudSyncTimer = setTimeout(cloudSave, 30000);
 }
 
-function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
-function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-function fmt(n) {
-  const num = Number(n);
-  if (!isFinite(num)) return "0";
-  if (num >= 100000000) return (num / 100000000).toFixed(2) + "亿";
-  if (num >= 10000) return (num / 10000).toFixed(2) + "万";
-  return Math.floor(num).toLocaleString("en-US");
-}
-function log(msg, cls = "") {
-  const logEl = document.getElementById("log");
-  const div = document.createElement("div");
-  div.className = cls;
-  div.textContent = msg;
-  logEl.appendChild(div);
-  logEl.scrollTop = logEl.scrollHeight;
-  while (logEl.children.length > 100) logEl.removeChild(logEl.firstChild);
-}
-function toast(msg) {
-  const div = document.createElement("div");
-  div.className = "toast";
-  div.textContent = msg;
-  document.body.appendChild(div);
-  setTimeout(() => div.remove(), 2500);
-}
-
+// ==================== 弟子 ====================
 function rollQuality() {
   const total = QUALITIES.reduce((s, q) => s + q.weight, 0);
   let r = Math.random() * total;
@@ -661,7 +827,6 @@ function rollQuality() {
   }
   return QUALITIES[QUALITIES.length - 1];
 }
-
 function generateDisciple(forceQuality) {
   const gender = Math.random() < 0.5 ? "male" : "female";
   const surname = pick(SURNAME);
@@ -681,19 +846,22 @@ function generateDisciple(forceQuality) {
     classWeapon: cls.weapon,
     classArmor: cls.armor,
     classAccessory: cls.accessory,
-    level: 1, hp: 100, maxHp: 100, loyalty: 70,
+    realm: 0, layer: 1,
+    exp: 0, expNeed: levelNeed(0, 1),
+    breakthroughReady: false,
+    hp: 100, maxHp: 100, loyalty: 70,
     status: "修炼中", role: "杂役",
     task: null, taskStart: 0, taskEnd: 0,
     mapX: 0.30, mapY: 0.80,
     equipment: { weapon: null, armor: null, accessory: null },
-    partner: null,
-    swornBrother: null,
+    partner: null, swornBrother: null,
+    body: 100, maxBody: 100,
+    subclass: null,
   };
 }
-
 function getDiscipleMax(role) {
   const limits = {
-    杂役: 10 + state.buildings.dorm * 100,
+    杂役: 10 + (state.buildings.dorm || 0) * 100,
     外门: 300, 内门: 100, 核心: 20, 圣子: 6, 长老: 10
   };
   return limits[role] || 0;
@@ -710,20 +878,113 @@ function addDisciple(d, role = "杂役", ignoreLimit = false) {
   return true;
 }
 
+function getCultivateSpeed(d) {
+  let s = 1.0;
+  s *= 1 + (state.buildings.library || 0) * 0.10;
+  const sb = getSkillBonus();
+  s *= 1 + (sb.exp || 0);
+  s *= 1 + (d.quality === "天" ? 1.0 : d.quality === "地" ? 0.6 : d.quality === "玄" ? 0.3 : 0);
+  s *= 1 + (d.loyalty - 50) / 200;
+  s *= Math.pow(1.15, d.realm || 0);
+  s *= 1 + ((d.layer || 1) - 1) * 0.03;
+  // 转职加成
+  if (d.subclass) {
+    const sub = findSubclass(d);
+    if (sub && sub.effect.exp) s *= 1 + sub.effect.exp;
+  }
+  return s;
+}
+
+function findSubclass(d) {
+  const list = SUBCLASSES[d.classKey] || [];
+  return list.find(x => x.key === d.subclass) || null;
+}
+
+function gainExp(d, amount) {
+  if (d.hp <= 0 || d.role === "长老") return;
+  d.exp += amount;
+  while (d.exp >= d.expNeed) {
+    if (d.layer < 9) {
+      d.exp -= d.expNeed;
+      d.layer++;
+      d.expNeed = levelNeed(d.realm, d.layer);
+      if (d.layer === 9) {
+        d.breakthroughReady = true;
+        log(`⭐ 弟子【${d.name}】已至【${getRealmName(d)}】圆满，等待突破`, "epic");
+      }
+    } else {
+      d.exp = d.expNeed;
+      d.breakthroughReady = true;
+      break;
+    }
+  }
+}
+
+function tryBreakthrough(d) {
+  if (!d.breakthroughReady || d.layer < 9) return false;
+  if (d.realm >= REALMS.length - 1) return false;
+  const cost = BREAKTHROUGH_COST[d.realm];
+  if (!cost) return false;
+  if (state.gold < cost.gold || state.herb < cost.herb) return false;
+  state.gold -= cost.gold;
+  state.herb -= cost.herb;
+
+  const rate = Math.min(0.95, 0.5 + d.qualityMult * 0.08 + (d.loyalty - 70) / 300);
+  if (Math.random() < rate) {
+    d.realm++;
+    d.layer = 1;
+    d.exp = 0;
+    d.expNeed = levelNeed(d.realm, 1);
+    d.breakthroughReady = false;
+    d.maxHp = Math.floor(100 * REALMS[d.realm].mult * 0.5 + 100);
+    d.hp = d.maxHp;
+    log(`✨ 弟子【${d.name}】突破成功，晋升【${getRealmName(d)}】！`, "myth");
+    toast(`✨ ${d.name} 突破至 ${getRealmName(d)}`);
+    return true;
+  } else {
+    d.breakthroughReady = false;
+    d.exp = 0;
+    d.hp = Math.max(1, Math.floor(d.hp * 0.6));
+    d.loyalty = Math.max(0, d.loyalty - 3);
+    log(`💥 弟子【${d.name}】突破失败，境界跌回【${getRealmName(d)}】`, "danger");
+    return false;
+  }
+}
+
+function autoBreakthrough() {
+  const now = Date.now();
+  if (now - state._lastBreakthrough < 30000) return;
+  state._lastBreakthrough = now;
+  state.disciples.forEach(d => {
+    if (d.hp <= 0 || d.role === "长老") return;
+    if (!d.breakthroughReady || d.layer < 9) return;
+    if (d.realm >= REALMS.length - 1) return;
+    tryBreakthrough(d);
+  });
+}
+
 function getDisciplePower(d) {
   if (d.hp <= 0) return 0;
   const cls = CLASSES.find(c => c.key === d.classKey) || CLASSES[0];
-  const base = 10 + d.level * 5;
-  const arenaBonus = 1 + state.buildings.arena * 0.03;
-  const skillBonus = getSkillBonus();
+  const realm = REALMS[Math.min(d.realm || 0, REALMS.length - 1)];
+  const total = getTotalLayer(d);
+  const base = (20 + total * 15) * realm.mult;
+  const arenaBonus = 1 + (state.buildings.arena || 0) * 0.03;
+  const sb = getSkillBonus();
   let p = base * d.qualityMult * cls.powerMult * arenaBonus;
-  p *= (1 + skillBonus.power);
-  if (d.classKey === "jian") p *= (1 + (skillBonus.jian || 0));
+  p *= (1 + (sb.power || 0));
+  if (d.classKey === "jian") p *= (1 + (sb.jian || 0));
   if (d.loyalty >= 100) p *= 1.1;
+  // 转职加成
+  const sub = findSubclass(d);
+  if (sub) {
+    if (sub.effect.power) p *= 1 + sub.effect.power;
+    if (sub.effect.jian && d.classKey === "jian") p *= 1 + sub.effect.jian;
+  }
   if (d.equipment) {
-    ["weapon", "armor", "accessory"].forEach(slot => {
+    ["weapon","armor","accessory"].forEach(slot => {
       const eq = d.equipment[slot];
-      if (eq) p += eq.power;
+      if (eq) p += eq.power * realm.mult;
     });
   }
   return Math.floor(p);
@@ -731,9 +992,18 @@ function getDisciplePower(d) {
 function getSectPower() {
   return state.disciples.reduce((s, d) => s + getDisciplePower(d), 0);
 }
+function getTopRealm() {
+  let best = -1, bestName = "—";
+  state.disciples.forEach(d => {
+    if (d.hp <= 0) return;
+    const t = getTotalLayer(d);
+    if (t > best) { best = t; bestName = getRealmName(d); }
+  });
+  return bestName;
+}
 
 function getSkillBonus() {
-  const bonus = { power: 0, hp: 0, exp: 0, gold: 0, herb: 0, dan: 0, jian: 0, loyalty: 0 };
+  const bonus = { power: 0, hp: 0, exp: 0, gold: 0, herb: 0, dan: 0, jian: 0, loyalty: 0, forge: 0 };
   Object.entries(state.skills || {}).forEach(([key, data]) => {
     const s = SKILLS.find(x => x.key === key);
     if (!s) return;
@@ -745,6 +1015,7 @@ function getSkillBonus() {
   return bonus;
 }
 
+// ==================== 装备 ====================
 function generateEquip(forceQuality) {
   const quality = forceQuality
     ? EQUIP_QUALITY.find(q => q.name === forceQuality)
@@ -772,7 +1043,6 @@ function generateEquip(forceQuality) {
     power,
   };
 }
-
 function equipItem(d, item) {
   if (!d.equipment) d.equipment = { weapon: null, armor: null, accessory: null };
   const old = d.equipment[item.slot];
@@ -780,14 +1050,12 @@ function equipItem(d, item) {
   d.equipment[item.slot] = item;
   state.inventory = state.inventory.filter(i => i.id !== item.id);
 }
-
 function isEquipMatchClass(item, d) {
   if (item.slot === "weapon") return item.name.includes(d.classWeapon);
   if (item.slot === "armor") return item.name.includes(d.classArmor);
   if (item.slot === "accessory") return item.name.includes(d.classAccessory);
   return true;
 }
-
 function isBetterEquip(newEq, oldEq) {
   if (!oldEq) return true;
   const order = { "凡品": 0, "灵品": 1, "宝品": 2, "仙品": 3, "神品": 4 };
@@ -795,7 +1063,6 @@ function isBetterEquip(newEq, oldEq) {
   if (order[newEq.quality] === order[oldEq.quality] && newEq.power > oldEq.power) return true;
   return false;
 }
-
 function autoEquipDisciple(d) {
   if (d.hp <= 0 || d.role === "长老") return;
   if (!d.equipment) d.equipment = { weapon: null, armor: null, accessory: null };
@@ -807,39 +1074,40 @@ function autoEquipDisciple(d) {
 }
 function autoEquipAll() { state.disciples.forEach(d => autoEquipDisciple(d)); }
 
+// ==================== 升职 ====================
 function tryPromote() {
   const now = Date.now();
   if (now - state._lastPromote < 10000) return;
   state._lastPromote = now;
+  // 杂役 → 外门：筑基一层（realm>=1）
   for (const d of state.disciples) {
-    if (d.role !== "杂役" || d.hp <= 0 || d.level < 20 || d.loyalty < 60) continue;
+    if (d.role !== "杂役" || d.hp <= 0 || d.realm < 1 || d.loyalty < 60) continue;
     if (getDiscipleCount("外门") >= getDiscipleMax("外门")) break;
     d.role = "外门";
   }
+  // 外门 → 内门：金丹一层（realm>=2）
   for (const d of state.disciples) {
-    if (d.role !== "外门" || d.hp <= 0 || d.level < 50 || d.loyalty < 80) continue;
+    if (d.role !== "外门" || d.hp <= 0 || d.realm < 2 || d.loyalty < 80) continue;
     if (getDiscipleCount("内门") >= getDiscipleMax("内门")) break;
     d.role = "内门";
   }
-  const cand3 = state.disciples.filter(d => d.role === "内门" && d.hp > 0 && d.level >= 80 && d.loyalty >= 90);
+  // 内门 → 核心：元婴一层（realm>=3）
+  const cand3 = state.disciples.filter(d => d.role === "内门" && d.hp > 0 && d.realm >= 3 && d.loyalty >= 90);
   cand3.sort((a, b) => getDisciplePower(b) - getDisciplePower(a));
   for (const d of cand3) {
     if (getDiscipleCount("核心") >= getDiscipleMax("核心")) break;
     d.role = "核心";
   }
-  const cand4 = state.disciples.filter(d => d.role === "核心" && d.hp > 0 && d.level >= 100);
-  cand4.sort((a, b) => getDisciplePower(b) - getDisciplePower(a));
-  for (const d of cand4) {
-    if (getDiscipleCount("圣子") >= getDiscipleMax("圣子")) break;
-    d.role = "圣子";
-  }
+  // 核心 → 圣子：化神一层（realm>=4），但需要争夺，不自动升
+  // 任何 → 长老：炼虚一层（realm>=5）
   for (const d of state.disciples) {
-    if (d.role === "长老" || d.hp <= 0 || d.level < 100) continue;
+    if (d.role === "长老" || d.hp <= 0 || d.realm < 5) continue;
     if (getDiscipleCount("长老") >= getDiscipleMax("长老")) break;
     d.role = "长老"; d.task = null; d.status = "长老";
   }
 }
 
+// ==================== 任务 ====================
 function autoAssignTasks() {
   const now = Date.now();
   if (now - state._lastAssign < 5000) return;
@@ -850,7 +1118,9 @@ function autoAssignTasks() {
     if (d.status === "生命垂危") return;
     if (!d.task) {
       let taskRate = d.taskRate;
-      if (d.level >= 80) taskRate *= 0.5;
+      // 高境界弟子不再做低阶任务
+      if (d.realm >= 3) taskRate *= 0.3;
+      if (d.realm >= 5) taskRate *= 0.1;
       if (Math.random() < taskRate) {
         const cls = CLASSES.find(c => c.key === d.classKey);
         startTask(d, cls.task);
@@ -861,7 +1131,6 @@ function autoAssignTasks() {
     }
   });
 }
-
 function startTask(d, taskName) {
   const task = TASKS[taskName];
   if (!task) return;
@@ -871,11 +1140,12 @@ function startTask(d, taskName) {
   d.status = taskName + "中";
   d.mapX = task.x; d.mapY = task.y;
 }
-
 function finishTask(d) {
   const task = TASKS[d.task];
   if (!task) { d.task = null; d.status = "修炼中"; return; }
   let risk = task.risk * (d.deathMult || 1);
+  // 境界越高，风险越低
+  risk *= Math.pow(0.7, d.realm);
   if (Math.random() < risk) {
     const elders = state.disciples.filter(x => x.role === "长老" && x.hp > 0);
     if (elders.length > 0 && Math.random() < 0.8) {
@@ -887,51 +1157,70 @@ function finishTask(d) {
           if (d.equipment[slot]) { state.inventory.push(d.equipment[slot]); d.equipment[slot] = null; }
         });
       }
-      log(`弟子【${d.name}】（${d.quality}品 ${d.className}）任务中陨落`, "danger");
+      log(`弟子【${d.name}】（${d.quality}品 ${d.className}·${getRealmName(d)}）任务中陨落`, "danger");
       return;
     }
   }
-  const skillBonus = getSkillBonus();
-  const gold = task.gold ? Math.floor(rand(task.gold[0], task.gold[1]) * (1 + skillBonus.gold)) : 0;
-  const herb = task.herb ? Math.floor(rand(task.herb[0], task.herb[1]) * (1 + skillBonus.herb)) : 0;
+  const sb = getSkillBonus();
+  const gold = task.gold ? Math.floor(rand(task.gold[0], task.gold[1]) * (1 + (sb.gold||0))) : 0;
+  const herb = task.herb ? Math.floor(rand(task.herb[0], task.herb[1]) * (1 + (sb.herb||0))) : 0;
   const ore = task.ore ? rand(task.ore[0], task.ore[1]) : 0;
   const exp = task.exp ? rand(task.exp[0], task.exp[1]) : 0;
   state.gold += gold; state.herb += herb; state.ore += ore;
-  if (exp > 10) d.level = Math.min(100, d.level + 1);
+  if (exp > 0) gainExp(d, exp);
   if (d.task === "历练") state.sectExp += rand(5, 30);
   d.task = null; d.status = "修炼中";
   d.mapX = 0.30; d.mapY = 0.80;
 }
 
+// ==================== 修炼 / 产出 ====================
 function cultivate() {
   const now = Date.now();
   if (now - state._lastCultivate < 10000) return;
   state._lastCultivate = now;
-  const skillBonus = getSkillBonus();
-  const libraryBonus = 1 + state.buildings.library * 0.05;
-  const zhenBonus = state.disciples.filter(d => d.classKey === "zhen" && d.hp > 0).length * 0.01;
-  const rate = libraryBonus + zhenBonus + skillBonus.exp;
   state.disciples.forEach(d => {
-    if (d.hp <= 0 || d.role === "长老") return;
-    if (d.task) return;
-    if (Math.random() < 0.3 * rate) d.level = Math.min(100, d.level + 1);
+    if (d.hp <= 0 || d.role === "长老" || d.task) return;
+    const speed = getCultivateSpeed(d);
+    gainExp(d, 8 * speed);
   });
 }
-
 function produce() {
   const now = Date.now();
-  const skillBonus = getSkillBonus();
+  const sb = getSkillBonus();
   if (now - state._lastGoldTick > 5000) {
     state._lastGoldTick = now;
-    const base = state.buildings.farm * 10 + state.disciples.filter(d => d.hp > 0).length * 1;
-    state.gold += Math.floor(base * (1 + skillBonus.gold) * (1 + state.legacyBonus));
+    const base = (state.buildings.farm || 0) * 10 + state.disciples.filter(d => d.hp > 0).length * 1;
+    state.gold += Math.floor(base * (1 + (sb.gold||0)) * (1 + state.legacyBonus));
   }
   if (now - state._lastHerbTick > 10000) {
     state._lastHerbTick = now;
-    state.herb += Math.floor(state.buildings.garden * 5 * (1 + skillBonus.herb));
+    state.herb += Math.floor((state.buildings.garden || 0) * 5 * (1 + (sb.herb||0)));
   }
 }
+function produceSectExp() {
+  const now = Date.now();
+  if (now - state._lastSectExp < 5000) return;
+  state._lastSectExp = now;
+  let gain = 0;
+  state.disciples.forEach(d => {
+    if (d.hp <= 0) return;
+    const total = getTotalLayer(d);
+    gain += 0.05 + total * 0.02;
+  });
+  state.sectExp += gain;
+}
+function recoverBody() {
+  const now = Date.now();
+  if (now - state._lastBody < 60000) return;
+  state._lastBody = now;
+  state.disciples.forEach(d => {
+    if (d.hp > 0 && d.body < d.maxBody) {
+      d.body = Math.min(d.maxBody, d.body + 10);
+    }
+  });
+}
 
+// ==================== 自动招募 ====================
 function autoRecruit() {
   if (!state.autoRecruit) return;
   const now = Date.now();
@@ -944,7 +1233,6 @@ function autoRecruit() {
   }
   const ok = addDisciple(d);
   if (!ok) {
-    // 上限满了，不再刷屏，但偶尔提示一次
     if (now - (state._lastFullWarn || 0) > 60000) {
       state._lastFullWarn = now;
       log("杂役已满，无法自动招募（升级弟子居可扩容）", "rare");
@@ -952,6 +1240,7 @@ function autoRecruit() {
   }
 }
 
+// ==================== 忠诚 / 互动 ====================
 function checkLoyalty() {
   const now = Date.now();
   if (now - state._lastLoyalty < 30000) return;
@@ -967,7 +1256,6 @@ function checkLoyalty() {
     }
   });
 }
-
 function checkInteraction() {
   const now = Date.now();
   if (now - state._lastInteraction < 5 * 60 * 1000) return;
@@ -995,22 +1283,23 @@ function checkInteraction() {
   }
 }
 
+// ==================== 炼丹 / 炼器 ====================
 function doAlchemy() {
   if (state.herb < 100 || state.gold < 50) { log("药材或灵石不足", "danger"); return; }
   state.herb -= 100; state.gold -= 50;
-  const bonus = getSkillBonus();
-  const danMult = 1 + (bonus.dan || 0); // 丹药加成：影响成功率与效果
+  const sb = getSkillBonus();
+  const danMult = 1 + (sb.dan || 0);
   const roll = Math.random() * danMult;
   if (roll < 0.6) {
     state.disciples.forEach(d => { if (d.hp > 0) d.hp = d.maxHp; });
     log(`🧪 炼出【疗伤丹】，全体弟子恢复满血`, "gold");
     addCraftLog("🧪 疗伤丹 ×1", "gold");
   } else if (roll < 0.9) {
-    const d = state.disciples.filter(x => x.hp > 0 && x.role !== "长老").sort((a, b) => a.level - b.level)[0];
+    const d = state.disciples.filter(x => x.hp > 0 && x.role !== "长老").sort((a, b) => getTotalLayer(a) - getTotalLayer(b))[0];
     if (d) {
-      const add = Math.max(1, Math.floor(5 * danMult));
-      d.level = Math.min(100, d.level + add);
-      log(`🧪 炼出【聚气丹】，弟子【${d.name}】等级 +${add}`, "epic");
+      const add = Math.max(1, Math.floor(d.expNeed * 0.3 * danMult));
+      gainExp(d, add);
+      log(`🧪 炼出【聚气丹】，弟子【${d.name}】修为 +${fmt(add)}`, "epic");
       addCraftLog("🧪 聚气丹 ×1", "epic");
     }
   } else {
@@ -1029,7 +1318,6 @@ function doAlchemy() {
     }
   }
 }
-
 function doForge() {
   if (state.ore < 100 || state.gold < 50) { log("矿石或灵石不足", "danger"); return; }
   state.ore -= 100; state.gold -= 50;
@@ -1039,9 +1327,9 @@ function doForge() {
   addCraftLog(`⚒️ ${eq.quality}·${eq.name} +${eq.power}`, eq.qualityColor);
   autoEquipAll();
 }
-
 function addCraftLog(text, cls) {
   const el = document.getElementById("craftLog");
+  if (!el) return;
   const div = document.createElement("div");
   div.className = "item " + (cls || "");
   div.innerHTML = `<div style="flex:1;">${text}</div>`;
@@ -1049,8 +1337,140 @@ function addCraftLog(text, cls) {
   while (el.children.length > 30) el.removeChild(el.lastChild);
 }
 
-const WAR_ENEMIES = ["青云门", "焚天宗", "万剑阁", "血煞教", "天机楼", "太虚观"];
+// ==================== 秘境 ====================
+function exploreSecret() {
+  const floor = Math.min(state.secretFloor, SECRET_FLOORS.length - 1);
+  const cfg = SECRET_FLOORS[floor];
+  const team = state.disciples
+    .filter(d => d.hp > 0 && d.role !== "长老" && d.body >= 20)
+    .sort((a, b) => getDisciplePower(b) - getDisciplePower(a))
+    .slice(0, 5);
+  if (team.length < 3) { log("至少需要 3 名体力充足的弟子", "danger"); return; }
+  const teamPower = team.reduce((s, d) => s + getDisciplePower(d), 0);
+  if (teamPower < cfg.need) { log(`战力不足（需要 ${fmt(cfg.need)}，当前 ${fmt(teamPower)}）`, "danger"); return; }
+  team.forEach(d => { d.body = Math.max(0, d.body - 20); });
+  const reward = {};
+  Object.entries(cfg.reward).forEach(([k, range]) => {
+    reward[k] = rand(range[0], range[1]);
+  });
+  state.gold += reward.gold || 0;
+  state.herb += reward.herb || 0;
+  state.ore += reward.ore || 0;
+  // 经验分给队伍
+  team.forEach(d => { gainExp(d, Math.floor((reward.exp || 0) / team.length)); });
+  // 掉装备
+  if (Math.random() < 0.4) {
+    const eq = generateEquip();
+    state.inventory.push(eq);
+    log(`秘境掉落：${eq.quality}·${eq.name}`, eq.qualityColor);
+  }
+  // 受伤
+  team.forEach(d => {
+    if (Math.random() < 0.15) {
+      d.hp = Math.max(1, Math.floor(d.hp * 0.5));
+      log(`弟子【${d.name}】在秘境中受伤`, "danger");
+    }
+  });
+  state.secretFloor = Math.min(state.secretFloor + 1, SECRET_FLOORS.length - 1);
+  log(`秘境第 ${floor + 1} 层探索成功！灵石 +${fmt(reward.gold||0)}，药材 +${fmt(reward.herb||0)}，矿石 +${fmt(reward.ore||0)}`, "gold");
+  addSecretLog(`✅ 第 ${floor+1} 层：灵石+${fmt(reward.gold||0)} 药材+${fmt(reward.herb||0)} 矿石+${fmt(reward.ore||0)}`, "gold");
+  saveLocal(); scheduleCloudSave(); updateUI();
+}
+function addSecretLog(text, cls) {
+  const el = document.getElementById("secretLog");
+  if (!el) return;
+  const div = document.createElement("div");
+  div.className = "item " + (cls || "");
+  div.innerHTML = `<div style="flex:1;">${text}</div>`;
+  el.insertBefore(div, el.firstChild);
+  while (el.children.length > 30) el.removeChild(el.lastChild);
+}
 
+// ==================== 转职 ====================
+function doSubclass(d, subKey) {
+  const sub = (SUBCLASSES[d.classKey] || []).find(x => x.key === subKey);
+  if (!sub) return;
+  // 需要化神一层（realm>=4）
+  if (d.realm < 4) { log("需要化神一层以上才能转职", "danger"); return; }
+  // 需要忠诚 90
+  if (d.loyalty < 90) { log("忠诚不足 90，无法转职", "danger"); return; }
+  // 消耗
+  const cost = { gold: 100000, herb: 20000 };
+  if (state.gold < cost.gold || state.herb < cost.herb) { log("灵石或药材不足", "danger"); return; }
+  state.gold -= cost.gold; state.herb -= cost.herb;
+  d.subclass = subKey;
+  log(`🌀 弟子【${d.name}】转职为【${sub.name}】`, "myth");
+  toast(`🌀 ${d.name} → ${sub.name}`);
+  saveLocal(); scheduleCloudSave(); updateUI();
+}
+
+// ==================== 圣子争夺 ====================
+function resetDailyIfNeeded() {
+  const now = Date.now();
+  if (!state.saintResetAt || now - state.saintResetAt > 24 * 3600 * 1000) {
+    state.saintChances = 3;
+    state.saintResetAt = now;
+  }
+}
+function getSaintCandidates() {
+  // 化神一层（realm>=4）且非长老、非圣子
+  return state.disciples.filter(d =>
+    d.hp > 0 &&
+    d.role !== "长老" &&
+    d.role !== "圣子" &&
+    d.realm >= 4
+  ).sort((a, b) => getDisciplePower(b) - getDisciplePower(a));
+}
+function saintTournament() {
+  resetDailyIfNeeded();
+  if (state.saintChances <= 0) {
+    log("今日圣子争夺次数已用完", "danger");
+    return;
+  }
+  const candidates = getSaintCandidates();
+  if (candidates.length === 0) {
+    log("暂无可参与圣子争夺的弟子（需化神一层以上）", "danger");
+    return;
+  }
+  state.saintChances--;
+  // 取最强 5 名作为挑战者
+  const challengers = candidates.slice(0, 5);
+  // 当前圣子若存在，也加入
+  let champion = null;
+  if (state.saint) {
+    const s = state.disciples.find(x => x.id === state.saint && x.hp > 0);
+    if (s) champion = s;
+  }
+  const all = champion ? [champion, ...challengers] : challengers;
+  // 战斗：按战力 + 随机
+  let winner = all[0];
+  let bestScore = -1;
+  all.forEach(d => {
+    const score = getDisciplePower(d) * (0.8 + Math.random() * 0.4);
+    if (score > bestScore) { bestScore = score; winner = d; }
+  });
+  // 原圣子降级为核心
+  if (champion && champion.id !== winner.id) {
+    champion.role = "核心";
+    log(`👑 圣子【${champion.name}】在争夺中落败，降为核心弟子`, "rare");
+  }
+  // 新圣子
+  if (winner.role !== "圣子") {
+    winner.role = "圣子";
+    winner.loyalty = Math.min(100, winner.loyalty + 10);
+    state.saint = winner.id;
+    log(`👑 弟子【${winner.name}】（${getRealmName(winner)}）成为新一任圣子！`, "myth");
+    toast(`👑 ${winner.name} 成为圣子！`);
+  } else {
+    log(`👑 圣子【${winner.name}】成功卫冕`, "gold");
+  }
+  state.saintHistory.push({ at: Date.now(), winner: winner.name, realm: getRealmName(winner) });
+  if (state.saintHistory.length > 20) state.saintHistory.shift();
+  saveLocal(); scheduleCloudSave(); updateUI();
+}
+
+// ==================== 宗门战 ====================
+const WAR_ENEMIES = ["青云门", "焚天宗", "万剑阁", "血煞教", "天机楼", "太虚观"];
 function checkWar() {
   const now = Date.now();
   if (now < state.nextWarAt) return;
@@ -1079,7 +1499,6 @@ function checkWar() {
   state.nextWarAt = now + 3600 * 1000;
   renderWar();
 }
-
 function renderWar() {
   const list = document.getElementById("warList");
   if (!list) return;
@@ -1113,8 +1532,8 @@ function renderWar() {
   });
 }
 
+// ==================== 传承 ====================
 function canReincarn() { return state.sectLevel >= SECT_LEVELS.length - 1; }
-
 function doReincarn() {
   if (!canReincarn()) { log("境界不足，无法传承", "danger"); return; }
   if (!confirm("确定要立新掌门吗？将重置境界、弟子、灵石，但保留部分底蕴。")) return;
@@ -1125,23 +1544,31 @@ function doReincarn() {
   state.herb = 0; state.ore = 0;
   state.generation++; state.legacyBonus += 0.1;
   state.disciples = coreDisciples.map(d => {
-    d.role = "杂役"; d.level = 1; d.hp = 100; d.maxHp = 100;
+    d.role = "杂役"; d.realm = 0; d.layer = 1;
+    d.exp = 0; d.expNeed = levelNeed(0, 1);
+    d.breakthroughReady = false;
+    d.hp = 100; d.maxHp = 100;
     d.task = null; d.status = "修炼中";
     d.mapX = 0.30; d.mapY = 0.80;
+    d.subclass = null;
     return d;
   });
   const elder = generateDisciple();
   elder.name = "太上长老·" + state.generation;
   elder.role = "长老";
-  elder.level = 100; elder.hp = 100; elder.maxHp = 100;
+  elder.realm = 8; elder.layer = 9;
+  elder.expNeed = levelNeed(8, 9);
+  elder.hp = 100; elder.maxHp = 100;
   elder.loyalty = 100; elder.status = "长老";
   state.disciples.push(elder);
   state.inventory = [];
+  state.saint = null;
   log(`★★★ 传承成功！第 ${state.generation} 代掌门诞生，全局加成 +${(state.legacyBonus*100).toFixed(0)}%`, "myth");
   toast(`★★★ 传承成功！第 ${state.generation} 代`);
   saveLocal(); scheduleCloudSave(); updateUI();
 }
 
+// ==================== 招募 ====================
 function recruitN(n) {
   let tian = 0, di = 0, xuan = 0, huang = 0;
   const loyaltyBonus = getSkillBonus().loyalty || 0;
@@ -1162,7 +1589,6 @@ function recruitN(n) {
   if (tian > 0) toast(`🎉 抽到天阶弟子 ×${tian}！`);
   saveLocal(); scheduleCloudSave(); updateUI();
 }
-
 function healDisciple() {
   const d = state.disciples.find(x => x.hp > 0 && x.hp < x.maxHp * 0.5);
   if (!d) { log("没有受伤的弟子", "danger"); return; }
@@ -1177,9 +1603,8 @@ function reviveDisciple() {
   d.status = "修炼中";
   log(`弟子【${d.name}】还魂复活（忠诚 -20）`, "gold");
 }
-
 function batchManage() {
-  const choice = prompt("批量管理：\n1 = 遣散所有黄阶杂役\n2 = 遣散所有玄阶杂役\n3 = 遣散所有杂役\n输入数字选择：");
+  const choice = prompt("批量管理：\n1 = 遣散所有黄阶杂役\n2 = 遣散所有玄阶杂役\n3 = 遣散所有杂役\n4 = 遣散所有筑基以下杂役\n输入数字选择：");
   if (!choice) return;
   let targets = [], refund = 0;
   if (choice === "1") { targets = state.disciples.filter(d => d.role === "杂役" && d.quality === "黄"); refund = 5; }
@@ -1192,18 +1617,21 @@ function batchManage() {
       else if (d.quality === "地") refund += 100;
       else if (d.quality === "天") refund += 500;
     });
+  } else if (choice === "4") {
+    targets = state.disciples.filter(d => d.role === "杂役" && d.realm < 1);
+    refund = 5;
   } else return;
   if (targets.length === 0) { log("没有符合条件的弟子", "danger"); return; }
   const ids = new Set(targets.map(d => d.id));
   state.disciples = state.disciples.filter(d => !ids.has(d.id));
-  if (choice !== "3") refund *= targets.length;
+  if (choice === "1" || choice === "2" || choice === "4") refund *= targets.length;
   state.gold += refund;
   log(`遣散 ${targets.length} 名弟子，返还 ${refund} 灵石`, "gold");
   saveLocal(); scheduleCloudSave(); updateUI();
 }
 
+// ==================== 渲染 ====================
 const MAP_W = 900, MAP_H = 600;
-
 function onBuildingClick(b) {
   const lv = state.buildings[b.key] || 0;
   if (lv >= b.maxLv) { log(`${b.name} 已满级`, "danger"); return; }
@@ -1213,12 +1641,9 @@ function onBuildingClick(b) {
   log(`【${b.name}】升级到 Lv.${state.buildings[b.key]}`, "gold");
   saveLocal(); scheduleCloudSave(); updateUI();
 }
-
-// 建筑只渲染一次，弟子点按 data-id 增删/移动
 function renderMap() {
   const map = document.getElementById("mapArea");
-
-  // ---- 建筑：只初始化一次 ----
+  if (!map) return;
   if (!map.dataset.buildingsDone) {
     BUILDINGS.forEach(b => {
       const el = document.createElement("div");
@@ -1233,17 +1658,13 @@ function renderMap() {
     });
     map.dataset.buildingsDone = "1";
   }
-  // 更新建筑等级文字
   BUILDINGS.forEach(b => {
     const el = map.querySelector(`.building[data-build="${b.key}"] .b-lv`);
     if (el) el.textContent = "Lv." + (state.buildings[b.key] || 0);
   });
-
-  // ---- 弟子点：用 data-id 对齐 ----
   const alive = state.disciples.filter(d => d.hp > 0).slice(0, 100);
   const existing = new Map();
   map.querySelectorAll(".disciple-dot").forEach(el => existing.set(el.dataset.id, el));
-
   alive.forEach(d => {
     const key = String(d.id);
     let el = existing.get(key);
@@ -1251,22 +1672,20 @@ function renderMap() {
       el = document.createElement("div");
       el.className = "disciple-dot " + d.quality + (d.gender === "male" ? " male" : "");
       el.dataset.id = key;
-      el.title = `${d.name} · ${d.role} · Lv.${d.level}`;
+      el.title = `${d.name} · ${getRealmName(d)} · ${d.role}`;
       map.appendChild(el);
     }
     el.style.left = (d.mapX * MAP_W) + "px";
     el.style.top  = (d.mapY * MAP_H) + "px";
-    el.title = `${d.name} · ${d.role} · Lv.${d.level}`;
+    el.title = `${d.name} · ${getRealmName(d)} · ${d.role}`;
   });
-
   existing.forEach((el, id) => {
     if (!alive.some(d => String(d.id) === id)) el.remove();
   });
 }
-
-// 只更新位置，不重建
 function updateDisciplePositions() {
   const map = document.getElementById("mapArea");
+  if (!map) return;
   const alive = state.disciples.filter(d => d.hp > 0).slice(0, 100);
   const idMap = new Map(alive.map(d => [String(d.id), d]));
   map.querySelectorAll(".disciple-dot").forEach(el => {
@@ -1280,22 +1699,23 @@ function updateDisciplePositions() {
   });
 }
 
-let currentFilter = "all", currentQFilter = "all", currentLvFilter = "all";
+let currentFilter = "all", currentQFilter = "all", currentRFilter = "all";
 
 function updateUI() {
-  document.getElementById("topSect").textContent = SECT_LEVELS[state.sectLevel];
+  document.getElementById("topSect").textContent = SECT_LEVELS[state.sectLevel] || "—";
   document.getElementById("topExp").textContent = fmt(state.sectExp);
   document.getElementById("topGold").textContent = fmt(state.gold);
   document.getElementById("topHerb").textContent = fmt(state.herb);
   document.getElementById("topOre").textContent = fmt(state.ore);
   document.getElementById("topDisciple").textContent = state.disciples.filter(d => d.hp > 0).length;
-  document.getElementById("sectLevel").textContent = SECT_LEVELS[state.sectLevel];
-  const need = SECT_NEED[state.sectLevel];
+  document.getElementById("sectLevel").textContent = SECT_LEVELS[state.sectLevel] || "—";
+  const need = SECT_NEED[state.sectLevel] || 100;
   document.getElementById("sectExp").textContent = `${fmt(state.sectExp)} / ${fmt(need)}`;
   document.getElementById("expFill").style.width = Math.min(100, (state.sectExp / need) * 100) + "%";
   document.getElementById("sectPower").textContent = fmt(getSectPower());
   document.getElementById("genCount").textContent = state.generation;
   document.getElementById("discipleTotal").textContent = `${state.disciples.length} / 1441`;
+  document.getElementById("topRealm").textContent = getTopRealm();
   document.getElementById("autoRecruitBtn").textContent = "自动招募：" + (state.autoRecruit ? "开" : "关");
   document.getElementById("reincarnBtn").disabled = !canReincarn();
   const badge = document.getElementById("eventBadge");
@@ -1304,21 +1724,30 @@ function updateUI() {
   document.getElementById("eventCount").textContent = `${state.events.length} / 10`;
   document.getElementById("craftHerb").textContent = fmt(state.herb);
   document.getElementById("craftOre").textContent = fmt(state.ore);
+  // 秘境
+  document.getElementById("secretFloor").textContent = `${Math.min(state.secretFloor + 1, SECRET_FLOORS.length)} / ${SECRET_FLOORS.length}`;
+  const cfg = SECRET_FLOORS[Math.min(state.secretFloor, SECRET_FLOORS.length - 1)];
+  document.getElementById("secretNeed").textContent = fmt(cfg.need);
+  const teamBody = state.disciples.filter(d => d.hp > 0 && d.role !== "长老").slice(0, 5).map(d => d.body).join("/");
+  document.getElementById("secretBody").textContent = teamBody || "—";
+  // 圣子
+  resetDailyIfNeeded();
+  document.getElementById("saintChances").textContent = `${state.saintChances} / 3`;
+  const saintD = state.disciples.find(x => x.id === state.saint && x.hp > 0);
+  document.getElementById("nextSaint").textContent = saintD ? `${saintD.name}（${getRealmName(saintD)}）` : "——";
   renderMap(); renderDisciples(); renderEvents(); renderBuildings();
-  renderSkills(); renderShop(); renderWar();
+  renderSkills(); renderShop(); renderWar(); renderSaint();
 }
 
 function renderDisciples() {
   const list = document.getElementById("discipleList");
+  if (!list) return;
   list.innerHTML = "";
-  const roles = ["长老", "圣子", "核心", "内门", "外门", "杂役"];
+  const roles = ["圣子", "长老", "核心", "内门", "外门", "杂役"];
   let filtered = state.disciples.filter(d => d.hp > 0);
   if (currentFilter !== "all") filtered = filtered.filter(d => d.role === currentFilter);
   if (currentQFilter !== "all") filtered = filtered.filter(d => d.quality === currentQFilter);
-  if (currentLvFilter !== "all") {
-    const [min, max] = currentLvFilter.split("-").map(Number);
-    filtered = filtered.filter(d => d.level >= min && d.level < max);
-  }
+  if (currentRFilter !== "all") filtered = filtered.filter(d => d.realm === Number(currentRFilter));
   const groups = {};
   roles.forEach(r => groups[r] = []);
   filtered.forEach(d => { if (groups[d.role]) groups[d.role].push(d); });
@@ -1353,24 +1782,39 @@ function renderDisciples() {
         const eqs = ["weapon", "armor", "accessory"].map(s => d.equipment[s]).filter(Boolean);
         if (eqs.length > 0) equipText = eqs.map(e => `<span class="equip-slot ${e.quality}">${e.quality}·${e.name}</span>`).join("");
       }
+      const sub = findSubclass(d);
+      const subText = sub ? ` · <span style="color:#c586c0;">${sub.name}</span>` : "";
+      const progress = Math.min(100, (d.exp / d.expNeed) * 100).toFixed(0);
       el.innerHTML = `
         <div style="flex:1;min-width:0;">
           <div class="name">${d.name} <span class="${genderCls}">${genderIcon}</span>
             <span class="${d.quality === "天" ? "tian" : d.quality === "地" ? "di" : d.quality === "玄" ? "xuan" : "huang"}">${d.quality}品</span>
-            · ${d.className} · ${d.role}${partnerText}</div>
-          <div class="attr">Lv.${d.level} · 战力 ${getDisciplePower(d)} · 忠诚 ${d.loyalty}</div>
-          <div class="attr">${d.task ? d.task + "中" : d.status}</div>
+            · ${d.className}${subText} · ${d.role}${partnerText}</div>
+          <div class="attr">
+            <span class="realm-tag ${REALMS[d.realm].color}">${getRealmName(d)}</span>
+            战力 ${fmt(getDisciplePower(d))} · 忠诚 ${d.loyalty} · 体力 ${d.body}/${d.maxBody}
+          </div>
+          <div class="attr">${d.task ? d.task + "中" : d.status} · 修为 ${fmt(d.exp)} / ${fmt(d.expNeed)}（${progress}%）${d.breakthroughReady ? ' <span style="color:#ffd700;">★可突破</span>' : ''}</div>
           ${equipText ? `<div style="margin-top:4px;">${equipText}</div>` : ""}
+          ${d.realm >= 4 && !d.subclass ? `<div style="margin-top:4px;">${(SUBCLASSES[d.classKey]||[]).map(s => `<button class="equip-slot" data-sub="${s.key}" data-id="${d.id}" style="cursor:pointer;">转职 ${s.name}</button>`).join(" ")}</div>` : ""}
         </div>
       `;
       list.appendChild(el);
     });
   });
   if (filtered.length === 0) list.innerHTML = '<div class="empty">没有符合条件的弟子</div>';
+  // 转职按钮
+  list.querySelectorAll("[data-sub]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const d = state.disciples.find(x => String(x.id) === btn.dataset.id);
+      if (d) doSubclass(d, btn.dataset.sub);
+    });
+  });
 }
 
 function renderEvents() {
   const list = document.getElementById("eventList");
+  if (!list) return;
   list.innerHTML = "";
   if (state.events.length === 0) { list.innerHTML = '<div class="empty">暂无待处理事件</div>'; return; }
   state.events.forEach((e) => {
@@ -1399,6 +1843,7 @@ function renderEvents() {
 
 function renderBuildings() {
   const list = document.getElementById("buildingList");
+  if (!list) return;
   list.innerHTML = "";
   BUILDINGS.forEach(b => {
     const lv = state.buildings[b.key] || 0;
@@ -1418,6 +1863,7 @@ function renderBuildings() {
 
 function renderSkills() {
   const list = document.getElementById("skillList");
+  if (!list) return;
   list.innerHTML = "";
   let learnedCount = 0;
   SKILLS.forEach(s => {
@@ -1452,6 +1898,7 @@ function renderSkills() {
 
 function renderShop() {
   const list = document.getElementById("shopList");
+  if (!list) return;
   list.innerHTML = "";
   document.getElementById("recruitCount").textContent = state.recruitCount;
   document.getElementById("pityDi").textContent = 10 - state.pityDi;
@@ -1479,7 +1926,45 @@ function renderShop() {
   });
 }
 
-// ==================== 事件生成（修复：原代码缺失） ====================
+function renderSaint() {
+  const list = document.getElementById("saintList");
+  if (!list) return;
+  list.innerHTML = "";
+  const candidates = getSaintCandidates().slice(0, 8);
+  if (candidates.length === 0) {
+    list.innerHTML = '<div class="empty">暂无可参与圣子争夺的弟子（需化神一层以上）</div>';
+  } else {
+    const header = document.createElement("div");
+    header.className = "saint-card";
+    header.innerHTML = `
+      <div class="sc-title">👑 圣子争夺大会</div>
+      <div class="sc-desc">每日 3 次机会，胜者成为圣子/圣女。圣子享受全宗供奉与战力加成，落败者降为核心弟子。</div>
+      <div class="sc-opponents">今日剩余次数：${state.saintChances} / 3</div>
+    `;
+    list.appendChild(header);
+    candidates.forEach(d => {
+      const el = document.createElement("div");
+      el.className = "item " + d.quality;
+      el.innerHTML = `
+        <div style="flex:1;">
+          <div class="name">${d.name} <span class="realm-tag ${REALMS[d.realm].color}">${getRealmName(d)}</span></div>
+          <div class="attr">${d.className} · 战力 ${fmt(getDisciplePower(d))} · 忠诚 ${d.loyalty}</div>
+        </div>
+      `;
+      list.appendChild(el);
+    });
+  }
+  if (state.saintHistory.length > 0) {
+    const h = document.createElement("div");
+    h.className = "saint-card";
+    h.innerHTML = `<div class="sc-title">历代圣子</div>` + state.saintHistory.slice(-5).reverse().map(x =>
+      `<div class="sc-opponents">${new Date(x.at).toLocaleDateString("zh-CN")} · ${x.winner}（${x.realm}）</div>`
+    ).join("");
+    list.appendChild(h);
+  }
+}
+
+// ==================== 事件生成 ====================
 function spawnEvent() {
   const now = Date.now();
   if (now - state._lastEvent < 60000) return;
@@ -1505,16 +1990,26 @@ function offlineEarnings() {
   const mins = Math.floor((capSec % 3600) / 60);
   const timeStr = hours > 0 ? `${hours} 小时 ${mins} 分钟` : `${mins} 分钟`;
 
-  const skillBonus = getSkillBonus();
+  const sb = getSkillBonus();
   const reincMult = 1 + state.legacyBonus;
-  const goldGain = Math.floor(capSec / 5 * (state.buildings.farm * 10 + 10) * (1 + skillBonus.gold) * reincMult);
-  const herbGain = Math.floor(capSec / 10 * state.buildings.garden * 5 * (1 + skillBonus.herb));
-  const discCount = state.disciples.filter(d => d.hp > 0 && d.role !== "长老").length;
-  const expGain = Math.floor(capSec / 10 * discCount * 0.3);
+  const goldGain = Math.floor(capSec / 5 * ((state.buildings.farm||0) * 10 + 10) * (1 + (sb.gold||0)) * reincMult);
+  const herbGain = Math.floor(capSec / 10 * (state.buildings.garden||0) * 5 * (1 + (sb.herb||0)));
 
+  // 离线修为
+  let totalExp = 0;
+  state.disciples.forEach(d => {
+    if (d.hp <= 0 || d.role === "长老") return;
+    const speed = getCultivateSpeed(d);
+    const exp = Math.floor(capSec / 10 * 8 * speed);
+    totalExp += exp;
+    gainExp(d, exp);
+    if (d.breakthroughReady && d.layer >= 9) tryBreakthrough(d);
+  });
+
+  // 离线死亡
   const deadCount = { 天: 0, 地: 0, 玄: 0, 黄: 0 };
   state.disciples.filter(d => d.hp > 0 && d.role !== "长老").forEach(d => {
-    const deathChance = 0.005 * (d.deathMult || 1);
+    const deathChance = 0.005 * (d.deathMult || 1) * Math.pow(0.7, d.realm);
     if (Math.random() < deathChance) {
       d.hp = 0;
       deadCount[d.quality] = (deadCount[d.quality] || 0) + 1;
@@ -1537,7 +2032,7 @@ function offlineEarnings() {
       <div class="row"><span>离线时长</span><span>${timeStr}</span></div>
       <div class="row"><span>💎 灵石</span><span>+${fmt(goldGain)}</span></div>
       <div class="row"><span>🌿 药材</span><span>+${fmt(herbGain)}</span></div>
-      <div class="row"><span>👤 弟子经验</span><span>+${fmt(expGain)}</span></div>
+      <div class="row"><span>👤 弟子总修为</span><span>+${fmt(totalExp)}</span></div>
       ${deadCount.天 > 0 ? `<div class="row" style="color:#ff6b6b;"><span>💀 天阶死亡</span><span>${deadCount.天} 人</span></div>` : ""}
       ${deadCount.地 > 0 ? `<div class="row" style="color:#dcdcaa;"><span>💀 地阶死亡</span><span>${deadCount.地} 人</span></div>` : ""}
       ${deadCount.玄 > 0 ? `<div class="row" style="color:#4ec9b0;"><span>💀 玄阶死亡</span><span>${deadCount.玄} 人</span></div>` : ""}
@@ -1562,14 +2057,18 @@ function tick() {
   autoAssignTasks();
   cultivate();
   produce();
+  produceSectExp();
   autoRecruit();
   checkLoyalty();
   checkInteraction();
   spawnEvent();
   tryPromote();
+  autoBreakthrough();
+  recoverBody();
   checkWar();
+  resetDailyIfNeeded();
 
-  // 境界升级：支持一次声望连续升级
+  // 境界升级
   while (
     state.sectLevel < SECT_LEVELS.length - 1 &&
     state.sectExp >= SECT_NEED[state.sectLevel]
@@ -1602,25 +2101,26 @@ document.querySelectorAll(".tab").forEach(tab => {
     tab.classList.add("active");
     document.getElementById("panel-" + tab.dataset.tab).classList.add("active");
     if (tab.dataset.tab === "war") renderWar();
+    if (tab.dataset.tab === "saint") renderSaint();
   });
 });
-
 document.getElementById("meditateBtn").addEventListener("click", () => {
-  state.disciples.forEach(d => { if (d.hp > 0) d.level = Math.min(100, d.level + 1); });
-  log("全体弟子闭关修炼，等级 +1", "gold");
+  state.disciples.forEach(d => {
+    if (d.hp > 0 && d.role !== "长老") gainExp(d, Math.floor(d.expNeed * 0.5));
+  });
+  log("全体弟子闭关修炼，修为 +50%", "gold");
   saveLocal(); scheduleCloudSave(); updateUI();
 });
-
 document.getElementById("autoRecruitBtn").addEventListener("click", () => {
   state.autoRecruit = !state.autoRecruit;
   updateUI();
 });
-
 document.getElementById("batchManageBtn").addEventListener("click", batchManage);
 document.getElementById("reincarnBtn").addEventListener("click", doReincarn);
 document.getElementById("alchemyBtn").addEventListener("click", () => { doAlchemy(); updateUI(); });
 document.getElementById("forgeBtn").addEventListener("click", () => { doForge(); updateUI(); });
-
+document.getElementById("exploreBtn").addEventListener("click", exploreSecret);
+document.getElementById("saintTournamentBtn").addEventListener("click", saintTournament);
 document.getElementById("manualSaveBtn").addEventListener("click", async () => {
   saveLocal();
   if (cloudReady) {
@@ -1630,7 +2130,6 @@ document.getElementById("manualSaveBtn").addEventListener("click", async () => {
     log("手动保存：本地已保存，云端未连接", "rare");
   }
 });
-
 document.getElementById("discipleFilter").addEventListener("click", e => {
   if (e.target.tagName !== "BUTTON") return;
   currentFilter = e.target.dataset.filter;
@@ -1638,7 +2137,6 @@ document.getElementById("discipleFilter").addEventListener("click", e => {
   e.target.classList.add("active");
   renderDisciples();
 });
-
 document.getElementById("discipleFilter2").addEventListener("click", e => {
   if (e.target.tagName !== "BUTTON") return;
   currentQFilter = e.target.dataset.qfilter;
@@ -1646,10 +2144,9 @@ document.getElementById("discipleFilter2").addEventListener("click", e => {
   e.target.classList.add("active");
   renderDisciples();
 });
-
 document.getElementById("discipleFilter3").addEventListener("click", e => {
   if (e.target.tagName !== "BUTTON") return;
-  currentLvFilter = e.target.dataset.lvfilter;
+  currentRFilter = e.target.dataset.rfilter;
   document.querySelectorAll("#discipleFilter3 button").forEach(b => b.classList.remove("active"));
   e.target.classList.add("active");
   renderDisciples();
@@ -1670,22 +2167,24 @@ async function init() {
         Object.assign(state, cloudState);
         state.inventory = Array.isArray(state.inventory) ? state.inventory : [];
         state.warHistory = Array.isArray(state.warHistory) ? state.warHistory : [];
+        state.saintHistory = Array.isArray(state.saintHistory) ? state.saintHistory : [];
         state.buildings = state.buildings || {};
         BUILDINGS.forEach(b => { if (typeof state.buildings[b.key] !== "number") state.buildings[b.key] = 0; });
-        state.lastTick = Date.now();
-        state._lastAutoRecruit = 0; state._lastEvent = 0; state._lastCultivate = 0;
-        state._lastGoldTick = 0; state._lastHerbTick = 0; state._lastLoyalty = 0;
+        if (typeof state.secretFloor !== "number") state.secretFloor = 0;
+        if (typeof state.saintChances !== "number") state.saintChances = 3;
         saveLocal();
       } else {
         addDisciple(generateDisciple());
         const elder = generateDisciple();
         elder.name = "太上长老";
         elder.role = "长老";
-        elder.level = 100; elder.hp = 100; elder.maxHp = 100;
+        elder.realm = 8; elder.layer = 9;
+        elder.expNeed = levelNeed(8, 9);
+        elder.hp = 100; elder.maxHp = 100;
         elder.loyalty = 100; elder.status = "长老";
         state.disciples.push(elder);
         log("你继承了一座破庙，开始了宗门经营之路……", "gold");
-        log("提示：弟子会自动修炼、自动接任务，事件会攒着等你处理。", "rare");
+        log("提示：弟子会自动修炼、自动突破，事件会攒着等你处理。", "rare");
         log("★ 一位太上长老自愿镇守山门，监管弟子陨落。", "legend");
       }
     } catch (e) {
@@ -1707,11 +2206,11 @@ async function init() {
           Object.assign(state, cloudState);
           state.inventory = Array.isArray(state.inventory) ? state.inventory : [];
           state.warHistory = Array.isArray(state.warHistory) ? state.warHistory : [];
+          state.saintHistory = Array.isArray(state.saintHistory) ? state.saintHistory : [];
           state.buildings = state.buildings || {};
           BUILDINGS.forEach(b => { if (typeof state.buildings[b.key] !== "number") state.buildings[b.key] = 0; });
-          state.lastTick = Date.now();
-          state._lastAutoRecruit = 0; state._lastEvent = 0; state._lastCultivate = 0;
-          state._lastGoldTick = 0; state._lastHerbTick = 0; state._lastLoyalty = 0;
+          if (typeof state.secretFloor !== "number") state.secretFloor = 0;
+          if (typeof state.saintChances !== "number") state.saintChances = 3;
           saveLocal();
         } else {
           log("本地存档较新，跳过云端覆盖", "rare");
