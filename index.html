@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>宗门经营录</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0d0b08; color: #d4c8b8;
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+    display: flex; justify-content: center; align-items: flex-start;
+    min-height: 100vh; padding: 20px; user-select: none;
+  }
+  #app {
+    width: 460px; background: #1a1610;
+    border: 1px solid #3a3020; border-radius: 12px; padding: 14px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.9);
+  }
+  .title {
+    font-size: 16px; color: #d4a857; text-align: center;
+    margin-bottom: 10px; letter-spacing: 4px; font-weight: bold;
+    text-shadow: 0 0 10px rgba(212,168,87,0.4);
+  }
+  .tabs { display: flex; gap: 3px; margin-bottom: 10px; flex-wrap: wrap; }
+  .tab {
+    flex: 1; min-width: 48px; text-align: center; padding: 6px 0; font-size: 11px;
+    background: #241e14; border-radius: 6px; cursor: pointer; color: #7a6a50; transition: all 0.2s;
+  }
+  .tab.active { background: #8a6a2a; color: #fff; }
+  .tab:hover:not(.active) { background: #2e2618; color: #b8a888; }
+  .tab .badge {
+    display: inline-block; background: #d44a2a; color: #fff;
+    font-size: 9px; padding: 0 4px; border-radius: 6px; margin-left: 2px;
+    vertical-align: top;
+  }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  .row { display: flex; justify-content: space-between; font-size: 12px; margin: 5px 0; color: #b8a888; }
+  .row span:last-child { color: #d4a857; font-weight: bold; }
+  .bar-bg { height: 8px; background: #241e14; border-radius: 4px; overflow: hidden; margin: 4px 0 10px; }
+  .bar-fill { height: 100%; width: 0%; transition: width 0.3s; border-radius: 4px; }
+  #expFill { background: linear-gradient(90deg, #8a6a2a, #d4a857); }
+
+  #log {
+    height: 130px; overflow-y: auto; background: #0f0c08; border: 1px solid #2a2418;
+    border-radius: 6px; padding: 8px; font-size: 11px; line-height: 1.7; color: #9a8a70; margin-top: 8px;
+  }
+  #log div { margin-bottom: 2px; }
+  #log::-webkit-scrollbar { width: 4px; }
+  #log::-webkit-scrollbar-thumb { background: #3a3020; border-radius: 2px; }
+
+  .rare { color: #4ec9b0; } .epic { color: #c586c0; } .legend { color: #dcdcaa; font-weight: bold; }
+  .danger { color: #f14c4c; } .gold { color: #ffd700; }
+  .myth { color: #ff6b6b; font-weight: bold; text-shadow: 0 0 6px #ff6b6b; }
+  .tian { color: #ff6b6b; } .di { color: #dcdcaa; } .xuan { color: #4ec9b0; } .huang { color: #888; }
+  .male { color: #6ab0ff; } .female { color: #ff8cd8; }
+
+  .btn {
+    width: 100%; margin-top: 8px; padding: 8px; background: #8a6a2a; color: #fff;
+    border: none; border-radius: 6px; cursor: pointer; font-size: 12px; transition: background 0.2s;
+  }
+  .btn:hover:not(:disabled) { background: #a8802a; }
+  .btn:disabled { background: #2a2418; cursor: not-allowed; color: #5a4a30; }
+  .btn.small { padding: 5px; font-size: 11px; margin-top: 4px; }
+  .btn.red { background: #8a2a2a; } .btn.red:hover:not(:disabled) { background: #b03a3a; }
+  .btn.green { background: #2a7a3a; } .btn.green:hover:not(:disabled) { background: #3a9a4a; }
+
+  .item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 10px; background: #241e14; border-radius: 6px; margin-bottom: 5px;
+    font-size: 11px; border-left: 3px solid #4a3a20; gap: 8px; flex-wrap: wrap;
+  }
+  .item.天 { border-left-color: #ff6b6b; }
+  .item.地 { border-left-color: #dcdcaa; }
+  .item.玄 { border-left-color: #4ec9b0; }
+  .item.黄 { border-left-color: #888; }
+  .item .name { color: #d4c8b8; font-size: 12px; font-weight: bold; }
+  .item .attr { color: #8a7a60; font-size: 10px; margin-top: 2px; }
+  .item .stat-line { color: #b8a888; font-size: 10px; margin-top: 1px; }
+  .item button {
+    background: #8a6a2a; color: #fff; border: none; border-radius: 4px;
+    padding: 4px 9px; font-size: 10px; cursor: pointer; white-space: nowrap;
+  }
+  .item button:hover { background: #a8802a; }
+  .item button.red { background: #8a2a2a; } .item button.red:hover { background: #b03a3a; }
+  .empty { color: #5a4a30; text-align: center; padding: 20px; font-size: 12px; }
+
+  .event-card {
+    background: #241e14; border: 1px solid #4a3a20; border-radius: 8px;
+    padding: 12px; margin-bottom: 10px;
+  }
+  .event-card .evt-title { color: #d4a857; font-size: 13px; font-weight: bold; margin-bottom: 6px; }
+  .event-card .evt-desc { color: #b8a888; font-size: 11px; line-height: 1.6; margin-bottom: 8px; }
+  .event-card .evt-options button {
+    width: 100%; text-align: left; padding: 6px 10px; margin-bottom: 4px;
+    background: #1a1610; color: #d4c8b8; border: 1px solid #3a3020; border-radius: 4px;
+    font-size: 11px; cursor: pointer;
+  }
+  .event-card .evt-options button:hover { background: #2e2618; border-color: #8a6a2a; }
+  .event-card .evt-time { color: #5a4a30; font-size: 10px; text-align: right; margin-top: 4px; }
+
+  .building-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .building {
+    background: #241e14; border: 1px solid #3a3020; border-radius: 6px;
+    padding: 8px; text-align: center; cursor: pointer;
+  }
+  .building:hover { border-color: #8a6a2a; }
+  .building .b-name { color: #d4a857; font-size: 12px; font-weight: bold; }
+  .building .b-lv { color: #b8a888; font-size: 10px; margin-top: 2px; }
+  .building .b-desc { color: #8a7a60; font-size: 9px; margin-top: 2px; }
+
+  .toast {
+    position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+    background: #241e14; color: #d4a857; border: 1px solid #8a6a2a;
+    border-radius: 8px; padding: 10px 20px; font-size: 13px; z-index: 999;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+    animation: toastIn 0.3s ease;
+  }
+  @keyframes toastIn { from { opacity: 0; top: 0; } to { opacity: 1; top: 20px; } }
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="title">宗 门 经 营 录</div>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="main">宗门</div>
+    <div class="tab" data-tab="disciples">弟子</div>
+    <div class="tab" data-tab="events">事件<span class="badge" id="eventBadge" style="display:none">0</span></div>
+    <div class="tab" data-tab="buildings">建筑</div>
+    <div class="tab" data-tab="skills">功法</div>
+    <div class="tab" data-tab="shop">坊市</div>
+  </div>
+
+  <!-- 宗门主界面 -->
+  <div class="panel active" id="panel-main">
+    <div class="row"><span>宗门名</span><span id="sectName">破庙</span></div>
+    <div class="row"><span>宗门等级</span><span id="sectLevel">九流一阶</span></div>
+    <div class="row"><span>宗门声望</span><span id="sectExp">0 / 100</span></div>
+    <div class="bar-bg"><div class="bar-fill" id="expFill"></div></div>
+    <div class="row"><span>灵石</span><span id="gold">0</span></div>
+    <div class="row"><span>弟子数量</span><span id="discipleCount">0 / 5</span></div>
+    <div class="row"><span>宗门战力</span><span id="sectPower">0</span></div>
+    <div class="row"><span>传承次数</span><span id="genCount">0</span></div>
+
+    <button class="btn" id="recruitBtn">山门招募弟子（100 灵石）</button>
+    <button class="btn green" id="meditateBtn">全体弟子闭关修炼（1 分钟）</button>
+  </div>
+
+  <!-- 弟子 -->
+  <div class="panel" id="panel-disciples">
+    <div class="row"><span>弟子数量</span><span id="discipleCount2">0 / 5</span></div>
+    <div id="discipleList"></div>
+  </div>
+
+  <!-- 事件 -->
+  <div class="panel" id="panel-events">
+    <div class="row"><span>待处理事件</span><span id="eventCount">0 / 10</span></div>
+    <div id="eventList"></div>
+  </div>
+
+  <!-- 建筑 -->
+  <div class="panel" id="panel-buildings">
+    <div class="building-grid" id="buildingGrid"></div>
+  </div>
+
+  <!-- 功法 -->
+  <div class="panel" id="panel-skills">
+    <div class="row"><span>已学功法</span><span id="skillCount">0</span></div>
+    <div id="skillList"></div>
+  </div>
+
+  <!-- 坊市 -->
+  <div class="panel" id="panel-shop">
+    <div id="shopList"></div>
+  </div>
+
+  <div id="log"></div>
+</div>
+
+<script>
+// ==================== 常量定义 ====================
+const SECT_LEVELS = [
+  "九流一阶", "九流二阶", "九流三阶", "九流四阶", "九流五阶", "九流六阶", "九流七阶", "九流八阶", "九流九阶",
+  "八流一阶", "八流二阶", "八流三阶", "八流四阶", "八流五阶", "八流六阶", "八流七阶", "八流八阶", "八流九阶",
+  "七流一阶", "七流二阶", "七流三阶", "七流四阶", "七流五阶", "七流六阶", "七流七阶", "七流八阶", "七流九阶",
+  "六流一阶", "六流二阶", "六流三阶", "六流四阶", "六流五阶", "六流六阶", "六流七阶", "六流八阶", "六流九阶",
+  "五流一阶", "五流二阶", "五流三阶", "五流四阶", "五流五阶", "五流六阶", "五流七阶", "五流八阶", "五流九阶",
+  "四流一阶", "四流二阶", "四流三阶", "四流四阶", "四流五阶", "四流六阶", "四流七阶", "四流八阶", "四流九阶",
+  "三流一阶", "三流二阶", "三流三阶", "三流四阶", "三流五阶", "三流六阶", "三流七阶", "三流八阶", "三流九阶",
+  "二流一阶", "二流二阶", "二流三阶", "二流四阶", "二流五阶", "二流六阶", "二流七阶", "二流八阶", "二流九阶",
+  "一流一阶", "一流二阶", "一流三阶", "一流四阶", "一流五阶", "一流六阶", "一流七阶", "一流八阶", "一流九阶",
+  "超一流一阶", "超一流二阶", "超一流三阶", "超一流四阶", "超一流五阶", "超一流六阶", "超一流七阶", "超一流八阶", "超一流九阶"
+];
+
+// 每级宗门所需声望
+function getNeedExp(levelIndex) {
+  return Math.floor(100 * Math.pow(1.35, levelIndex));
+}
+
+// 弟子资质
+const QUALITIES = [
+  { name: "天", color: "tian", mult: 4.0, weight: 1 },
+  { name: "地", color: "di",   mult: 2.5, weight: 5 },
+  { name: "玄", color: "xuan", mult: 1.6, weight: 20 },
+  { name: "黄", color: "huang",mult: 1.0, weight: 74 },
+];
+
+// 弟子职业
+const CLASSES = [
+  { key: "jian", name: "剑修", desc: "战力成长最高", powerMult: 1.5, goldMult: 1.0, expMult: 1.0 },
+  { key: "dan",  name: "丹修", desc: "擅长采药炼丹", powerMult: 1.0, goldMult: 1.2, expMult: 1.0 },
+  { key: "qi",   name: "器修", desc: "擅长挖矿炼器", powerMult: 1.1, goldMult: 1.5, expMult: 1.0 },
+  { key: "zhen", name: "阵修", desc: "提升全体弟子修炼", powerMult: 1.0, goldMult: 1.0, expMult: 1.5 },
+  { key: "ti",   name: "体修", desc: "气血旺盛不易死", powerMult: 1.3, goldMult: 1.0, expMult: 1.0 },
+];
+
+// 男名
+const MALE_SURNAME = ["李", "王", "张", "刘", "陈", "杨", "赵", "黄", "周", "吴", "徐", "孙", "马", "朱", "胡", "郭", "何", "林", "罗", "郑"];
+const MALE_GIVEN = ["青云", "无极", "浩然", "子轩", "宇轩", "天赐", "子墨", "逸尘", "风吟", "夜白", "凌风", "子谦", "玄机", "无痕", "苍梧"];
+
+// 女名
+const FEMALE_GIVEN = ["清瑶", "若雪", "芷若", "语嫣", "诗涵", "梦瑶", "紫嫣", "雨萱", "月华", "流萤", "冰心", "妙音", "凝霜", "素问", "璃月"];
+
+// 8 个建筑
+const BUILDINGS = [
+  { key: "main",   name: "主殿",   desc: "决定宗门等级上限", maxLv: 10, baseCost: 200 },
+  { key: "library",name: "藏经阁", desc: "提升弟子修炼速度", maxLv: 10, baseCost: 150 },
+  { key: "dan",    name: "炼丹房", desc: "生产丹药，恢复弟子", maxLv: 10, baseCost: 150 },
+  { key: "qi",     name: "炼器阁", desc: "生产装备，提升战力", maxLv: 10, baseCost: 150 },
+  { key: "arena",  name: "演武场", desc: "提升弟子战斗经验", maxLv: 10, baseCost: 120 },
+  { key: "farm",   name: "灵田",   desc: "生产灵石",         maxLv: 10, baseCost: 100 },
+  { key: "garden", name: "药园",   desc: "生产药材",         maxLv: 10, baseCost: 100 },
+  { key: "dorm",   name: "弟子居", desc: "决定弟子数量上限", maxLv: 10, baseCost: 150 },
+];
+
+// 功法（技能书）
+const SKILLS = [
+  { key: "j1", name: "基础剑诀", tier: 1, price: 100,  effect: { power: 0.05 }, desc: "全体弟子战力 +5%" },
+  { key: "j2", name: "吐纳心法", tier: 1, price: 100,  effect: { exp: 0.05 },   desc: "弟子修炼速度 +5%" },
+  { key: "j3", name: "聚财术",   tier: 1, price: 120,  effect: { gold: 0.08 },  desc: "宗门灵石收益 +8%" },
+  { key: "j4", name: "铁骨功",   tier: 2, price: 300,  effect: { hp: 0.10 },    desc: "弟子气血 +10%" },
+  { key: "j5", name: "御灵诀",   tier: 2, price: 300,  effect: { power: 0.10 }, desc: "全体弟子战力 +10%" },
+  { key: "j6", name: "聚宝盆",   tier: 2, price: 350,  effect: { gold: 0.15 },  desc: "宗门灵石收益 +15%" },
+  { key: "j7", name: "天罡阵法", tier: 3, price: 800,  effect: { power: 0.20 }, desc: "全体弟子战力 +20%" },
+  { key: "j8", name: "太清心经", tier: 3, price: 800,  effect: { exp: 0.20 },   desc: "弟子修炼速度 +20%" },
+  { key: "j9", name: "大罗仙诀", tier: 4, price: 2000, effect: { power: 0.40 }, desc: "全体弟子战力 +40%" },
+];
+
+// 坊市商品
+const SHOP_ITEMS = [
+  { key: "recruit", name: "招募令牌", price: 100, desc: "招募一名弟子", action: () => recruitDisciple() },
+  { key: "heal",    name: "疗伤丹",   price: 50,  desc: "治疗一名受伤弟子", action: () => healDisciple() },
+  { key: "revive",  name: "还魂丹",   price: 500, desc: "复活一名已死弟子", action: () => reviveDisciple() },
+];
+
+// ==================== 事件库 ====================
+const EVENTS = [
+  { id: "e1", title: "山门乞儿", desc: "山门外来了个衣衫褴褛的少年，跪求收留。", options: [
+    { text: "收留他（-10 灵石）", effect: () => { if (state.gold < 10) return log("灵石不足", "danger"); state.gold -= 10; addDisciple(generateDisciple()); log("少年拜入门下", "gold"); } },
+    { text: "赶他走", effect: () => log("少年落寞离去") },
+  ]},
+  { id: "e2", title: "仇家上门", desc: "青云门的人上门挑衅，要求你交出宗门信物。", options: [
+    { text: "应战", effect: () => { const win = Math.random() < 0.5; if (win) { state.gold += 200; log("击退仇家，缴获 200 灵石", "gold"); } else { const d = pickAliveDisciple(); if (d) { d.hp = 0; log(`弟子【${d.name}】战死`, "danger"); } } } },
+    { text: "交信物和解（-200 灵石）", effect: () => { if (state.gold < 200) return log("灵石不足", "danger"); state.gold -= 200; log("破财消灾", "rare"); } },
+    { text: "闭门不出", effect: () => { state.sectExp = Math.max(0, state.sectExp - 50); log("声望 -50", "danger"); } },
+  ]},
+  { id: "e3", title: "秘境洞开", desc: "后山突然霞光万丈，疑似上古秘境开启。", options: [
+    { text: "派弟子探索", effect: () => { const d = pickAliveDisciple(); if (!d) return log("没有可用弟子", "danger"); if (Math.random() < 0.6) { state.gold += 300; d.level += 1; log(`弟子【${d.name}】探索归来，带回 300 灵石，等级 +1`, "gold"); } else { d.hp = 0; log(`弟子【${d.name}】在秘境中陨落`, "danger"); } } },
+    { text: "封禁秘境", effect: () => log("保守为上") },
+  ]},
+  { id: "e4", title: "弟子争斗", desc: "两名弟子在演武场大打出手。", options: [
+    { text: "严惩先动手的", effect: () => log("以儆效尤，纪律严明") },
+    { text: "各打五十大板", effect: () => log("双方各有过错") },
+    { text: "让他们打，胜者为尊", effect: () => { const d = pickAliveDisciple(); if (d) { d.level += 1; log(`弟子【${d.name}】获胜，等级 +1`, "gold"); } } },
+  ]},
+  { id: "e5", title: "药园丰收", desc: "药园的灵药成熟了，弟子们争相采摘。", options: [
+    { text: "全部入库", effect: () => { state.gold += 100; log("入库 100 灵石", "gold"); } },
+    { text: "分给弟子", effect: () => { state.disciples.forEach(d => d.loyalty = Math.min(100, d.loyalty + 5)); log("全体弟子忠诚 +5", "rare"); } },
+  ]},
+  { id: "e6", title: "神秘商人", desc: "一位神秘商人来到山门，兜售稀世奇珍。", options: [
+    { text: "花 300 灵石买下（随机宝物）", effect: () => { if (state.gold < 300) return log("灵石不足", "danger"); state.gold -= 300; const r = Math.random(); if (r < 0.3) { state.gold += 1000; log("宝物价值连城，卖出 1000 灵石！", "legend"); } else if (r < 0.7) { addDisciple(generateDisciple()); log("宝物化为人形，成为你的弟子！", "epic"); } else { log("宝物是假的，血本无归", "danger"); } } },
+    { text: "婉拒", effect: () => log("商人离去") },
+  ]},
+  { id: "e7", title: "弟子叛逃", desc: "一名弟子深夜不辞而别，还带走了宗门财物。", options: [
+    { text: "派人追捕", effect: () => { if (Math.random() < 0.5) { const d = pickDisciple(); if (d) { d.hp = 0; log(`追捕失败，弟子【${d.name}】战死`, "danger"); } } else { state.gold += 50; log("追回部分财物", "rare"); } } },
+    { text: "随他去吧", effect: () => { const d = pickDisciple(); if (d) { state.disciples = state.disciples.filter(x => x.id !== d.id); log(`弟子【${d.name}】叛逃`, "danger"); } } },
+  ]},
+  { id: "e8", title: "天生异象", desc: "夜间天降流星，落在后山。", options: [
+    { text: "派人寻访", effect: () => { state.gold += 200; log("寻得陨铁，价值 200 灵石", "gold"); } },
+    { text: "置之不理", effect: () => log("流星坠落无声") },
+  ]},
+  { id: "e9", title: "老友来访", desc: "你年轻时的一位故人突然来访。", options: [
+    { text: "热情招待（-50 灵石）", effect: () => { if (state.gold < 50) return log("灵石不足", "danger"); state.gold -= 50; state.sectExp += 30; log("声望 +30", "gold"); } },
+    { text: "闭门谢客", effect: () => log("故人叹息离去") },
+  ]},
+  { id: "e10", title: "弟子突破", desc: "一名弟子在闭关中突破瓶颈！", options: [
+    { text: "奖赏他", effect: () => { const d = pickAliveDisciple(); if (d) { d.level += 2; log(`弟子【${d.name}】等级 +2`, "gold"); } } },
+    { text: "让他继续苦修", effect: () => { const d = pickAliveDisciple(); if (d) { d.level += 1; d.loyalty = Math.max(0, d.loyalty - 5); log(`弟子【${d.name}】等级 +1，忠诚 -5`, "rare"); } } },
+  ]},
+];
+
+// ==================== 游戏状态 ====================
+const state = {
+  sectName: "破庙",
+  sectLevel: 0,
+  sectExp: 0,
+  gold: 0,
+  disciples: [],
+  buildings: {},
+  skills: {},
+  events: [],
+  generation: 0,
+  lastTick: Date.now(),
+};
+
+// 初始化建筑
+BUILDINGS.forEach(b => { state.buildings[b.key] = 0; });
+
+// ==================== 工具函数 ====================
+function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+function pickDisciple() {
+  const alive = state.disciples.filter(d => d.hp > 0);
+  return alive.length ? pick(alive) : null;
+}
+function pickAliveDisciple() { return pickDisciple(); }
+
+function fmt(n) {
+  const num = Number(n);
+  if (!isFinite(num)) return "0";
+  if (num >= 100000000) return (num / 100000000).toFixed(2) + "亿";
+  if (num >= 10000) return (num / 10000).toFixed(2) + "万";
+  return Math.floor(num).toLocaleString("en-US");
+}
+
+function log(msg, cls = "") {
+  const logEl = document.getElementById("log");
+  const div = document.createElement("div");
+  div.className = cls;
+  div.textContent = msg;
+  logEl.appendChild(div);
+  logEl.scrollTop = logEl.scrollHeight;
+  while (logEl.children.length > 80) logEl.removeChild(logEl.firstChild);
+}
+
+function toast(msg) {
+  const div = document.createElement("div");
+  div.className = "toast";
+  div.textContent = msg;
+  document.body.appendChild(div);
+  setTimeout(() => div.remove(), 2000);
+}
+
+// ==================== 弟子生成 ====================
+function rollQuality() {
+  const total = QUALITIES.reduce((s, q) => s + q.weight, 0);
+  let r = Math.random() * total;
+  for (const q of QUALITIES) {
+    if (r < q.weight) return q;
+    r -= q.weight;
+  }
+  return QUALITIES[QUALITIES.length - 1];
+}
+
+function generateDisciple() {
+  const gender = Math.random() < 0.5 ? "male" : "female";
+  const surname = pick(MALE_SURNAME);
+  const given = gender === "male" ? pick(MALE_GIVEN) : pick(FEMALE_GIVEN);
+  const q = rollQuality();
+  const cls = pick(CLASSES);
+  return {
+    id: Date.now() + Math.random(),
+    name: surname + given,
+    gender,
+    quality: q.name,
+    qualityMult: q.mult,
+    class: cls.key,
+    className: cls.name,
+    classDesc: cls.desc,
+    level: 1,
+    hp: 100,
+    maxHp: 100,
+    loyalty: 70,
+    status: "修炼中", // 修炼中 / 历练中 / 休息中 / 受伤 / 死亡
+    birthTick: Date.now(),
+  };
+}
+
+function addDisciple(d) {
+  const max = getDiscipleMax();
+  if (state.disciples.length >= max) {
+    log(`弟子已满（${max}），无法收留`, "danger");
+    return;
+  }
+  state.disciples.push(d);
+  log(`弟子【${d.name}】（${d.gender === "male" ? "♂" : "♀"} ${d.quality}品 ${d.className}）拜入门下`, "gold");
+}
+
+function getDiscipleMax() {
+  return 5 + state.buildings.dorm * 2;
+}
+
+// ==================== 弟子战力 ====================
+function getDisciplePower(d) {
+  if (d.hp <= 0) return 0;
+  const cls = CLASSES.find(c => c.key === d.class);
+  const base = 10 + d.level * 5;
+  return Math.floor(base * d.qualityMult * cls.powerMult);
+}
+
+function getSectPower() {
+  return state.disciples.reduce((s, d) => s + getDisciplePower(d), 0);
+}
+
+// ==================== 游戏主循环 ====================
+function tick() {
+  const now = Date.now();
+  const dt = (now - state.lastTick) / 1000;
+  state.lastTick = now;
+
+  // 弟子修炼：每 10 秒涨经验
+  if (now - (state._lastCultivate || 0) > 10000) {
+    state._lastCultivate = now;
+    state.disciples.forEach(d => {
+      if (d.hp <= 0) return;
+      if (d.status === "修炼中") {
+        d.level += 1; // 简化：每 10 秒 +1 级
+        if (d.level > 100) d.level = 100;
+      }
+    });
+  }
+
+  // 弟子忠诚度衰减
+  if (now - (state._lastLoyalty || 0) > 30000) {
+    state._lastLoyalty = now;
+    state.disciples.forEach(d => {
+      if (d.hp <= 0) return;
+      d.loyalty = Math.max(0, d.loyalty - 1);
+      if (d.loyalty <= 0) {
+        state.disciples = state.disciples.filter(x => x.id !== d.id);
+        log(`弟子【${d.name}】因忠诚度过低，叛逃出宗`, "danger");
+      }
+    });
+  }
+
+  // 灵石收益
+  if (now - (state._lastGold || 0) > 5000) {
+    state._lastGold = now;
+    const income = state.buildings.farm * 10 + state.disciples.filter(d => d.hp > 0).length * 2;
+    state.gold += income;
+  }
+
+  // 事件生成
+  if (now - (state._lastEvent || 0) > 60000 && state.events.length < 10) {
+    state._lastEvent = now;
+    if (Math.random() < 0.6) {
+      const evt = { ...pick(EVENTS), triggeredAt: now };
+      state.events.push(evt);
+      toast("新事件：" + evt.title);
+      updateEventBadge();
+    }
+  }
+
+  // 事件过期（24 小时）
+  state.events = state.events.filter(e => now - e.triggeredAt < 24 * 3600 * 1000);
+
+  updateUI();
+}
+
+// ==================== UI 渲染 ====================
+function updateUI() {
+  document.getElementById("sectName").textContent = state.sectName;
+  document.getElementById("sectLevel").textContent = SECT_LEVELS[state.sectLevel] || "超一流九阶";
+  const need = getNeedExp(state.sectLevel);
+  document.getElementById("sectExp").textContent = `${fmt(state.sectExp)} / ${fmt(need)}`;
+  document.getElementById("expFill").style.width = Math.min(100, (state.sectExp / need) * 100) + "%";
+  document.getElementById("gold").textContent = fmt(state.gold);
+  document.getElementById("discipleCount").textContent = `${state.disciples.length} / ${getDiscipleMax()}`;
+  document.getElementById("discipleCount2").textContent = `${state.disciples.length} / ${getDiscipleMax()}`;
+  document.getElementById("sectPower").textContent = fmt(getSectPower());
+  document.getElementById("genCount").textContent = state.generation;
+
+  document.getElementById("recruitBtn").disabled = state.gold < 100 || state.disciples.length >= getDiscipleMax();
+
+  updateEventBadge();
+  renderDisciples();
+  renderEvents();
+  renderBuildings();
+  renderSkills();
+  renderShop();
+}
+
+function updateEventBadge() {
+  const badge = document.getElementById("eventBadge");
+  if (state.events.length > 0) {
+    badge.style.display = "inline-block";
+    badge.textContent = state.events.length;
+  } else {
+    badge.style.display = "none";
+  }
+  document.getElementById("eventCount").textContent = `${state.events.length} / 10`;
+}
+
+function renderDisciples() {
+  const list = document.getElementById("discipleList");
+  list.innerHTML = "";
+  if (state.disciples.length === 0) {
+    list.innerHTML = '<div class="empty">还没有弟子，去山门招募吧</div>';
+    return;
+  }
+  state.disciples.forEach(d => {
+    const div = document.createElement("div");
+    div.className = "item " + d.quality;
+    const genderIcon = d.gender === "male" ? "♂" : "♀";
+    const genderCls = d.gender === "male" ? "male" : "female";
+    div.innerHTML = `
+      <div style="flex:1;min-width:0;">
+        <div class="name">${d.name} <span class="${genderCls}">${genderIcon}</span> <span class="${d.quality === "天" ? "tian" : d.quality === "地" ? "di" : d.quality === "玄" ? "xuan" : "huang"}">${d.quality}品</span> · ${d.className}</div>
+        <div class="stat-line">等级 ${d.level} · 战力 ${getDisciplePower(d)} · 忠诚 ${d.loyalty}</div>
+        <div class="stat-line">状态：${d.hp > 0 ? d.status : "已死亡"}</div>
+      </div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end;">
+        ${d.hp > 0 ? `<button data-task="lian" data-id="${d.id}">历练</button>` : ""}
+        ${d.hp > 0 ? `<button data-task="cai" data-id="${d.id}">采药</button>` : ""}
+        ${d.hp > 0 ? `<button data-task="kuang" data-id="${d.id}">挖矿</button>` : ""}
+        ${d.hp <= 0 ? `<button class="red" data-revive="${d.id}">还魂(500)</button>` : ""}
+      </div>
+    `;
+    list.appendChild(div);
+  });
+  list.querySelectorAll("[data-task]").forEach(btn => {
+    btn.addEventListener("click", () => assignTask(parseFloat(btn.dataset.id), btn.dataset.task));
+  });
+  list.querySelectorAll("[data-revive]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      if (state.gold < 500) { log("灵石不足", "danger"); return; }
+      state.gold -= 500;
+      const d = state.disciples.find(x => x.id === parseFloat(btn.dataset.revive));
+      if (d) { d.hp = 100; d.status = "修炼中"; log(`弟子【${d.name}】复活`, "gold"); }
+    });
+  });
+}
+
+function renderEvents() {
+  const list = document.getElementById("eventList");
+  list.innerHTML = "";
+  if (state.events.length === 0) {
+    list.innerHTML = '<div class="empty">暂无待处理事件</div>';
+    return;
+  }
+  state.events.forEach((e, idx) => {
+    const div = document.createElement("div");
+    div.className = "event-card";
+    div.innerHTML = `
+      <div class="evt-title">【${e.title}】</div>
+      <div class="evt-desc">${e.desc}</div>
+      <div class="evt-options"></div>
+    `;
+    const optBox = div.querySelector(".evt-options");
+    e.options.forEach((o, i) => {
+      const btn = document.createElement("button");
+      btn.textContent = o.text;
+      btn.addEventListener("click", () => {
+        o.effect();
+        state.events.splice(idx, 1);
+        renderEvents();
+        updateUI();
+      });
+      optBox.appendChild(btn);
+    });
+    list.appendChild(div);
+  });
+}
+
+function renderBuildings() {
+  const grid = document.getElementById("buildingGrid");
+  grid.innerHTML = "";
+  BUILDINGS.forEach(b => {
+    const lv = state.buildings[b.key] || 0;
+    const cost = b.baseCost * (lv + 1);
+    const div = document.createElement("div");
+    div.className = "building";
+    div.innerHTML = `
+      <div class="b-name">${b.name}</div>
+      <div class="b-lv">Lv.${lv} / ${b.maxLv}</div>
+      <div class="b-desc">${b.desc}</div>
+      <div class="b-lv" style="color:#ffd700;margin-top:4px;">${lv >= b.maxLv ? "已满级" : `升级 ${fmt(cost)} 灵石`}</div>
+    `;
+    if (lv < b.maxLv) {
+      div.addEventListener("click", () => {
+        if (state.gold < cost) { log("灵石不足", "danger"); return; }
+        state.gold -= cost;
+        state.buildings[b.key]++;
+        log(`【${b.name}】升级到 Lv.${state.buildings[b.key]}`, "gold");
+        updateUI();
+      });
+    }
+    grid.appendChild(div);
+  });
+}
+
+function renderSkills() {
+  const list = document.getElementById("skillList");
+  list.innerHTML = "";
+  document.getElementById("skillCount").textContent = Object.keys(state.skills).length;
+  SKILLS.forEach(s => {
+    const learned = !!state.skills[s.key];
+    const div = document.createElement("div");
+    div.className = "item";
+    div.innerHTML = `
+      <div style="flex:1;">
+        <div class="name">${s.name} <span style="color:#888">[${s.tier}阶]</span></div>
+        <div class="stat-line">${s.desc}</div>
+      </div>
+      <button data-buy="${s.key}" ${learned ? "disabled" : ""}>${learned ? "已学" : `${s.price} 灵石`}</button>
+    `;
+    list.appendChild(div);
+  });
+  list.querySelectorAll("[data-buy]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const s = SKILLS.find(x => x.key === btn.dataset.buy);
+      if (!s) return;
+      if (state.gold < s.price) { log("灵石不足", "danger"); return; }
+      state.gold -= s.price;
+      state.skills[s.key] = true;
+      log(`学会功法【${s.name}】`, "gold");
+      updateUI();
+    });
+  });
+}
+
+function renderShop() {
+  const list = document.getElementById("shopList");
+  list.innerHTML = "";
+  SHOP_ITEMS.forEach(s => {
+    const div = document.createElement("div");
+    div.className = "item";
+    div.innerHTML = `
+      <div style="flex:1;">
+        <div class="name">${s.name}</div>
+        <div class="stat-line">${s.desc}</div>
+      </div>
+      <button data-shop="${s.key}">${s.price} 灵石</button>
+    `;
+    list.appendChild(div);
+  });
+  list.querySelectorAll("[data-shop]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const s = SHOP_ITEMS.find(x => x.key === btn.dataset.shop);
+      if (!s) return;
+      if (state.gold < s.price) { log("灵石不足", "danger"); return; }
+      state.gold -= s.price;
+      s.action();
+      updateUI();
+    });
+  });
+}
+
+// ==================== 弟子任务 ====================
+function assignTask(id, task) {
+  const d = state.disciples.find(x => x.id === id);
+  if (!d || d.hp <= 0) return;
+  if (task === "lian") {
+    if (Math.random() < 0.7) {
+      const gold = rand(20, 80);
+      state.gold += gold;
+      d.level += 1;
+      log(`【${d.name}】历练归来，带回 ${gold} 灵石，等级 +1`, "gold");
+    } else {
+      d.hp = 0;
+      log(`【${d.name}】在历练中陨落`, "danger");
+    }
+  } else if (task === "cai") {
+    const gold = rand(10, 30);
+    state.gold += gold;
+    log(`【${d.name}】采药归来，带回 ${gold} 灵石`, "gold");
+  } else if (task === "kuang") {
+    const gold = rand(30, 100);
+    state.gold += gold;
+    log(`【${d.name}】挖矿归来，带回 ${gold} 灵石`, "gold");
+  }
+  updateUI();
+}
+
+// ==================== 招募 ====================
+function recruitDisciple() {
+  if (state.gold < 100) { log("灵石不足", "danger"); return; }
+  state.gold -= 100;
+  addDisciple(generateDisciple());
+  updateUI();
+}
+
+// ==================== 事件绑定 ====================
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+    tab.classList.add("active");
+    document.getElementById("panel-" + tab.dataset.tab).classList.add("active");
+  });
+});
+
+document.getElementById("recruitBtn").addEventListener("click", recruitDisciple);
+
+document.getElementById("meditateBtn").addEventListener("click", () => {
+  state.disciples.forEach(d => { if (d.hp > 0) d.level += 1; });
+  log("全体弟子闭关修炼，等级 +1", "gold");
+  updateUI();
+});
+
+// ==================== 启动 ====================
+function init() {
+  // 开局送一个弟子
+  addDisciple(generateDisciple());
+  log("你继承了一座破庙，开始了宗门经营之路……", "gold");
+  log("提示：弟子会自动修炼，事件会攒着等你处理。", "rare");
+
+  // 初始事件
+  state.events.push({ ...EVENTS[0], triggeredAt: Date.now() });
+
+  updateUI();
+
+  setInterval(tick, 1000);
+}
+
+init();
+</script>
+</body>
+</html>
