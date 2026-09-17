@@ -1389,23 +1389,22 @@ async function init() {
         state._lastGoldTick = 0; state._lastHerbTick = 0; state._lastLoyalty = 0;
         saveLocal();
       } else {
-        if (!loaded) {
-  addDisciple(generateDisciple());
-  // 开局送一个长老
-  const elder = generateDisciple();
-  elder.name = "太上长老";
-  elder.role = "长老";
-  elder.level = 100;
-  elder.hp = 100;
-  elder.maxHp = 100;
-  elder.loyalty = 100;
-  elder.status = "长老";
-  state.disciples.push(elder);
-  
-  log("你继承了一座破庙，开始了宗门经营之路……", "gold");
-  log("提示：弟子会自动修炼、自动接任务，事件会攒着等你处理。", "rare");
-  log("★ 一位太上长老自愿镇守山门，监管弟子陨落。", "legend");
-}
+        // 云端也没有，开新档
+        addDisciple(generateDisciple());
+        const elder = generateDisciple();
+        elder.name = "太上长老";
+        elder.role = "长老";
+        elder.level = 100;
+        elder.hp = 100;
+        elder.maxHp = 100;
+        elder.loyalty = 100;
+        elder.status = "长老";
+        state.disciples.push(elder);
+        
+        log("你继承了一座破庙，开始了宗门经营之路……", "gold");
+        log("提示：弟子会自动修炼、自动接任务，事件会攒着等你处理。", "rare");
+        log("★ 一位太上长老自愿镇守山门，监管弟子陨落。", "legend");
+      }
     } catch (e) {
       addDisciple(generateDisciple());
       log("云端连接失败，开始新游戏", "danger");
@@ -1437,7 +1436,7 @@ async function init() {
     } catch (e) {}
   }
 
-    // 先算离线收益（必须在 updateUI 之前，否则 TIME_KEY 会被覆盖）
+  // 先算离线收益（必须在 updateUI 之前，否则 TIME_KEY 会被覆盖）
   offlineEarnings();
 
   updateUI();
