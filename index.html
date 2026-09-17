@@ -19,7 +19,6 @@
     border: 1px solid #3a3020; border-radius: 14px; padding: 16px;
     box-shadow: 0 20px 60px rgba(0,0,0,0.9);
   }
-
   .top-bar {
     display: flex; justify-content: space-between; align-items: center;
     background: #0f0c08; border: 1px solid #2a2418; border-radius: 10px;
@@ -36,9 +35,7 @@
     color: #d4a857; font-family: monospace; font-size: 15px;
     margin-left: 4px;
   }
-
   .main-layout { display: flex; gap: 14px; margin-bottom: 14px; }
-
   .map-area {
     flex: 0 0 900px; height: 600px;
     background: linear-gradient(180deg, #1a2418 0%, #0f1a10 50%, #1a1008 100%);
@@ -59,7 +56,6 @@
                       radial-gradient(1px 1px at 90% 35%, #fff 0%, transparent 100%);
     opacity: 0.3; pointer-events: none;
   }
-
   .building {
     position: absolute; text-align: center; cursor: pointer;
     transition: transform 0.2s, filter 0.2s;
@@ -76,7 +72,6 @@
     font-size: 12px; color: #b8a888; margin-top: 2px;
     text-shadow: 0 2px 4px rgba(0,0,0,0.9);
   }
-
   .disciple-dot {
     position: absolute; width: 12px; height: 12px; border-radius: 50%;
     transition: left 1.5s linear, top 1.5s linear, opacity 0.5s;
@@ -88,7 +83,6 @@
   .disciple-dot.di { background: #dcdcaa; color: #dcdcaa; }
   .disciple-dot.xuan { background: #4ec9b0; color: #4ec9b0; }
   .disciple-dot.huang { background: #888; color: #888; }
-
   .right-panel { flex: 1; min-width: 480px; display: flex; flex-direction: column; }
   .tabs { display: flex; gap: 6px; margin-bottom: 12px; }
   .tab {
@@ -103,16 +97,13 @@
     background: #d44a2a; color: #fff;
     font-size: 10px; padding: 1px 6px; border-radius: 8px;
   }
-
   .panel { display: none; flex: 1; }
   .panel.active { display: block; }
-
   .row { display: flex; justify-content: space-between; font-size: 14px; margin: 8px 0; color: #b8a888; }
   .row span:last-child { color: #d4a857; font-weight: bold; font-family: monospace; }
   .bar-bg { height: 12px; background: #241e14; border-radius: 6px; overflow: hidden; margin: 6px 0 12px; }
   .bar-fill { height: 100%; width: 0%; transition: width 0.3s; border-radius: 6px; }
   #expFill { background: linear-gradient(90deg, #8a6a2a, #d4a857); }
-
   .btn {
     width: 100%; margin-top: 8px; padding: 10px; background: #8a6a2a; color: #fff;
     border: none; border-radius: 8px; cursor: pointer; font-size: 14px; transition: background 0.2s;
@@ -121,11 +112,9 @@
   .btn:disabled { background: #2a2418; cursor: not-allowed; color: #5a4a30; }
   .btn.red { background: #8a2a2a; } .btn.red:hover:not(:disabled) { background: #b03a3a; }
   .btn.green { background: #2a7a3a; } .btn.green:hover:not(:disabled) { background: #3a9a4a; }
-
   .scroll-area { max-height: 480px; overflow-y: auto; padding-right: 4px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-thumb { background: #3a3020; border-radius: 3px; }
-
   .item {
     display: flex; justify-content: space-between; align-items: center;
     padding: 10px 14px; background: #241e14; border-radius: 8px; margin-bottom: 6px;
@@ -145,7 +134,6 @@
   .item button.red { background: #8a2a2a; }
   .item button:disabled { background: #2a2418; color: #5a4a30; cursor: not-allowed; }
   .empty { color: #5a4a30; text-align: center; padding: 24px; font-size: 14px; }
-
   .event-card {
     background: #241e14; border: 1px solid #4a3a20; border-radius: 10px;
     padding: 14px; margin-bottom: 10px;
@@ -158,20 +146,17 @@
     font-size: 13px; cursor: pointer;
   }
   .event-card .evt-options button:hover { background: #2e2618; border-color: #8a6a2a; }
-
   .filter-bar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
   .filter-bar button {
     padding: 6px 12px; font-size: 12px; background: #241e14; color: #b8a888;
     border: 1px solid #3a3020; border-radius: 6px; cursor: pointer;
   }
   .filter-bar button.active { background: #8a6a2a; color: #fff; }
-
   .disciples-collapse {
     background: #241e14; border-radius: 8px; padding: 10px 14px; margin-bottom: 6px;
     font-size: 13px; color: #b8a888; cursor: pointer;
   }
   .disciples-collapse:hover { background: #2e2618; }
-
   #log {
     height: 180px; overflow-y: auto; background: #0f0c08;
     border: 1px solid #2a2418; border-radius: 10px;
@@ -181,13 +166,11 @@
   #log div { margin-bottom: 3px; }
   #log::-webkit-scrollbar { width: 6px; }
   #log::-webkit-scrollbar-thumb { background: #3a3020; border-radius: 3px; }
-
   .rare { color: #4ec9b0; } .epic { color: #c586c0; } .legend { color: #dcdcaa; font-weight: bold; }
   .danger { color: #f14c4c; } .gold { color: #ffd700; }
   .myth { color: #ff6b6b; font-weight: bold; }
   .tian { color: #ff6b6b; } .di { color: #dcdcaa; } .xuan { color: #4ec9b0; } .huang { color: #888; }
   .male { color: #6ab0ff; } .female { color: #ff8cd8; }
-
   .modal-bg {
     position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 998;
     display: flex; justify-content: center; align-items: center;
@@ -204,7 +187,6 @@
     border: none; border-radius: 8px; cursor: pointer; font-size: 14px;
   }
   .modal .close-btn:hover { background: #a8802a; }
-
   .toast {
     position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
     background: #241e14; color: #d4a857; border: 1px solid #8a6a2a;
@@ -213,7 +195,6 @@
     animation: toastIn 0.3s ease;
   }
   @keyframes toastIn { from { opacity: 0; top: 0; } to { opacity: 1; top: 30px; } }
-
   .sync-status {
     display: flex; justify-content: center; align-items: center;
     font-size: 12px; color: #8a7a60; margin-top: 8px; gap: 8px;
@@ -337,7 +318,6 @@ const SECT_LEVELS = [
   "一流一阶","一流二阶","一流三阶","一流四阶","一流五阶","一流六阶","一流七阶","一流八阶","一流九阶",
   "超一流一阶","超一流二阶","超一流三阶","超一流四阶","超一流五阶","超一流六阶","超一流七阶","超一流八阶","超一流九阶"
 ];
-
 const SECT_NEED = [
   100,150,200,300,400,500,700,900,1200,
   1500,2000,2500,3000,4000,5000,6000,7000,9000,
@@ -350,14 +330,12 @@ const SECT_NEED = [
   600000000,800000000,1000000000,1200000000,1500000000,1800000000,2200000000,2700000000,3300000000,
   5000000000,6000000000,7000000000,8500000000,10000000000,12000000000,14000000000,17000000000,20000000000
 ];
-
 const QUALITIES = [
   { name: "天", color: "tian", mult: 4.0, weight: 1, taskRate: 0.20, deathMult: 0.5 },
   { name: "地", color: "di",   mult: 2.5, weight: 5, taskRate: 0.30, deathMult: 0.5 },
   { name: "玄", color: "xuan", mult: 1.6, weight: 20, taskRate: 0.50, deathMult: 1.0 },
   { name: "黄", color: "huang",mult: 1.0, weight: 74, taskRate: 0.70, deathMult: 1.0 },
 ];
-
 const CLASSES = [
   { key: "jian", name: "剑修", task: "历练", powerMult: 1.5, goldMult: 1.0, expMult: 1.0 },
   { key: "dan",  name: "丹修", task: "采药", powerMult: 1.0, goldMult: 1.2, expMult: 1.0 },
@@ -365,7 +343,6 @@ const CLASSES = [
   { key: "zhen", name: "阵修", task: "修炼", powerMult: 1.0, goldMult: 1.0, expMult: 1.5 },
   { key: "ti",   name: "体修", task: "守山", powerMult: 1.3, goldMult: 1.0, expMult: 1.0 },
 ];
-
 const SURNAME = ["李","王","张","刘","陈","杨","赵","黄","周","吴","徐","孙","马","朱","胡","郭","何","林","罗","郑"];
 const MALE_GIVEN = ["青云","无极","浩然","子轩","宇轩","天赐","子墨","逸尘","风吟","夜白","凌风","子谦","玄机","无痕","苍梧"];
 const FEMALE_GIVEN = ["清瑶","若雪","芷若","语嫣","诗涵","梦瑶","紫嫣","雨萱","月华","流萤","冰心","妙音","凝霜","素问","璃月"];
@@ -381,23 +358,24 @@ const BUILDINGS = [
   { key: "dorm",    name: "弟子居", icon: "🏠", desc: "杂役上限 +100",        maxLv: 10, baseCost: 200, x: 0.30, y: 0.80 },
 ];
 
+// ==================== 功法（10 级制）====================
 const SKILLS = [
-  { key: "j1", name: "基础剑诀", tier: 1, price: 100,  effect: { power: 0.05 }, desc: "全体弟子战力 +5%" },
-  { key: "j2", name: "吐纳心法", tier: 1, price: 100,  effect: { exp: 0.05 },   desc: "弟子修炼 +5%" },
-  { key: "j3", name: "聚财术",   tier: 1, price: 120,  effect: { gold: 0.08 },  desc: "灵石收益 +8%" },
-  { key: "j4", name: "铁骨功",   tier: 2, price: 300,  effect: { hp: 0.10 },    desc: "弟子气血 +10%" },
-  { key: "j5", name: "御灵诀",   tier: 2, price: 300,  effect: { power: 0.10 }, desc: "全体弟子战力 +10%" },
-  { key: "j6", name: "聚宝盆",   tier: 2, price: 350,  effect: { gold: 0.15 },  desc: "灵石收益 +15%" },
-  { key: "j7", name: "天灵丹方", tier: 2, price: 350,  effect: { dan: 0.20 },   desc: "丹药效果 +20%" },
-  { key: "j8", name: "天罡阵法", tier: 3, price: 800,  effect: { power: 0.20 }, desc: "全体弟子战力 +20%" },
-  { key: "j9", name: "太清心经", tier: 3, price: 800,  effect: { exp: 0.20 },   desc: "弟子修炼 +20%" },
-  { key: "j10", name: "万剑归宗", tier: 3, price: 900, effect: { jian: 0.30 },  desc: "剑修弟子战力 +30%" },
-  { key: "j11", name: "百草仙典", tier: 3, price: 900, effect: { herb: 0.30 },  desc: "药园产出 +30%" },
-  { key: "j12", name: "大罗仙诀", tier: 4, price: 2000, effect: { power: 0.40 }, desc: "全体弟子战力 +40%" },
-  { key: "j13", name: "太上忘情录", tier: 4, price: 2000, effect: { loyalty: 20 }, desc: "全体弟子忠诚 +20" },
-  { key: "j14", name: "九转金丹诀", tier: 4, price: 2500, effect: { dan: 0.50 }, desc: "丹药效果 +50%" },
-  { key: "j15", name: "太上阵法", tier: 4, price: 3000, effect: { power: 0.50 }, desc: "全体弟子战力 +50%" },
-  { key: "j16", name: "聚灵大阵", tier: 4, price: 3000, effect: { gold: 0.50 }, desc: "灵石收益 +50%" },
+  { key: "j1", name: "基础剑诀", tier: 1, basePrice: 100,  effect: { power: 0.01 }, desc: "每级战力 +1%（10 级满）" },
+  { key: "j2", name: "吐纳心法", tier: 1, basePrice: 100,  effect: { exp: 0.01 },   desc: "每级修炼 +1%（10 级满）" },
+  { key: "j3", name: "聚财术",   tier: 1, basePrice: 120,  effect: { gold: 0.02 },  desc: "每级灵石 +2%（10 级满）" },
+  { key: "j4", name: "铁骨功",   tier: 2, basePrice: 300,  effect: { hp: 0.02 },    desc: "每级气血 +2%（10 级满）" },
+  { key: "j5", name: "御灵诀",   tier: 2, basePrice: 300,  effect: { power: 0.02 }, desc: "每级战力 +2%（10 级满）" },
+  { key: "j6", name: "聚宝盆",   tier: 2, basePrice: 350,  effect: { gold: 0.03 },  desc: "每级灵石 +3%（10 级满）" },
+  { key: "j7", name: "天灵丹方", tier: 2, basePrice: 350,  effect: { dan: 0.04 },   desc: "每级丹药 +4%（10 级满）" },
+  { key: "j8", name: "天罡阵法", tier: 3, basePrice: 800,  effect: { power: 0.04 }, desc: "每级战力 +4%（10 级满）" },
+  { key: "j9", name: "太清心经", tier: 3, basePrice: 800,  effect: { exp: 0.04 },   desc: "每级修炼 +4%（10 级满）" },
+  { key: "j10", name: "万剑归宗", tier: 3, basePrice: 900, effect: { jian: 0.06 },  desc: "每级剑修战力 +6%（10 级满）" },
+  { key: "j11", name: "百草仙典", tier: 3, basePrice: 900, effect: { herb: 0.06 },  desc: "每级药材 +6%（10 级满）" },
+  { key: "j12", name: "大罗仙诀", tier: 4, basePrice: 2000, effect: { power: 0.08 }, desc: "每级战力 +8%（10 级满）" },
+  { key: "j13", name: "太上忘情录", tier: 4, basePrice: 2000, effect: { loyalty: 2 }, desc: "每级忠诚 +2（10 级满）" },
+  { key: "j14", name: "九转金丹诀", tier: 4, basePrice: 2500, effect: { dan: 0.10 }, desc: "每级丹药 +10%（10 级满）" },
+  { key: "j15", name: "太上阵法", tier: 4, basePrice: 3000, effect: { power: 0.10 }, desc: "每级战力 +10%（10 级满）" },
+  { key: "j16", name: "聚灵大阵", tier: 4, basePrice: 3000, effect: { gold: 0.10 }, desc: "每级灵石 +10%（10 级满）" },
 ];
 
 const SHOP_ITEMS = [
@@ -415,6 +393,43 @@ const TASKS = {
   "守山": { time: 5*60*1000, exp: [1, 5], risk: 0.0, x: 0.5, y: 0.95 },
   "修炼": { time: 2*60*1000, exp: [5, 15], risk: 0.0, x: 0.30, y: 0.80 },
 };
+
+// ==================== 事件模板 ====================
+// 注意：这里不加 effect 函数，改用 tplIdx 索引方式，避免序列化丢失
+const EVENT_TEMPLATES = [
+  { type: "机遇", title: "灵药现世", desc: "后山发现一株千年灵药。", opts: [
+    { text: "采摘（+200 药材）", effect: () => { state.herb += 200; log("采摘灵药，药材 +200", "gold"); } },
+    { text: "献给宗门（+50 声望）", effect: () => { state.sectExp += 50; log("声望 +50", "gold"); } },
+  ]},
+  { type: "机遇", title: "神秘商人", desc: "一位神秘商人来访。", opts: [
+    { text: "花 500 灵石买丹药", effect: () => { if (state.gold < 500) return log("灵石不足", "danger"); state.gold -= 500; state.disciples.forEach(d => d.hp = d.maxHp); log("全体弟子恢复满血", "gold"); } },
+    { text: "婉拒", effect: () => log("商人离去") },
+  ]},
+  { type: "危机", title: "仇家上门", desc: "青云门上门挑衅！", opts: [
+    { text: "应战", effect: () => { if (Math.random() < 0.5) { state.gold += 300; log("击退仇家，+300 灵石", "gold"); } else { const d = state.disciples.find(x => x.hp > 0 && x.role !== "长老"); if (d) { d.hp = 0; log(`弟子【${d.name}】战死`, "danger"); } } } },
+    { text: "求和（-200 灵石）", effect: () => { if (state.gold < 200) return log("灵石不足", "danger"); state.gold -= 200; log("花 200 灵石求和", "rare"); } },
+  ]},
+  { type: "日常", title: "弟子争执", desc: "两名弟子在演武场打起来了。", opts: [
+    { text: "严惩先动手的", effect: () => log("以儆效尤") },
+    { text: "各打五十大板", effect: () => log("公平处置") },
+  ]},
+  { type: "日常", title: "丰收", desc: "灵田大丰收！", opts: [
+    { text: "全部入库（+500 灵石）", effect: () => { state.gold += 500; log("+500 灵石", "gold"); } },
+    { text: "分给弟子（+5 忠诚）", effect: () => { state.disciples.forEach(d => d.loyalty = Math.min(100, d.loyalty + 5)); log("全体弟子忠诚 +5", "rare"); } },
+  ]},
+  { type: "机遇", title: "天降陨铁", desc: "一颗陨石落入后山。", opts: [
+    { text: "派人挖掘（+300 矿石）", effect: () => { state.ore += 300; log("+300 矿石", "gold"); } },
+    { text: "置之不理", effect: () => log("陨石无声") },
+  ]},
+  { type: "危机", title: "妖兽袭山", desc: "一头妖兽闯入山门！", opts: [
+    { text: "派弟子围杀", effect: () => { if (Math.random() < 0.7) { state.gold += 500; log("击杀妖兽，+500 灵石", "gold"); } else { const d = state.disciples.find(x => x.hp > 0 && x.role !== "长老"); if (d) { d.hp = 0; log(`弟子【${d.name}】战死`, "danger"); } } } },
+    { text: "躲入主殿", effect: () => log("避其锋芒") },
+  ]},
+  { type: "日常", title: "弟子突破", desc: "一名弟子闭关突破！", opts: [
+    { text: "奖赏", effect: () => { const d = state.disciples.find(x => x.hp > 0 && x.level < 100); if (d) { d.level = Math.min(100, d.level + 3); log(`弟子【${d.name}】等级 +3`, "gold"); } } },
+    { text: "让他继续苦修", effect: () => { const d = state.disciples.find(x => x.hp > 0); if (d) { d.level = Math.min(100, d.level + 1); d.loyalty = Math.max(0, d.loyalty - 5); log(`弟子【${d.name}】等级 +1，忠诚 -5`, "rare"); } } },
+  ]},
+];
 
 // ==================== 状态 ====================
 const state = {
@@ -436,7 +451,7 @@ let cloudSyncTimer = null;
 let lastCloudTry = 0;
 let cloudFailCount = 0;
 
-const SAVE_KEY = "zongmen_save_v1";
+const SAVE_KEY = "zongmen_save_v2";
 const TIME_KEY = "zongmen_save_time";
 
 function extractSaveData() {
@@ -463,6 +478,14 @@ function loadLocal() {
   try {
     const data = JSON.parse(saved);
     Object.assign(state, data);
+    // 兼容旧存档：过滤无效事件（没有 tplIdx 的）
+    state.events = (state.events || []).filter(e => 
+      typeof e.tplIdx === "number" && EVENT_TEMPLATES[e.tplIdx]
+    );
+    // 兼容旧功法：{ j1: true } → { j1: { level: 1 } }
+    Object.keys(state.skills || {}).forEach(k => {
+      if (state.skills[k] === true) state.skills[k] = { level: 1 };
+    });
     state.lastTick = Date.now();
     state._lastAutoRecruit = 0; state._lastEvent = 0; state._lastCultivate = 0;
     state._lastGoldTick = 0; state._lastHerbTick = 0; state._lastLoyalty = 0;
@@ -521,7 +544,6 @@ function scheduleCloudSave() {
 // ==================== 工具 ====================
 function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
 function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-
 function fmt(n) {
   const num = Number(n);
   if (!isFinite(num)) return "0";
@@ -529,7 +551,6 @@ function fmt(n) {
   if (num >= 10000) return (num / 10000).toFixed(2) + "万";
   return Math.floor(num).toLocaleString("en-US");
 }
-
 function log(msg, cls = "") {
   const logEl = document.getElementById("log");
   const div = document.createElement("div");
@@ -539,7 +560,6 @@ function log(msg, cls = "") {
   logEl.scrollTop = logEl.scrollHeight;
   while (logEl.children.length > 100) logEl.removeChild(logEl.firstChild);
 }
-
 function toast(msg) {
   const div = document.createElement("div");
   div.className = "toast";
@@ -575,16 +595,10 @@ function generateDisciple(forceQuality) {
     deathMult: q.deathMult,
     classKey: cls.key,
     className: cls.name,
-    level: 1,
-    hp: 100,
-    maxHp: 100,
-    loyalty: 70,
-    status: "修炼中",
-    role: "杂役",
-    task: null,
-    taskEnd: 0,
-    mapX: 0.30,
-    mapY: 0.80,
+    level: 1, hp: 100, maxHp: 100, loyalty: 70,
+    status: "修炼中", role: "杂役",
+    task: null, taskEnd: 0,
+    mapX: 0.30, mapY: 0.80,
   };
 }
 
@@ -592,11 +606,9 @@ function getDiscipleMax(role) {
   const limits = { 杂役: 5 + state.buildings.dorm * 100, 外门: 300, 内门: 100, 核心: 20, 圣子: 6, 长老: 10 };
   return limits[role] || 0;
 }
-
 function getDiscipleCount(role) {
   return state.disciples.filter(d => d.role === role && d.hp > 0).length;
 }
-
 function addDisciple(d, role = "杂役") {
   const max = getDiscipleMax(role);
   const cur = getDiscipleCount(role);
@@ -615,9 +627,22 @@ function getDisciplePower(d) {
   if (d.loyalty >= 100) p *= 1.1;
   return Math.floor(p);
 }
-
 function getSectPower() {
   return state.disciples.reduce((s, d) => s + getDisciplePower(d), 0);
+}
+
+// ==================== 功法加成 ====================
+function getSkillBonus() {
+  const bonus = { power: 0, hp: 0, exp: 0, gold: 0, herb: 0, dan: 0, jian: 0, loyalty: 0 };
+  Object.entries(state.skills || {}).forEach(([key, data]) => {
+    const s = SKILLS.find(x => x.key === key);
+    if (!s) return;
+    const lv = data.level || 0;
+    Object.entries(s.effect).forEach(([k, v]) => {
+      bonus[k] = (bonus[k] || 0) + v * lv;
+    });
+  });
+  return bonus;
 }
 
 // ==================== 晋升 ====================
@@ -651,9 +676,7 @@ function tryPromote() {
   for (const d of state.disciples) {
     if (d.role === "长老" || d.hp <= 0 || d.level < 100) continue;
     if (getDiscipleCount("长老") >= getDiscipleMax("长老")) break;
-    d.role = "长老";
-    d.task = null;
-    d.status = "长老";
+    d.role = "长老"; d.task = null; d.status = "长老";
   }
 }
 
@@ -677,8 +700,7 @@ function autoAssignTasks() {
         startTask(d, cls.task);
       } else {
         d.status = "修炼中";
-        d.mapX = 0.30;
-        d.mapY = 0.80;
+        d.mapX = 0.30; d.mapY = 0.80;
       }
     }
   });
@@ -691,8 +713,7 @@ function startTask(d, taskName) {
   d.taskStart = Date.now();
   d.taskEnd = Date.now() + task.time;
   d.status = taskName + "中";
-  d.mapX = task.x;
-  d.mapY = task.y;
+  d.mapX = task.x; d.mapY = task.y;
 }
 
 function finishTask(d) {
@@ -705,15 +726,15 @@ function finishTask(d) {
     if (elders.length > 0 && Math.random() < 0.8) {
       log(`弟子【${d.name}】任务遇险，长老出手相救，已脱险`, "rare");
     } else {
-      d.hp = 0;
-      d.status = "死亡";
+      d.hp = 0; d.status = "死亡";
       log(`弟子【${d.name}】（${d.quality}品 ${d.className}）任务中陨落`, "danger");
       return;
     }
   }
 
-  const gold = task.gold ? rand(task.gold[0], task.gold[1]) : 0;
-  const herb = task.herb ? rand(task.herb[0], task.herb[1]) : 0;
+  const skillBonus = getSkillBonus();
+  const gold = task.gold ? Math.floor(rand(task.gold[0], task.gold[1]) * (1 + skillBonus.gold)) : 0;
+  const herb = task.herb ? Math.floor(rand(task.herb[0], task.herb[1]) * (1 + skillBonus.herb)) : 0;
   const ore = task.ore ? rand(task.ore[0], task.ore[1]) : 0;
   const exp = task.exp ? rand(task.exp[0], task.exp[1]) : 0;
   state.gold += gold;
@@ -721,16 +742,12 @@ function finishTask(d) {
   state.ore += ore;
   if (exp > 10) d.level = Math.min(100, d.level + 1);
 
-  // 历练给声望
   if (d.task === "历练") {
-    const expGain = rand(5, 30);
-    state.sectExp += expGain;
+    state.sectExp += rand(5, 30);
   }
 
-  d.task = null;
-  d.status = "修炼中";
-  d.mapX = 0.30;
-  d.mapY = 0.80;
+  d.task = null; d.status = "修炼中";
+  d.mapX = 0.30; d.mapY = 0.80;
 }
 
 // ==================== 修炼 ====================
@@ -738,9 +755,10 @@ function cultivate() {
   const now = Date.now();
   if (now - state._lastCultivate < 10000) return;
   state._lastCultivate = now;
+  const skillBonus = getSkillBonus();
   const libraryBonus = 1 + state.buildings.library * 0.05;
   const zhenBonus = state.disciples.filter(d => d.classKey === "zhen" && d.hp > 0).length * 0.01;
-  const rate = libraryBonus + zhenBonus;
+  const rate = libraryBonus + zhenBonus + skillBonus.exp;
 
   state.disciples.forEach(d => {
     if (d.hp <= 0 || d.role === "长老") return;
@@ -754,15 +772,16 @@ function cultivate() {
 // ==================== 产出 ====================
 function produce() {
   const now = Date.now();
+  const skillBonus = getSkillBonus();
   if (now - state._lastGoldTick > 5000) {
     state._lastGoldTick = now;
-    const income = state.buildings.farm * 10 + state.disciples.filter(d => d.hp > 0).length * 1;
-    state.gold += income;
+    const base = state.buildings.farm * 10 + state.disciples.filter(d => d.hp > 0).length * 1;
+    state.gold += Math.floor(base * (1 + skillBonus.gold));
   }
   if (now - state._lastHerbTick > 10000) {
     state._lastHerbTick = now;
-    const income = state.buildings.garden * 5;
-    state.herb += income;
+    const base = state.buildings.garden * 5;
+    state.herb += Math.floor(base * (1 + skillBonus.herb));
   }
 }
 
@@ -774,10 +793,8 @@ function autoRecruit() {
   state._lastAutoRecruit = now;
   const d = generateDisciple();
   if (d.quality === "天" || d.quality === "地") {
-    d.quality = "玄";
-    d.qualityMult = 1.6;
-    d.taskRate = 0.5;
-    d.deathMult = 1.0;
+    d.quality = "玄"; d.qualityMult = 1.6;
+    d.taskRate = 0.5; d.deathMult = 1.0;
   }
   addDisciple(d);
 }
@@ -800,50 +817,15 @@ function checkLoyalty() {
 }
 
 // ==================== 事件 ====================
-const EVENT_TEMPLATES = [
-  { type: "机遇", title: "灵药现世", desc: "后山发现一株千年灵药。", opts: [
-    { text: "采摘（+200 药材）", effect: () => { state.herb += 200; log("采摘灵药，药材 +200", "gold"); } },
-    { text: "献给宗门（+50 声望）", effect: () => { state.sectExp += 50; log("声望 +50", "gold"); } },
-  ]},
-  { type: "机遇", title: "神秘商人", desc: "一位神秘商人来访。", opts: [
-    { text: "花 500 灵石买丹药", effect: () => { if (state.gold < 500) return log("灵石不足", "danger"); state.gold -= 500; state.disciples.forEach(d => d.hp = d.maxHp); log("全体弟子恢复满血", "gold"); } },
-    { text: "婉拒", effect: () => log("商人离去") },
-  ]},
-  { type: "危机", title: "仇家上门", desc: "青云门上门挑衅！", opts: [
-    { text: "应战", effect: () => { if (Math.random() < 0.5) { state.gold += 300; log("击退仇家，+300 灵石", "gold"); } else { const d = state.disciples.find(x => x.hp > 0 && x.role !== "长老"); if (d) { d.hp = 0; log(`弟子【${d.name}】战死`, "danger"); } } } },
-    { text: "求和（-200 灵石）", effect: () => { if (state.gold < 200) return log("灵石不足", "danger"); state.gold -= 200; log("花 200 灵石求和", "rare"); } },
-  ]},
-  { type: "日常", title: "弟子争执", desc: "两名弟子在演武场打起来了。", opts: [
-    { text: "严惩先动手的", effect: () => log("以儆效尤") },
-    { text: "各打五十大板", effect: () => log("公平处置") },
-  ]},
-  { type: "日常", title: "丰收", desc: "灵田大丰收！", opts: [
-    { text: "全部入库（+500 灵石）", effect: () => { state.gold += 500; log("+500 灵石", "gold"); } },
-    { text: "分给弟子（+5 忠诚）", effect: () => { state.disciples.forEach(d => d.loyalty = Math.min(100, d.loyalty + 5)); log("全体弟子忠诚 +5", "rare"); } },
-  ]},
-  { type: "机遇", title: "天降陨铁", desc: "一颗陨石落入后山。", opts: [
-    { text: "派人挖掘（+300 矿石）", effect: () => { state.ore += 300; log("+300 矿石", "gold"); } },
-    { text: "置之不理", effect: () => log("陨石无声") },
-  ]},
-  { type: "危机", title: "妖兽袭山", desc: "一头妖兽闯入山门！", opts: [
-    { text: "派弟子围杀", effect: () => { if (Math.random() < 0.7) { state.gold += 500; log("击杀妖兽，+500 灵石", "gold"); } else { const d = state.disciples.find(x => x.hp > 0 && x.role !== "长老"); if (d) { d.hp = 0; log(`弟子【${d.name}】战死`, "danger"); } } } },
-    { text: "躲入主殿", effect: () => log("避其锋芒") },
-  ]},
-  { type: "日常", title: "弟子突破", desc: "一名弟子闭关突破！", opts: [
-    { text: "奖赏", effect: () => { const d = state.disciples.find(x => x.hp > 0 && x.level < 100); if (d) { d.level = Math.min(100, d.level + 3); log(`弟子【${d.name}】等级 +3`, "gold"); } } },
-    { text: "让他继续苦修", effect: () => { const d = state.disciples.find(x => x.hp > 0); if (d) { d.level = Math.min(100, d.level + 1); d.loyalty = Math.max(0, d.loyalty - 5); log(`弟子【${d.name}】等级 +1，忠诚 -5`, "rare"); } } },
-  ]},
-];
-
 function spawnEvent() {
   const now = Date.now();
   if (now - state._lastEvent < 60000) return;
   state._lastEvent = now;
   if (state.events.length >= 10) return;
   if (Math.random() < 0.6) {
-    const tpl = pick(EVENT_TEMPLATES);
-    state.events.push({ ...tpl, id: Date.now() + Math.random(), at: now });
-    toast("📢 新事件：" + tpl.title);
+    const tplIdx = Math.floor(Math.random() * EVENT_TEMPLATES.length);
+    state.events.push({ tplIdx, id: Date.now() + Math.random(), at: now });
+    toast("📢 新事件：" + EVENT_TEMPLATES[tplIdx].title);
   }
 }
 
@@ -866,6 +848,9 @@ function recruitN(n) {
   }
   log(`招募 ${n} 次：天 ${tian} · 地 ${di} · 玄 ${xuan} · 黄 ${huang}`, "gold");
   if (tian > 0) toast(`🎉 抽到天阶弟子 ×${tian}！`);
+  saveLocal();
+  scheduleCloudSave();
+  updateUI();
 }
 
 function healDisciple() {
@@ -915,6 +900,7 @@ function batchManage() {
   log(`遣散 ${targets.length} 名弟子，返还 ${refund} 灵石`, "gold");
   saveLocal();
   scheduleCloudSave();
+  updateUI();
 }
 
 // ==================== 地图 ====================
@@ -1036,7 +1022,9 @@ function renderDisciples() {
   roles.forEach(role => {
     const arr = groups[role];
     if (arr.length === 0) return;
-    const showAll = ["圣子", "核心", "长老"].includes(role) || currentFilter === role;
+    // 天阶/地阶全显示，其他最多 5 个
+    const hasHighQuality = arr.some(d => d.quality === "天" || d.quality === "地");
+    const showAll = ["圣子", "核心", "长老"].includes(role) || currentFilter === role || hasHighQuality;
     const toShow = showAll ? arr : arr.slice(0, 5);
 
     if (!showAll && arr.length > 5) {
@@ -1082,15 +1070,17 @@ function renderEvents() {
     return;
   }
   state.events.forEach((e, idx) => {
+    const tpl = EVENT_TEMPLATES[e.tplIdx];
+    if (!tpl) return;
     const div = document.createElement("div");
     div.className = "event-card";
     div.innerHTML = `
-      <div class="evt-title">【${e.type}】${e.title}</div>
-      <div class="evt-desc">${e.desc}</div>
+      <div class="evt-title">【${tpl.type}】${tpl.title}</div>
+      <div class="evt-desc">${tpl.desc}</div>
       <div class="evt-options"></div>
     `;
     const optBox = div.querySelector(".evt-options");
-    e.opts.forEach(o => {
+    tpl.opts.forEach(o => {
       const btn = document.createElement("button");
       btn.textContent = o.text;
       btn.addEventListener("click", () => {
@@ -1144,27 +1134,40 @@ function renderBuildings() {
 function renderSkills() {
   const list = document.getElementById("skillList");
   list.innerHTML = "";
-  document.getElementById("skillCount").textContent = `${Object.keys(state.skills).length} / 16`;
+  let learnedCount = 0;
   SKILLS.forEach(s => {
-    const learned = !!state.skills[s.key];
+    const data = state.skills[s.key];
+    const lv = data ? (data.level || 0) : 0;
+    const isMax = lv >= 10;
+    if (lv > 0) learnedCount++;
+    const upgradeCost = s.basePrice * (lv + 1) * 1.5;
     const div = document.createElement("div");
     div.className = "item";
+    const effectText = Object.entries(s.effect).map(([k, v]) => `${k} +${((v * lv) * 100).toFixed(0)}%`).join(" ");
     div.innerHTML = `
       <div style="flex:1;">
-        <div class="name">${s.name} <span style="color:#888">[${s.tier}阶]</span></div>
+        <div class="name">${s.name} <span style="color:#888">[${s.tier}阶]</span> <span style="color:#d4a857;">Lv.${lv}/10</span></div>
         <div class="attr">${s.desc}</div>
+        <div class="attr" style="color:#6affd8;">当前加成：${lv > 0 ? effectText : "无"}</div>
       </div>
-      <button data-skill="${s.key}" ${learned ? "disabled" : ""}>${learned ? "已学" : `${s.price} 灵石`}</button>
+      <button data-skill="${s.key}" ${isMax ? "disabled" : ""}>${isMax ? "满级" : (lv === 0 ? `学习 ${s.basePrice}` : `升级 ${Math.floor(upgradeCost)}`)}</button>
     `;
     list.appendChild(div);
   });
+  document.getElementById("skillCount").textContent = `${learnedCount} / 16`;
+
   list.querySelectorAll("[data-skill]").forEach(btn => {
     btn.addEventListener("click", () => {
       const s = SKILLS.find(x => x.key === btn.dataset.skill);
-      if (state.gold < s.price) { log("灵石不足", "danger"); return; }
-      state.gold -= s.price;
-      state.skills[s.key] = true;
-      log(`学会功法【${s.name}】`, "gold");
+      const data = state.skills[s.key];
+      const lv = data ? (data.level || 0) : 0;
+      if (lv >= 10) return;
+      const cost = lv === 0 ? s.basePrice : Math.floor(s.basePrice * (lv + 1) * 1.5);
+      if (state.gold < cost) { log("灵石不足", "danger"); return; }
+      state.gold -= cost;
+      if (!state.skills[s.key]) state.skills[s.key] = { level: 0 };
+      state.skills[s.key].level = lv + 1;
+      log(`${lv === 0 ? "学会" : "升级"}功法【${s.name}】 Lv.${lv + 1}`, "gold");
       saveLocal(); scheduleCloudSave(); updateUI();
     });
   });
@@ -1211,8 +1214,9 @@ function offlineEarnings() {
   const mins = Math.floor((capSec % 3600) / 60);
   const timeStr = hours > 0 ? `${hours} 小时 ${mins} 分钟` : `${mins} 分钟`;
 
-  const goldGain = Math.floor(capSec / 5 * (state.buildings.farm * 10 + 10));
-  const herbGain = Math.floor(capSec / 10 * state.buildings.garden * 5);
+  const skillBonus = getSkillBonus();
+  const goldGain = Math.floor(capSec / 5 * (state.buildings.farm * 10 + 10) * (1 + skillBonus.gold));
+  const herbGain = Math.floor(capSec / 10 * state.buildings.garden * 5 * (1 + skillBonus.herb));
   const discCount = state.disciples.filter(d => d.hp > 0 && d.role !== "长老").length;
   const expGain = Math.floor(capSec / 10 * discCount * 0.3);
 
@@ -1355,6 +1359,14 @@ async function init() {
   try {
     const cloudState = await cloudLoad();
     if (cloudState) {
+      // 兼容旧存档
+      cloudState.events = (cloudState.events || []).filter(e => 
+        typeof e.tplIdx === "number" && EVENT_TEMPLATES[e.tplIdx]
+      );
+      Object.keys(cloudState.skills || {}).forEach(k => {
+        if (cloudState.skills[k] === true) cloudState.skills[k] = { level: 1 };
+      });
+
       const localTime = parseInt(localStorage.getItem(TIME_KEY) || "0", 10);
       const cloudTime = cloudState._saveTime || 0;
       if (cloudTime > localTime) {
