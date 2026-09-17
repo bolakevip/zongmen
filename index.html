@@ -10,1149 +10,382 @@
     background: #0d0b08; color: #d4c8b8;
     font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
     display: flex; justify-content: center; align-items: flex-start;
-    min-height: 100vh; padding: 16px; user-select: none;
+    min-height: 100vh; padding: 20px; user-select: none;
+    background: radial-gradient(ellipse at top, #1a1610 0%, #0d0b08 100%);
   }
   #app {
-    width: 480px; background: #1a1610;
-    border: 1px solid #3a3020; border-radius: 12px; padding: 12px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.9);
+    width: 100%; max-width: 1400px;
+    background: #1a1610;
+    border: 1px solid #3a3020; border-radius: 14px; padding: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.9);
   }
-  .title {
-    font-size: 16px; color: #d4a857; text-align: center;
-    margin-bottom: 8px; letter-spacing: 4px; font-weight: bold;
-    text-shadow: 0 0 10px rgba(212,168,87,0.4);
-  }
-  .top-bar {
-    display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 11px;
-    background: #0f0c08; border: 1px solid #2a2418; border-radius: 6px;
-    padding: 6px 8px; margin-bottom: 8px; color: #b8a888;
-  }
-  .top-bar span b { color: #d4a857; }
 
-  .tabs { display: flex; gap: 3px; margin-bottom: 8px; flex-wrap: wrap; }
+  /* ============ 顶栏 ============ */
+  .top-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #0f0c08; border: 1px solid #2a2418; border-radius: 10px;
+    padding: 12px 20px; margin-bottom: 14px;
+  }
+  .top-bar .sect-name {
+    font-size: 20px; color: #d4a857; font-weight: bold;
+    letter-spacing: 3px;
+    text-shadow: 0 0 12px rgba(212,168,87,0.5);
+  }
+  .top-bar .resources {
+    display: flex; gap: 24px; font-size: 14px;
+  }
+  .top-bar .resources span { color: #b8a888; }
+  .top-bar .resources b {
+    color: #d4a857; font-family: monospace; font-size: 15px;
+    margin-left: 4px;
+  }
+
+  /* ============ 主体布局 ============ */
+  .main-layout {
+    display: flex; gap: 14px; margin-bottom: 14px;
+  }
+
+  /* ============ 左侧地图 ============ */
+  .map-area {
+    flex: 0 0 900px; height: 600px;
+    background: linear-gradient(180deg, #1a2418 0%, #0f1a10 50%, #1a1008 100%);
+    border: 1px solid #3a3020; border-radius: 12px;
+    position: relative; overflow: hidden;
+  }
+  .map-bg-mountain {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 200px;
+    background: linear-gradient(180deg, transparent 0%, #0a0805 100%);
+    pointer-events: none;
+  }
+  .map-bg-stars {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(1px 1px at 20% 15%, #fff 0%, transparent 100%),
+                      radial-gradient(1px 1px at 60% 25%, #fff 0%, transparent 100%),
+                      radial-gradient(1px 1px at 80% 10%, #fff 0%, transparent 100%),
+                      radial-gradient(1px 1px at 35% 40%, #fff 0%, transparent 100%),
+                      radial-gradient(1px 1px at 90% 35%, #fff 0%, transparent 100%);
+    opacity: 0.3; pointer-events: none;
+  }
+
+  .building {
+    position: absolute; text-align: center; cursor: pointer;
+    transition: transform 0.2s, filter 0.2s;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+  }
+  .building:hover { transform: translate(-50%, -50%) scale(1.15); filter: brightness(1.3); }
+  .building .b-icon { font-size: 48px; display: block; line-height: 1; }
+  .building .b-name {
+    font-size: 16px; color: #d4a857; margin-top: 4px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+  }
+  .building .b-lv {
+    font-size: 12px; color: #b8a888; margin-top: 2px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+  }
+
+  .disciple-dot {
+    position: absolute;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    transition: left 1.5s linear, top 1.5s linear, opacity 0.5s;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    box-shadow: 0 0 8px currentColor;
+  }
+  .disciple-dot.male { border-radius: 2px; }
+  .disciple-dot.tian { background: #ff6b6b; color: #ff6b6b; }
+  .disciple-dot.di { background: #dcdcaa; color: #dcdcaa; }
+  .disciple-dot.xuan { background: #4ec9b0; color: #4ec9b0; }
+  .disciple-dot.huang { background: #888; color: #888; }
+
+  /* ============ 右侧面板 ============ */
+  .right-panel {
+    flex: 1; min-width: 480px;
+    display: flex; flex-direction: column;
+  }
+  .tabs {
+    display: flex; gap: 6px; margin-bottom: 12px;
+  }
   .tab {
-    flex: 1; min-width: 48px; text-align: center; padding: 6px 0; font-size: 11px;
-    background: #241e14; border-radius: 6px; cursor: pointer; color: #7a6a50; transition: all 0.2s;
+    flex: 1; text-align: center; padding: 10px 0; font-size: 13px;
+    background: #241e14; border-radius: 8px; cursor: pointer;
+    color: #7a6a50; transition: all 0.2s;
+    position: relative;
   }
   .tab.active { background: #8a6a2a; color: #fff; }
   .tab:hover:not(.active) { background: #2e2618; color: #b8a888; }
   .tab .badge {
-    display: inline-block; background: #d44a2a; color: #fff;
-    font-size: 9px; padding: 0 4px; border-radius: 6px; margin-left: 2px;
-    vertical-align: top;
+    position: absolute; top: 4px; right: 6px;
+    background: #d44a2a; color: #fff;
+    font-size: 10px; padding: 1px 6px; border-radius: 8px;
   }
-  .panel { display: none; }
+
+  .panel { display: none; flex: 1; }
   .panel.active { display: block; }
 
-  .row { display: flex; justify-content: space-between; font-size: 12px; margin: 4px 0; color: #b8a888; }
-  .row span:last-child { color: #d4a857; font-weight: bold; }
-  .bar-bg { height: 8px; background: #241e14; border-radius: 4px; overflow: hidden; margin: 4px 0 8px; }
-  .bar-fill { height: 100%; width: 0%; transition: width 0.3s; border-radius: 4px; }
+  .row { display: flex; justify-content: space-between; font-size: 14px; margin: 8px 0; color: #b8a888; }
+  .row span:last-child { color: #d4a857; font-weight: bold; font-family: monospace; }
+  .bar-bg { height: 12px; background: #241e14; border-radius: 6px; overflow: hidden; margin: 6px 0 12px; }
+  .bar-fill { height: 100%; width: 0%; transition: width 0.3s; border-radius: 6px; }
   #expFill { background: linear-gradient(90deg, #8a6a2a, #d4a857); }
 
-  #log {
-    height: 120px; overflow-y: auto; background: #0f0c08; border: 1px solid #2a2418;
-    border-radius: 6px; padding: 8px; font-size: 11px; line-height: 1.7; color: #9a8a70; margin-top: 8px;
-  }
-  #log div { margin-bottom: 2px; }
-  #log::-webkit-scrollbar { width: 4px; }
-  #log::-webkit-scrollbar-thumb { background: #3a3020; border-radius: 2px; }
-
-  .rare { color: #4ec9b0; } .epic { color: #c586c0; } .legend { color: #dcdcaa; font-weight: bold; }
-  .danger { color: #f14c4c; } .gold { color: #ffd700; }
-  .myth { color: #ff6b6b; font-weight: bold; text-shadow: 0 0 6px #ff6b6b; }
-  .tian { color: #ff6b6b; } .di { color: #dcdcaa; } .xuan { color: #4ec9b0; } .huang { color: #888; }
-  .male { color: #6ab0ff; } .female { color: #ff8cd8; }
-
   .btn {
-    width: 100%; margin-top: 6px; padding: 7px; background: #8a6a2a; color: #fff;
-    border: none; border-radius: 6px; cursor: pointer; font-size: 12px; transition: background 0.2s;
+    width: 100%; margin-top: 8px; padding: 10px; background: #8a6a2a; color: #fff;
+    border: none; border-radius: 8px; cursor: pointer; font-size: 14px; transition: background 0.2s;
   }
   .btn:hover:not(:disabled) { background: #a8802a; }
   .btn:disabled { background: #2a2418; cursor: not-allowed; color: #5a4a30; }
-  .btn.small { padding: 4px 8px; font-size: 11px; margin-top: 4px; width: auto; }
   .btn.red { background: #8a2a2a; } .btn.red:hover:not(:disabled) { background: #b03a3a; }
   .btn.green { background: #2a7a3a; } .btn.green:hover:not(:disabled) { background: #3a9a4a; }
 
+  .scroll-area {
+    max-height: 480px; overflow-y: auto; padding-right: 4px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #3a3020; border-radius: 3px; }
+
   .item {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 6px 8px; background: #241e14; border-radius: 6px; margin-bottom: 4px;
-    font-size: 11px; border-left: 3px solid #4a3a20; gap: 6px; flex-wrap: wrap;
+    padding: 10px 14px; background: #241e14; border-radius: 8px; margin-bottom: 6px;
+    font-size: 13px; border-left: 4px solid #4a3a20; gap: 10px; flex-wrap: wrap;
   }
   .item.天 { border-left-color: #ff6b6b; }
   .item.地 { border-left-color: #dcdcaa; }
   .item.玄 { border-left-color: #4ec9b0; }
   .item.黄 { border-left-color: #888; }
-  .item .name { color: #d4c8b8; font-size: 11px; font-weight: bold; }
-  .item .attr { color: #8a7a60; font-size: 10px; margin-top: 1px; }
+  .item .name { color: #d4c8b8; font-size: 14px; font-weight: bold; }
+  .item .attr { color: #8a7a60; font-size: 12px; margin-top: 2px; }
   .item button {
-    background: #8a6a2a; color: #fff; border: none; border-radius: 4px;
-    padding: 3px 7px; font-size: 10px; cursor: pointer; white-space: nowrap;
+    background: #8a6a2a; color: #fff; border: none; border-radius: 6px;
+    padding: 5px 12px; font-size: 12px; cursor: pointer; white-space: nowrap;
   }
   .item button:hover { background: #a8802a; }
   .item button.red { background: #8a2a2a; }
-  .empty { color: #5a4a30; text-align: center; padding: 16px; font-size: 12px; }
+  .empty { color: #5a4a30; text-align: center; padding: 24px; font-size: 14px; }
 
   .event-card {
-    background: #241e14; border: 1px solid #4a3a20; border-radius: 8px;
-    padding: 10px; margin-bottom: 8px;
+    background: #241e14; border: 1px solid #4a3a20; border-radius: 10px;
+    padding: 14px; margin-bottom: 10px;
   }
-  .event-card .evt-title { color: #d4a857; font-size: 12px; font-weight: bold; margin-bottom: 4px; }
-  .event-card .evt-desc { color: #b8a888; font-size: 11px; line-height: 1.5; margin-bottom: 6px; }
+  .event-card .evt-title { color: #d4a857; font-size: 15px; font-weight: bold; margin-bottom: 6px; }
+  .event-card .evt-desc { color: #b8a888; font-size: 13px; line-height: 1.6; margin-bottom: 10px; }
   .event-card .evt-options button {
-    width: 100%; text-align: left; padding: 5px 8px; margin-bottom: 3px;
-    background: #1a1610; color: #d4c8b8; border: 1px solid #3a3020; border-radius: 4px;
-    font-size: 11px; cursor: pointer;
+    width: 100%; text-align: left; padding: 8px 12px; margin-bottom: 5px;
+    background: #1a1610; color: #d4c8b8; border: 1px solid #3a3020; border-radius: 6px;
+    font-size: 13px; cursor: pointer;
   }
   .event-card .evt-options button:hover { background: #2e2618; border-color: #8a6a2a; }
 
-  .building-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
-  .building {
-    background: #241e14; border: 1px solid #3a3020; border-radius: 6px;
-    padding: 8px; text-align: center; cursor: pointer;
+  .filter-bar {
+    display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px;
   }
-  .building:hover { border-color: #8a6a2a; }
-  .building .b-name { color: #d4a857; font-size: 12px; font-weight: bold; }
-  .building .b-lv { color: #b8a888; font-size: 10px; margin-top: 2px; }
-  .building .b-desc { color: #8a7a60; font-size: 9px; margin-top: 2px; }
+  .filter-bar button {
+    padding: 6px 12px; font-size: 12px; background: #241e14; color: #b8a888;
+    border: 1px solid #3a3020; border-radius: 6px; cursor: pointer;
+  }
+  .filter-bar button.active { background: #8a6a2a; color: #fff; }
 
+  .disciples-collapse {
+    background: #241e14; border-radius: 8px; padding: 10px 14px; margin-bottom: 6px;
+    font-size: 13px; color: #b8a888; cursor: pointer;
+  }
+  .disciples-collapse:hover { background: #2e2618; }
+
+  /* ============ 底部日志 ============ */
+  #log {
+    height: 180px; overflow-y: auto; background: #0f0c08;
+    border: 1px solid #2a2418; border-radius: 10px;
+    padding: 12px 16px; font-size: 13px; line-height: 1.8;
+    color: #9a8a70;
+  }
+  #log div { margin-bottom: 3px; }
+  #log::-webkit-scrollbar { width: 6px; }
+  #log::-webkit-scrollbar-thumb { background: #3a3020; border-radius: 3px; }
+
+  /* ============ 颜色 ============ */
+  .rare { color: #4ec9b0; } .epic { color: #c586c0; } .legend { color: #dcdcaa; font-weight: bold; }
+  .danger { color: #f14c4c; } .gold { color: #ffd700; }
+  .myth { color: #ff6b6b; font-weight: bold; }
+  .tian { color: #ff6b6b; } .di { color: #dcdcaa; } .xuan { color: #4ec9b0; } .huang { color: #888; }
+  .male { color: #6ab0ff; } .female { color: #ff8cd8; }
+
+  /* ============ 弹窗 ============ */
   .modal-bg {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 998;
+    position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 998;
     display: flex; justify-content: center; align-items: center;
   }
   .modal {
-    background: #1a1610; border: 1px solid #8a6a2a; border-radius: 12px;
-    padding: 16px; max-width: 400px; width: 90%; max-height: 80vh; overflow-y: auto;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.9);
+    background: #1a1610; border: 1px solid #8a6a2a; border-radius: 14px;
+    padding: 24px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.9);
   }
-  .modal h3 { color: #d4a857; font-size: 14px; margin-bottom: 10px; text-align: center; letter-spacing: 2px; }
-  .modal .row { font-size: 12px; margin: 5px 0; }
+  .modal h3 {
+    color: #d4a857; font-size: 18px; margin-bottom: 14px;
+    text-align: center; letter-spacing: 3px;
+  }
+  .modal .row { font-size: 14px; margin: 8px 0; }
   .modal .close-btn {
-    width: 100%; margin-top: 10px; padding: 8px; background: #8a6a2a; color: #fff;
-    border: none; border-radius: 6px; cursor: pointer; font-size: 12px;
+    width: 100%; margin-top: 16px; padding: 10px; background: #8a6a2a; color: #fff;
+    border: none; border-radius: 8px; cursor: pointer; font-size: 14px;
   }
   .modal .close-btn:hover { background: #a8802a; }
 
   .toast {
-    position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+    position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
     background: #241e14; color: #d4a857; border: 1px solid #8a6a2a;
-    border-radius: 8px; padding: 8px 16px; font-size: 12px; z-index: 999;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+    border-radius: 10px; padding: 12px 24px; font-size: 14px; z-index: 999;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.9);
     animation: toastIn 0.3s ease;
   }
-  @keyframes toastIn { from { opacity: 0; top: 0; } to { opacity: 1; top: 20px; } }
+  @keyframes toastIn { from { opacity: 0; top: 0; } to { opacity: 1; top: 30px; } }
 
-  .disciples-collapse {
-    background: #241e14; border-radius: 6px; padding: 8px; margin-bottom: 4px;
-    font-size: 11px; color: #b8a888; cursor: pointer;
+  /* 云同步状态 */
+  .sync-status {
+    display: flex; justify-content: center; align-items: center;
+    font-size: 12px; color: #8a7a60; margin-top: 8px; gap: 8px;
   }
-  .disciples-collapse:hover { background: #2e2618; }
-  .disciples-list { margin-bottom: 8px; }
-
-  .filter-bar {
-    display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px;
+  .sync-status .dot {
+    width: 8px; height: 8px; border-radius: 50%; background: #5a4a30;
   }
-  .filter-bar button {
-    padding: 4px 8px; font-size: 10px; background: #241e14; color: #b8a888;
-    border: 1px solid #3a3020; border-radius: 4px; cursor: pointer;
-  }
-  .filter-bar button.active { background: #8a6a2a; color: #fff; }
+  .sync-status .dot.ok { background: #4ec9b0; box-shadow: 0 0 8px #4ec9b0; }
+  .sync-status .dot.err { background: #f14c4c; box-shadow: 0 0 8px #f14c4c; }
 </style>
 </head>
 <body>
 <div id="app">
-  <div class="title">宗 门 经 营 录</div>
-
-  <!-- 顶部资源栏 -->
+  <!-- 顶栏 -->
   <div class="top-bar">
-    <span>🏯 <b id="topSect">破庙</b></span>
-    <span>⭐ <b id="topExp">0</b></span>
-    <span>💎 <b id="topGold">0</b></span>
-    <span>🌿 <b id="topHerb">0</b></span>
-    <span>⛏️ <b id="topOre">0</b></span>
-    <span>👤 <b id="topDisciple">0</b></span>
-  </div>
-
-  <div class="tabs">
-    <div class="tab active" data-tab="main">宗门</div>
-    <div class="tab" data-tab="disciples">弟子</div>
-    <div class="tab" data-tab="events">事件<span class="badge" id="eventBadge" style="display:none">0</span></div>
-    <div class="tab" data-tab="buildings">建筑</div>
-    <div class="tab" data-tab="skills">功法</div>
-    <div class="tab" data-tab="shop">坊市</div>
-  </div>
-
-  <!-- 宗门主界面 -->
-  <div class="panel active" id="panel-main">
-    <div class="row"><span>宗门等级</span><span id="sectLevel">九流一阶</span></div>
-    <div class="row"><span>宗门声望</span><span id="sectExp">0 / 100</span></div>
-    <div class="bar-bg"><div class="bar-fill" id="expFill"></div></div>
-    <div class="row"><span>宗门战力</span><span id="sectPower">0</span></div>
-    <div class="row"><span>传承次数</span><span id="genCount">0</span></div>
-    <div class="row"><span>弟子总数</span><span id="discipleTotal">0 / 1441</span></div>
-
-    <button class="btn green" id="meditateBtn">全体弟子闭关修炼（1 分钟）</button>
-    <button class="btn" id="autoRecruitBtn">自动招募：开</button>
-  </div>
-
-  <!-- 弟子 -->
-  <div class="panel" id="panel-disciples">
-    <div class="filter-bar" id="discipleFilter">
-      <button class="active" data-filter="all">全部</button>
-      <button data-filter="杂役">杂役</button>
-      <button data-filter="外门">外门</button>
-      <button data-filter="内门">内门</button>
-      <button data-filter="核心">核心</button>
-      <button data-filter="圣子">圣子/圣女</button>
-      <button data-filter="长老">长老</button>
+    <div class="sect-name">宗 门 经 营 录</div>
+    <div class="resources">
+      <span>🏯 <b id="topSect">破庙</b></span>
+      <span>⭐ <b id="topExp">0</b></span>
+      <span>💎 <b id="topGold">0</b></span>
+      <span>🌿 <b id="topHerb">0</b></span>
+      <span>⛏️ <b id="topOre">0</b></span>
+      <span>👤 <b id="topDisciple">0</b></span>
     </div>
-    <div class="disciples-list" id="discipleList"></div>
-    <button class="btn red" id="batchManageBtn">批量管理</button>
   </div>
 
-  <!-- 事件 -->
-  <div class="panel" id="panel-events">
-    <div class="row"><span>待处理事件</span><span id="eventCount">0 / 10</span></div>
-    <div id="eventList"></div>
+  <!-- 主体 -->
+  <div class="main-layout">
+    <!-- 左侧地图 -->
+    <div class="map-area" id="mapArea">
+      <div class="map-bg-stars"></div>
+      <div class="map-bg-mountain"></div>
+      <!-- 建筑位置在这里由 JS 渲染 -->
+    </div>
+
+    <!-- 右侧面板 -->
+    <div class="right-panel">
+      <div class="tabs">
+        <div class="tab active" data-tab="main">宗门</div>
+        <div class="tab" data-tab="disciples">弟子</div>
+        <div class="tab" data-tab="events">事件<span class="badge" id="eventBadge" style="display:none">0</span></div>
+        <div class="tab" data-tab="buildings">建筑</div>
+        <div class="tab" data-tab="skills">功法</div>
+        <div class="tab" data-tab="shop">坊市</div>
+      </div>
+
+      <!-- 宗门 -->
+      <div class="panel active" id="panel-main">
+        <div class="row"><span>宗门等级</span><span id="sectLevel">九流一阶</span></div>
+        <div class="row"><span>宗门声望</span><span id="sectExp">0 / 100</span></div>
+        <div class="bar-bg"><div class="bar-fill" id="expFill"></div></div>
+        <div class="row"><span>宗门战力</span><span id="sectPower">0</span></div>
+        <div class="row"><span>传承次数</span><span id="genCount">0</span></div>
+        <div class="row"><span>弟子总数</span><span id="discipleTotal">0 / 1441</span></div>
+        <button class="btn green" id="meditateBtn">全体弟子闭关修炼（1 分钟）</button>
+        <button class="btn" id="autoRecruitBtn">自动招募：开</button>
+      </div>
+
+      <!-- 弟子 -->
+      <div class="panel" id="panel-disciples">
+        <div class="filter-bar" id="discipleFilter">
+          <button class="active" data-filter="all">全部</button>
+          <button data-filter="杂役">杂役</button>
+          <button data-filter="外门">外门</button>
+          <button data-filter="内门">内门</button>
+          <button data-filter="核心">核心</button>
+          <button data-filter="圣子">圣子/圣女</button>
+          <button data-filter="长老">长老</button>
+        </div>
+        <div class="scroll-area" id="discipleList"></div>
+        <button class="btn red" id="batchManageBtn">批量管理</button>
+      </div>
+
+      <!-- 事件 -->
+      <div class="panel" id="panel-events">
+        <div class="row"><span>待处理事件</span><span id="eventCount">0 / 10</span></div>
+        <div class="scroll-area" id="eventList"></div>
+      </div>
+
+      <!-- 建筑 -->
+      <div class="panel" id="panel-buildings">
+        <div class="scroll-area" id="buildingList"></div>
+      </div>
+
+      <!-- 功法 -->
+      <div class="panel" id="panel-skills">
+        <div class="row"><span>已学功法</span><span id="skillCount">0 / 16</span></div>
+        <div class="scroll-area" id="skillList"></div>
+      </div>
+
+      <!-- 坊市 -->
+      <div class="panel" id="panel-shop">
+        <div class="row"><span>累计招募</span><span id="recruitCount">0</span></div>
+        <div class="row"><span>距地阶保底</span><span id="pityDi">10</span></div>
+        <div class="row"><span>距天阶保底</span><span id="pityTian">100</span></div>
+        <div class="scroll-area" id="shopList"></div>
+      </div>
+    </div>
   </div>
 
-  <!-- 建筑 -->
-  <div class="panel" id="panel-buildings">
-    <div class="building-grid" id="buildingGrid"></div>
-  </div>
-
-  <!-- 功法 -->
-  <div class="panel" id="panel-skills">
-    <div class="row"><span>已学功法</span><span id="skillCount">0 / 16</span></div>
-    <div id="skillList"></div>
-  </div>
-
-  <!-- 坊市 -->
-  <div class="panel" id="panel-shop">
-    <div class="row"><span>累计招募</span><span id="recruitCount">0</span></div>
-    <div class="row"><span>距地阶保底</span><span id="pityDi">10</span></div>
-    <div class="row"><span>距天阶保底</span><span id="pityTian">100</span></div>
-    <div id="shopList"></div>
-  </div>
-
+  <!-- 日志 -->
   <div id="log"></div>
+
+  <!-- 云同步状态 -->
+  <div class="sync-status">
+    <span class="dot" id="syncDot"></span>
+    <span id="syncText">云端：未连接</span>
+  </div>
 </div>
+ const KV_KEY = "default-save";
+
+export async function onRequestGet(context) {
+  const { env } = context;
+  try {
+    const data = await env.XIUXIAN_KV.get(KV_KEY, { type: "json" });
+    return new Response(JSON.stringify({ state: data }), {
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (e) {
+    return new Response(JSON.stringify({ state: null }), {
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+}
+
+export async function onRequestPost(context) {
+  const { request, env } = context;
+  try {
+    const body = await request.json();
+    if (!body || !body.data) {
+      return new Response(JSON.stringify({ error: "Missing data" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+    await env.XIUXIAN_KV.put(KV_KEY, JSON.stringify(body.data));
+    return new Response(JSON.stringify({ ok: true }), {
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (e) {
+    return new Response(JSON.stringify({ error: "Invalid JSON" }), {
+      status: 400,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+}
 
 <script>
- // ==================== 常量 ====================
-const SECT_LEVELS = [
-  "九流一阶","九流二阶","九流三阶","九流四阶","九流五阶","九流六阶","九流七阶","九流八阶","九流九阶",
-  "八流一阶","八流二阶","八流三阶","八流四阶","八流五阶","八流六阶","八流七阶","八流八阶","八流九阶",
-  "七流一阶","七流二阶","七流三阶","七流四阶","七流五阶","七流六阶","七流七阶","七流八阶","七流九阶",
-  "六流一阶","六流二阶","六流三阶","六流四阶","六流五阶","六流六阶","六流七阶","六流八阶","六流九阶",
-  "五流一阶","五流二阶","五流三阶","五流四阶","五流五阶","五流六阶","五流七阶","五流八阶","五流九阶",
-  "四流一阶","四流二阶","四流三阶","四流四阶","四流五阶","四流六阶","四流七阶","四流八阶","四流九阶",
-  "三流一阶","三流二阶","三流三阶","三流四阶","三流五阶","三流六阶","三流七阶","三流八阶","三流九阶",
-  "二流一阶","二流二阶","二流三阶","二流四阶","二流五阶","二流六阶","二流七阶","二流八阶","二流九阶",
-  "一流一阶","一流二阶","一流三阶","一流四阶","一流五阶","一流六阶","一流七阶","一流八阶","一流九阶",
-  "超一流一阶","超一流二阶","超一流三阶","超一流四阶","超一流五阶","超一流六阶","超一流七阶","超一流八阶","超一流九阶"
-];
-
-// 每级声望需求（分段递增）
-const SECT_NEED = [
-  100,150,200,300,400,500,700,900,1200,      // 九流 1~9
-  1500,2000,2500,3000,4000,5000,6000,7000,9000, // 八流 1~9
-  10000,12000,15000,18000,22000,26000,30000,35000,42000, // 七流
-  50000,60000,70000,85000,100000,120000,140000,170000,200000, // 六流
-  250000,300000,360000,430000,520000,620000,750000,900000,1100000, // 五流
-  1500000,1800000,2200000,2700000,3300000,4000000,4800000,5800000,7000000, // 四流
-  10000000,12000000,15000000,18000000,22000000,27000000,33000000,40000000,50000000, // 三流
-  80000000,100000000,120000000,150000000,180000000,220000000,270000000,330000000,400000000, // 二流
-  600000000,800000000,1000000000,1200000000,1500000000,1800000000,2200000000,2700000000,3300000000, // 一流
-  5000000000,6000000000,7000000000,8500000000,10000000000,12000000000,14000000000,17000000000,20000000000 // 超一流
-];
-
-const QUALITIES = [
-  { name: "天", color: "tian", mult: 4.0, weight: 1 },
-  { name: "地", color: "di",   mult: 2.5, weight: 5 },
-  { name: "玄", color: "xuan", mult: 1.6, weight: 20 },
-  { name: "黄", color: "huang",mult: 1.0, weight: 74 },
-];
-
-const CLASSES = [
-  { key: "jian", name: "剑修", task: "历练", powerMult: 1.5, goldMult: 1.0, expMult: 1.0 },
-  { key: "dan",  name: "丹修", task: "采药", powerMult: 1.0, goldMult: 1.2, expMult: 1.0 },
-  { key: "qi",   name: "器修", task: "挖矿", powerMult: 1.1, goldMult: 1.5, expMult: 1.0 },
-  { key: "zhen", name: "阵修", task: "修炼", powerMult: 1.0, goldMult: 1.0, expMult: 1.5 },
-  { key: "ti",   name: "体修", task: "守山", powerMult: 1.3, goldMult: 1.0, expMult: 1.0 },
-];
-
-const SURNAME = ["李","王","张","刘","陈","杨","赵","黄","周","吴","徐","孙","马","朱","胡","郭","何","林","罗","郑"];
-const MALE_GIVEN = ["青云","无极","浩然","子轩","宇轩","天赐","子墨","逸尘","风吟","夜白","凌风","子谦","玄机","无痕","苍梧"];
-const FEMALE_GIVEN = ["清瑶","若雪","芷若","语嫣","诗涵","梦瑶","紫嫣","雨萱","月华","流萤","冰心","妙音","凝霜","素问","璃月"];
-
-const BUILDINGS = [
-  { key: "main",    name: "主殿",   icon: "🏯", desc: "宗门等级上限 +1",      maxLv: 10, baseCost: 300 },
-  { key: "library", name: "藏经阁", icon: "📚", desc: "弟子修炼 +5%",         maxLv: 10, baseCost: 200 },
-  { key: "dan",     name: "炼丹房", icon: "🧪", desc: "丹药产出 +1/分钟",     maxLv: 10, baseCost: 200 },
-  { key: "qi",      name: "炼器阁", icon: "⚒️", desc: "装备产出 +1/分钟",     maxLv: 10, baseCost: 200 },
-  { key: "arena",   name: "演武场", icon: "⚔️", desc: "弟子战力 +3%",         maxLv: 10, baseCost: 180 },
-  { key: "farm",    name: "灵田",   icon: "🌾", desc: "灵石 +10/5 秒",        maxLv: 10, baseCost: 150 },
-  { key: "garden",  name: "药园",   icon: "🌿", desc: "药材 +5/10 秒",        maxLv: 10, baseCost: 150 },
-  { key: "dorm",    name: "弟子居", icon: "🏠", desc: "杂役上限 +100",        maxLv: 10, baseCost: 200 },
-];
-
-const SKILLS = [
-  { key: "j1", name: "基础剑诀", tier: 1, price: 100,  effect: { power: 0.05 }, desc: "全体弟子战力 +5%" },
-  { key: "j2", name: "吐纳心法", tier: 1, price: 100,  effect: { exp: 0.05 },   desc: "弟子修炼 +5%" },
-  { key: "j3", name: "聚财术",   tier: 1, price: 120,  effect: { gold: 0.08 },  desc: "灵石收益 +8%" },
-  { key: "j4", name: "铁骨功",   tier: 2, price: 300,  effect: { hp: 0.10 },    desc: "弟子气血 +10%" },
-  { key: "j5", name: "御灵诀",   tier: 2, price: 300,  effect: { power: 0.10 }, desc: "全体弟子战力 +10%" },
-  { key: "j6", name: "聚宝盆",   tier: 2, price: 350,  effect: { gold: 0.15 },  desc: "灵石收益 +15%" },
-  { key: "j7", name: "天灵丹方", tier: 2, price: 350,  effect: { dan: 0.20 },   desc: "丹药效果 +20%" },
-  { key: "j8", name: "天罡阵法", tier: 3, price: 800,  effect: { power: 0.20 }, desc: "全体弟子战力 +20%" },
-  { key: "j9", name: "太清心经", tier: 3, price: 800,  effect: { exp: 0.20 },   desc: "弟子修炼 +20%" },
-  { key: "j10", name: "万剑归宗", tier: 3, price: 900, effect: { jian: 0.30 },  desc: "剑修弟子战力 +30%" },
-  { key: "j11", name: "百草仙典", tier: 3, price: 900, effect: { herb: 0.30 },  desc: "药园产出 +30%" },
-  { key: "j12", name: "大罗仙诀", tier: 4, price: 2000, effect: { power: 0.40 }, desc: "全体弟子战力 +40%" },
-  { key: "j13", name: "太上忘情录", tier: 4, price: 2000, effect: { loyalty: 20 }, desc: "全体弟子忠诚 +20" },
-  { key: "j14", name: "九转金丹诀", tier: 4, price: 2500, effect: { dan: 0.50 }, desc: "丹药效果 +50%" },
-  { key: "j15", name: "太上阵法", tier: 4, price: 3000, effect: { power: 0.50 }, desc: "全体弟子战力 +50%" },
-  { key: "j16", name: "聚灵大阵", tier: 4, price: 3000, effect: { gold: 0.50 }, desc: "灵石收益 +50%" },
-];
-
-const SHOP_ITEMS = [
-  { key: "recruit1",   name: "招募令牌 ×1",   price: 100,    desc: "招募 1 个弟子",       action: () => recruitN(1) },
-  { key: "recruit10",  name: "招募令牌 ×10",  price: 1000,   desc: "10 连，保底 1 个地阶", action: () => recruitN(10) },
-  { key: "recruit100", name: "招募令牌 ×100", price: 10000,  desc: "100 连，保底 1 个天阶", action: () => recruitN(100) },
-  { key: "heal",       name: "疗伤丹",        price: 50,     desc: "治疗一名受伤弟子",     action: () => healDisciple() },
-  { key: "revive",     name: "还魂丹",        price: 500,    desc: "复活一名已死弟子",     action: () => reviveDisciple() },
-];
-
-// ==================== 状态 ====================
-const state = {
-  sectLevel: 0,
-  sectExp: 0,
-  gold: 0,
-  herb: 0,
-  ore: 0,
-  disciples: [],
-  buildings: {},
-  skills: {},
-  events: [],
-  recruitCount: 0,
-  pityDi: 0,
-  pityTian: 0,
-  autoRecruit: true,
-  generation: 0,
-  lastTick: Date.now(),
-  lastSave: Date.now(),
-  _lastAutoRecruit: 0,
-  _lastEvent: 0,
-  _lastCultivate: 0,
-  _lastSaveTick: 0,
-  _lastGoldTick: 0,
-  _lastHerbTick: 0,
-  _lastInteraction: 0,
-  _lastLoyalty: 0,
-};
-
-BUILDINGS.forEach(b => { state.buildings[b.key] = 0; });
-
-// ==================== 工具 ====================
-function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
-function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-
-function fmt(n) {
-  const num = Number(n);
-  if (!isFinite(num)) return "0";
-  if (num >= 100000000) return (num / 100000000).toFixed(2) + "亿";
-  if (num >= 10000) return (num / 10000).toFixed(2) + "万";
-  return Math.floor(num).toLocaleString("en-US");
-}
-
-function log(msg, cls = "") {
-  const logEl = document.getElementById("log");
-  const div = document.createElement("div");
-  div.className = cls;
-  div.textContent = msg;
-  logEl.appendChild(div);
-  logEl.scrollTop = logEl.scrollHeight;
-  while (logEl.children.length > 80) logEl.removeChild(logEl.firstChild);
-}
-
-function toast(msg) {
-  const div = document.createElement("div");
-  div.className = "toast";
-  div.textContent = msg;
-  document.body.appendChild(div);
-  setTimeout(() => div.remove(), 2000);
-}
-
-// ==================== 弟子生成 ====================
-function rollQuality() {
-  const total = QUALITIES.reduce((s, q) => s + q.weight, 0);
-  let r = Math.random() * total;
-  for (const q of QUALITIES) {
-    if (r < q.weight) return q;
-    r -= q.weight;
-  }
-  return QUALITIES[QUALITIES.length - 1];
-}
-
-function generateDisciple(forceQuality) {
-  const gender = Math.random() < 0.5 ? "male" : "female";
-  const surname = pick(SURNAME);
-  const given = gender === "male" ? pick(MALE_GIVEN) : pick(FEMALE_GIVEN);
-  const q = forceQuality ? QUALITIES.find(x => x.name === forceQuality) : rollQuality();
-  const cls = pick(CLASSES);
-  return {
-    id: Date.now() + Math.random(),
-    name: surname + given,
-    gender,
-    quality: q.name,
-    qualityMult: q.mult,
-    classKey: cls.key,
-    className: cls.name,
-    level: 1,
-    hp: 100,
-    maxHp: 100,
-    loyalty: 70,
-    status: "修炼中",
-    role: "杂役",
-    birthTick: Date.now(),
-  };
-}
-
-function getDiscipleMax(role) {
-  const limits = { 杂役: 5 + state.buildings.dorm * 100, 外门: 300, 内门: 100, 核心: 20, 圣子: 6, 长老: 10 };
-  return limits[role] || 0;
-}
-
-function getDiscipleCount(role) {
-  return state.disciples.filter(d => d.role === role && d.hp > 0).length;
-}
-
-function addDisciple(d, role = "杂役") {
-  const max = getDiscipleMax(role);
-  const cur = getDiscipleCount(role);
-  if (cur >= max) {
-    return false;
-  }
-  d.role = role;
-  state.disciples.push(d);
-  return true;
-}
-
-// ==================== 属性计算 ====================
-function getDisciplePower(d) {
-  if (d.hp <= 0) return 0;
-  const cls = CLASSES.find(c => c.key === d.classKey);
-  const base = 10 + d.level * 5;
-  let p = base * d.qualityMult * cls.powerMult;
-  // 忠诚 100 加成
-  if (d.loyalty >= 100) p *= 1.1;
-  return Math.floor(p);
-}
-
-function getSectPower() {
-  return state.disciples.reduce((s, d) => s + getDisciplePower(d), 0);
-}
-
-function getLoyaltyBonus() {
-  return state.skills["j13"] ? 20 : 0;
-}
-
-// ==================== 职位晋升 ====================
-function tryPromote() {
-  // 杂役 → 外门
-  const candidates1 = state.disciples.filter(d => d.role === "杂役" && d.hp > 0 && d.level >= 20 && d.loyalty >= 60);
-  for (const d of candidates1) {
-    if (getDiscipleCount("外门") >= getDiscipleMax("外门")) break;
-    d.role = "外门";
-  }
-  // 外门 → 内门
-  const candidates2 = state.disciples.filter(d => d.role === "外门" && d.hp > 0 && d.level >= 50 && d.loyalty >= 80);
-  for (const d of candidates2) {
-    if (getDiscipleCount("内门") >= getDiscipleMax("内门")) break;
-    d.role = "内门";
-  }
-  // 内门 → 核心
-  const candidates3 = state.disciples.filter(d => d.role === "内门" && d.hp > 0 && d.level >= 80 && d.loyalty >= 90);
-  candidates3.sort((a, b) => getDisciplePower(b) - getDisciplePower(a));
-  for (const d of candidates3) {
-    if (getDiscipleCount("核心") >= getDiscipleMax("核心")) break;
-    d.role = "核心";
-  }
-  // 核心 → 圣子/圣女
-  const candidates4 = state.disciples.filter(d => d.role === "核心" && d.hp > 0 && d.level >= 100);
-  candidates4.sort((a, b) => getDisciplePower(b) - getDisciplePower(a));
-  for (const d of candidates4) {
-    if (getDiscipleCount("圣子") >= getDiscipleMax("圣子")) break;
-    d.role = "圣子";
-  }
-  // 满 100 级 → 长老
-  const candidates5 = state.disciples.filter(d => d.role !== "长老" && d.hp > 0 && d.level >= 100);
-  for (const d of candidates5) {
-    if (getDiscipleCount("长老") >= getDiscipleMax("长老")) break;
-    d.role = "长老";
-  }
-}
-
-// ==================== 任务安排 ====================
-const TASKS = {
-  "历练": { time: 3*60*1000, gold: [30, 120], exp: [5, 20], risk: 0.10, type: "danger" },
-  "采药": { time: 2*60*1000, herb: [10, 30], exp: [2, 8], risk: 0.03, type: "herb" },
-  "挖矿": { time: 2*60*1000, ore: [10, 30], exp: [2, 8], risk: 0.03, type: "ore" },
-  "守山": { time: 5*60*1000, exp: [1, 5], risk: 0.0, type: "safe" },
-  "修炼": { time: 2*60*1000, exp: [5, 15], risk: 0.0, type: "safe" },
-};
-
-function autoAssignTasks() {
-  state.disciples.forEach(d => {
-    if (d.hp <= 0 || d.role === "长老") return;
-    if (d.task && d.taskEnd && Date.now() < d.taskEnd) return; // 已在任务中
-    if (d.status === "生命垂危") return; // 不派任务
-    const cls = CLASSES.find(c => c.key === d.classKey);
-    const taskName = cls.task;
-    startTask(d, taskName);
-  });
-}
-
-function startTask(d, taskName) {
-  const task = TASKS[taskName];
-  d.task = taskName;
-  d.taskStart = Date.now();
-  d.taskEnd = Date.now() + task.time;
-  d.status = taskName + "中";
-}
-
-function finishTask(d) {
-  const task = TASKS[d.task];
-  if (!task) { d.task = null; d.status = "修炼中"; return; }
-  // 判定死亡
-  if (Math.random() < task.risk) {
-    // 触发长老召回
-    const elders = state.disciples.filter(x => x.role === "长老" && x.hp > 0);
-    if (elders.length > 0 && Math.random() < 0.8) {
-      log(`弟子【${d.name}】任务遇险，长老出手相救，已脱险`, "rare");
-    } else {
-      d.hp = 0;
-      d.status = "死亡";
-      log(`弟子【${d.name}】（${d.quality}品 ${d.className}）任务中陨落`, "danger");
-      return;
-    }
-  }
-  // 收益
-  const gold = task.gold ? rand(task.gold[0], task.gold[1]) : 0;
-  const herb = task.herb ? rand(task.herb[0], task.herb[1]) : 0;
-  const ore = task.ore ? rand(task.ore[0], task.ore[1]) : 0;
-  const exp = task.exp ? rand(task.exp[0], task.exp[1]) : 0;
-  state.gold += gold;
-  state.herb += herb;
-  state.ore += ore;
-  d.level = Math.min(100, d.level + (exp > 10 ? 1 : 0));
-  d.task = null;
-  d.status = "修炼中";
-}
-
-// ==================== 建筑产出 ====================
-function produce() {
-  const now = Date.now();
-  // 灵石
-  if (now - state._lastGoldTick > 5000) {
-    state._lastGoldTick = now;
-    const income = state.buildings.farm * 10 + state.disciples.filter(d => d.hp > 0).length * 1;
-    state.gold += income;
-  }
-  // 药材
-  if (now - state._lastHerbTick > 10000) {
-    state._lastHerbTick = now;
-    const income = state.buildings.garden * 5;
-    state.herb += income;
-  }
-}
-
-// ==================== 自动招募 ====================
-function autoRecruit() {
-  if (!state.autoRecruit) return;
-  const now = Date.now();
-  if (now - state._lastAutoRecruit < 10000) return;
-  state._lastAutoRecruit = now;
-  const d = generateDisciple();
-  // 只出黄/玄
-  if (d.quality === "天" || d.quality === "地") {
-    d.quality = "玄";
-    d.qualityMult = 1.6;
-  }
-  addDisciple(d);
-}
-
-// ==================== 修炼 ====================
-function cultivate() {
-  const now = Date.now();
-  if (now - state._lastCultivate < 10000) return;
-  state._lastCultivate = now;
-  const libraryBonus = 1 + state.buildings.library * 0.05;
-  const zhenBonus = state.disciples.filter(d => d.classKey === "zhen" && d.hp > 0).length * 0.01;
-  const rate = libraryBonus + zhenBonus;
-  state.disciples.forEach(d => {
-    if (d.hp <= 0 || d.role === "长老") return;
-    if (d.task) return;
-    if (Math.random() < 0.3 * rate) {
-      d.level = Math.min(100, d.level + 1);
-    }
-  });
-}
-
-// ==================== 忠诚 ====================
-function checkLoyalty() {
-  const now = Date.now();
-  if (now - state._lastLoyalty < 30000) return;
-  state._lastLoyalty = now;
-  state.disciples.forEach(d => {
-    if (d.hp <= 0 || d.role === "长老") return;
-    if (d.loyalty < 30 && Math.random() < 0.05) {
-      state.disciples = state.disciples.filter(x => x.id !== d.id);
-      log(`弟子【${d.name}】叛逃出宗`, "danger");
-    } else if (d.loyalty < 10 && Math.random() < 0.2) {
-      state.disciples = state.disciples.filter(x => x.id !== d.id);
-      log(`弟子【${d.name}】叛逃出宗`, "danger");
-    }
-  });
-}
-
-// ==================== 事件 ====================
-const EVENT_TEMPLATES = [
-  { type: "机遇", title: "灵药现世", desc: "后山发现一株千年灵药。", opts: [
-    { text: "采摘（+200 药材）", effect: () => { state.herb += 200; log("采摘灵药，药材 +200", "gold"); } },
-    { text: "献给宗门（+50 声望）", effect: () => { state.sectExp += 50; log("声望 +50", "gold"); } },
-  ]},
-  { type: "机遇", title: "神秘商人", desc: "一位神秘商人来访。", opts: [
-    { text: "花 500 灵石买丹药", effect: () => { if (state.gold < 500) return log("灵石不足", "danger"); state.gold -= 500; state.disciples.forEach(d => d.hp = d.maxHp); log("全体弟子恢复满血", "gold"); } },
-    { text: "婉拒", effect: () => log("商人离去") },
-  ]},
-  { type: "危机", title: "仇家上门", desc: "青云门上门挑衅！", opts: [
-    { text: "应战", effect: () => { if (Math.random() < 0.5) { state.gold += 300; log("击退仇家，+300 灵石", "gold"); } else { const d = state.disciples.find(x => x.hp > 0); if (d) { d.hp = 0; log(`弟子【${d.name}】战死`, "danger"); } } } },
-    { text: "求和（-200 灵石）", effect: () => { if (state.gold < 200) return log("灵石不足", "danger"); state.gold -= 200; log("花 200 灵石求和", "rare"); } },
-  ]},
-  { type: "日常", title: "弟子争执", desc: "两名弟子在演武场打起来了。", opts: [
-    { text: "严惩先动手的", effect: () => log("以儆效尤") },
-    { text: "各打五十大板", effect: () => log("公平处置") },
-  ]},
-  { type: "日常", title: "丰收", desc: "灵田大丰收！", opts: [
-    { text: "全部入库（+500 灵石）", effect: () => { state.gold += 500; log("+500 灵石", "gold"); } },
-    { text: "分给弟子（+5 忠诚）", effect: () => { state.disciples.forEach(d => d.loyalty = Math.min(100, d.loyalty + 5)); log("全体弟子忠诚 +5", "rare"); } },
-  ]},
-  { type: "机遇", title: "天降陨铁", desc: "一颗陨石落入后山。", opts: [
-    { text: "派人挖掘（+300 矿石）", effect: () => { state.ore += 300; log("+300 矿石", "gold"); } },
-    { text: "置之不理", effect: () => log("陨石无声") },
-  ]},
-  { type: "危机", title: "妖兽袭山", desc: "一头妖兽闯入山门！", opts: [
-    { text: "派弟子围杀", effect: () => { if (Math.random() < 0.7) { state.gold += 500; log("击杀妖兽，+500 灵石", "gold"); } else { const d = state.disciples.find(x => x.hp > 0); if (d) { d.hp = 0; log(`弟子【${d.name}】战死`, "danger"); } } } },
-    { text: "躲入主殿", effect: () => log("避其锋芒") },
-  ]},
-  { type: "日常", title: "弟子突破", desc: "一名弟子闭关突破！", opts: [
-    { text: "奖赏", effect: () => { const d = state.disciples.find(x => x.hp > 0 && x.level < 100); if (d) { d.level = Math.min(100, d.level + 3); log(`弟子【${d.name}】等级 +3`, "gold"); } } },
-    { text: "让他继续苦修", effect: () => { const d = state.disciples.find(x => x.hp > 0); if (d) { d.level = Math.min(100, d.level + 1); d.loyalty = Math.max(0, d.loyalty - 5); log(`弟子【${d.name}】等级 +1，忠诚 -5`, "rare"); } } },
-  ]},
-];
-
-function spawnEvent() {
-  const now = Date.now();
-  if (now - state._lastEvent < 60000) return;
-  state._lastEvent = now;
-  if (state.events.length >= 10) return;
-  if (Math.random() < 0.6) {
-    const tpl = pick(EVENT_TEMPLATES);
-    state.events.push({ ...tpl, id: Date.now() + Math.random(), at: now });
-    toast("📢 新事件：" + tpl.title);
-  }
-}
-
-// ==================== 招募 ====================
-function recruitN(n) {
-  let tian = 0, di = 0, xuan = 0, huang = 0;
-  let dCount = 0;
-  for (let i = 0; i < n; i++) {
-    state.recruitCount++;
-    state.pityDi++;
-    state.pityTian++;
-    let forceQ = null;
-    if (state.pityTian >= 100) { forceQ = "天"; state.pityTian = 0; }
-    else if (state.pityDi >= 10) { forceQ = "地"; state.pityDi = 0; }
-    const d = generateDisciple(forceQ);
-    if (d.quality === "天") { tian++; state.pityTian = 0; }
-    else if (d.quality === "地") { di++; state.pityDi = 0; }
-    else if (d.quality === "玄") xuan++;
-    else huang++;
-    if (addDisciple(d)) dCount++;
-  }
-  log(`招募 ${n} 次：天 ${tian} · 地 ${di} · 玄 ${xuan} · 黄 ${huang}`, "gold");
-  if (tian > 0) toast(`🎉 抽到天阶弟子 ×${tian}！`);
-  return dCount;
-}
-
-function healDisciple() {
-  const d = state.disciples.find(x => x.hp > 0 && x.hp < x.maxHp * 0.5);
-  if (!d) { log("没有受伤的弟子", "danger"); return; }
-  d.hp = d.maxHp;
-  log(`弟子【${d.name}】伤势痊愈`, "gold");
-}
-
-function reviveDisciple() {
-  const d = state.disciples.find(x => x.hp <= 0);
-  if (!d) { log("没有死亡的弟子", "danger"); return; }
-  d.hp = Math.floor(d.maxHp * 0.5);
-  d.loyalty = Math.max(0, d.loyalty - 20);
-  d.status = "修炼中";
-  log(`弟子【${d.name}】还魂复活（忠诚 -20）`, "gold");
-}
-
-// ==================== 批量管理 ====================
-function batchManage() {
-  const choice = prompt(
-    "批量管理：\n" +
-    "1 = 遣散所有黄阶杂役\n" +
-    "2 = 遣散所有玄阶杂役\n" +
-    "3 = 遣散所有杂役\n" +
-    "输入数字选择："
-  );
-  if (!choice) return;
-  let targets = [];
-  let refund = 0;
-  if (choice === "1") {
-    targets = state.disciples.filter(d => d.role === "杂役" && d.quality === "黄");
-    refund = 5;
-  } else if (choice === "2") {
-    targets = state.disciples.filter(d => d.role === "杂役" && d.quality === "玄");
-    refund = 20;
-  } else if (choice === "3") {
-    targets = state.disciples.filter(d => d.role === "杂役");
-    targets.forEach(d => {
-      if (d.quality === "黄") refund += 5;
-      else if (d.quality === "玄") refund += 20;
-      else if (d.quality === "地") refund += 100;
-      else if (d.quality === "天") refund += 500;
-    });
-  } else {
-    return;
-  }
-  if (targets.length === 0) { log("没有符合条件的弟子", "danger"); return; }
-  const ids = new Set(targets.map(d => d.id));
-  state.disciples = state.disciples.filter(d => !ids.has(d.id));
-  if (choice !== "3") refund *= targets.length;
-  state.gold += refund;
-  log(`遣散 ${targets.length} 名弟子，返还 ${refund} 灵石`, "gold");
-  updateUI();
-}
-
-// ==================== UI ====================
-let currentFilter = "all";
-
-function updateUI() {
-  document.getElementById("topSect").textContent = SECT_LEVELS[state.sectLevel];
-  document.getElementById("topExp").textContent = fmt(state.sectExp);
-  document.getElementById("topGold").textContent = fmt(state.gold);
-  document.getElementById("topHerb").textContent = fmt(state.herb);
-  document.getElementById("topOre").textContent = fmt(state.ore);
-  document.getElementById("topDisciple").textContent = state.disciples.filter(d => d.hp > 0).length;
-
-  document.getElementById("sectLevel").textContent = SECT_LEVELS[state.sectLevel];
-  const need = SECT_NEED[state.sectLevel];
-  document.getElementById("sectExp").textContent = `${fmt(state.sectExp)} / ${fmt(need)}`;
-  document.getElementById("expFill").style.width = Math.min(100, (state.sectExp / need) * 100) + "%";
-  document.getElementById("sectPower").textContent = fmt(getSectPower());
-  document.getElementById("genCount").textContent = state.generation;
-  document.getElementById("discipleTotal").textContent = `${state.disciples.length} / 1441`;
-
-  document.getElementById("autoRecruitBtn").textContent = "自动招募：" + (state.autoRecruit ? "开" : "关");
-
-  // 事件角标
-  const badge = document.getElementById("eventBadge");
-  if (state.events.length > 0) {
-    badge.style.display = "inline-block";
-    badge.textContent = state.events.length;
-  } else {
-    badge.style.display = "none";
-  }
-  document.getElementById("eventCount").textContent = `${state.events.length} / 10`;
-
-  renderDisciples();
-  renderEvents();
-  renderBuildings();
-  renderSkills();
-  renderShop();
-}
-
-function renderDisciples() {
-  const list = document.getElementById("discipleList");
-  list.innerHTML = "";
-  const roles = ["圣子", "核心", "内门", "外门", "杂役", "长老"];
-  const order = { "长老": 0, "圣子": 1, "核心": 2, "内门": 3, "外门": 4, "杂役": 5 };
-  let filtered = state.disciples.filter(d => d.hp > 0);
-  if (currentFilter !== "all") filtered = filtered.filter(d => d.role === currentFilter);
-
-  // 按职位分组
-  const groups = {};
-  roles.forEach(r => groups[r] = []);
-  filtered.forEach(d => { if (groups[d.role]) groups[d.role].push(d); });
-
-  // 排序
-  Object.keys(groups).forEach(r => {
-    groups[r].sort((a, b) => getDisciplePower(b) - getDisciplePower(a));
-  });
-
-  // 渲染
-  roles.forEach(role => {
-    const arr = groups[role];
-    if (arr.length === 0) return;
-    const showAll = ["圣子", "核心", "长老"].includes(role) || currentFilter === role;
-    const toShow = showAll ? arr : arr.slice(0, 3);
-
-    if (!showAll && arr.length > 3) {
-      const div = document.createElement("div");
-      div.className = "disciples-collapse";
-      div.textContent = `▼ ${role}（${arr.length} 人，点击展开）`;
-      div.addEventListener("click", () => {
-        currentFilter = role;
-        document.querySelectorAll("#discipleFilter button").forEach(b => b.classList.remove("active"));
-        updateUI();
-      });
-      list.appendChild(div);
-    }
-
-    toShow.forEach(d => {
-      const el = document.createElement("div");
-      el.className = "item " + d.quality;
-      const genderIcon = d.gender === "male" ? "♂" : "♀";
-      const genderCls = d.gender === "male" ? "male" : "female";
-      el.innerHTML = `
-        <div style="flex:1;min-width:0;">
-          <div class="name">${d.name} <span class="${genderCls}">${genderIcon}</span>
-            <span class="${d.quality === "天" ? "tian" : d.quality === "地" ? "di" : d.quality === "玄" ? "xuan" : "huang"}">${d.quality}品</span>
-            · ${d.className} · ${d.role}</div>
-          <div class="attr">Lv.${d.level} · 战力 ${getDisciplePower(d)} · 忠诚 ${d.loyalty}</div>
-          <div class="attr">${d.task ? d.task + "中" : d.status}</div>
-        </div>
-      `;
-      list.appendChild(el);
-    });
-  });
-
-  if (filtered.length === 0) {
-    list.innerHTML = '<div class="empty">没有符合条件的弟子</div>';
-  }
-
-  document.getElementById("discipleFilter").querySelectorAll("button").forEach(b => {
-    b.classList.toggle("active", b.dataset.filter === currentFilter);
-  });
-}
-
-function renderEvents() {
-  const list = document.getElementById("eventList");
-  list.innerHTML = "";
-  if (state.events.length === 0) {
-    list.innerHTML = '<div class="empty">暂无待处理事件</div>';
-    return;
-  }
-  state.events.forEach((e, idx) => {
-    const div = document.createElement("div");
-    div.className = "event-card";
-    div.innerHTML = `
-      <div class="evt-title">【${e.type}】${e.title}</div>
-      <div class="evt-desc">${e.desc}</div>
-      <div class="evt-options"></div>
-    `;
-    const optBox = div.querySelector(".evt-options");
-    e.opts.forEach(o => {
-      const btn = document.createElement("button");
-      btn.textContent = o.text;
-      btn.addEventListener("click", () => {
-        o.effect();
-        state.events.splice(idx, 1);
-        updateUI();
-      });
-      optBox.appendChild(btn);
-    });
-    list.appendChild(div);
-  });
-}
-
-function renderBuildings() {
-  const grid = document.getElementById("buildingGrid");
-  grid.innerHTML = "";
-  BUILDINGS.forEach(b => {
-    const lv = state.buildings[b.key] || 0;
-    const cost = b.baseCost * (lv + 1) * 1.5;
-    const div = document.createElement("div");
-    div.className = "building";
-    div.innerHTML = `
-      <div class="b-name">${b.icon} ${b.name}</div>
-      <div class="b-lv">Lv.${lv} / ${b.maxLv}</div>
-      <div class="b-desc">${b.desc}</div>
-      <div class="b-lv" style="color:#ffd700;margin-top:4px;">${lv >= b.maxLv ? "已满级" : `${fmt(cost)} 灵石`}</div>
-    `;
-    if (lv < b.maxLv) {
-      div.addEventListener("click", () => {
-        if (state.gold < cost) { log("灵石不足", "danger"); return; }
-        state.gold -= cost;
-        state.buildings[b.key]++;
-        log(`【${b.name}】升级到 Lv.${state.buildings[b.key]}`, "gold");
-        updateUI();
-      });
-    }
-    grid.appendChild(div);
-  });
-}
-
-function renderSkills() {
-  const list = document.getElementById("skillList");
-  list.innerHTML = "";
-  document.getElementById("skillCount").textContent = `${Object.keys(state.skills).length} / 16`;
-  SKILLS.forEach(s => {
-    const learned = !!state.skills[s.key];
-    const div = document.createElement("div");
-    div.className = "item";
-    div.innerHTML = `
-      <div style="flex:1;">
-        <div class="name">${s.name} <span style="color:#888">[${s.tier}阶]</span></div>
-        <div class="attr">${s.desc}</div>
-      </div>
-      <button data-skill="${s.key}" ${learned ? "disabled" : ""}>${learned ? "已学" : `${s.price} 灵石`}</button>
-    `;
-    list.appendChild(div);
-  });
-  list.querySelectorAll("[data-skill]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const s = SKILLS.find(x => x.key === btn.dataset.skill);
-      if (!s) return;
-      if (state.gold < s.price) { log("灵石不足", "danger"); return; }
-      state.gold -= s.price;
-      state.skills[s.key] = true;
-      log(`学会功法【${s.name}】`, "gold");
-      updateUI();
-    });
-  });
-}
-
-function renderShop() {
-  const list = document.getElementById("shopList");
-  list.innerHTML = "";
-  document.getElementById("recruitCount").textContent = state.recruitCount;
-  document.getElementById("pityDi").textContent = 10 - state.pityDi;
-  document.getElementById("pityTian").textContent = 100 - state.pityTian;
-  SHOP_ITEMS.forEach(s => {
-    const div = document.createElement("div");
-    div.className = "item";
-    div.innerHTML = `
-      <div style="flex:1;">
-        <div class="name">${s.name}</div>
-        <div class="attr">${s.desc}</div>
-      </div>
-      <button data-shop="${s.key}">${s.price} 灵石</button>
-    `;
-    list.appendChild(div);
-  });
-  list.querySelectorAll("[data-shop]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const s = SHOP_ITEMS.find(x => x.key === btn.dataset.shop);
-      if (!s) return;
-      if (state.gold < s.price) { log("灵石不足", "danger"); return; }
-      state.gold -= s.price;
-      s.action();
-      updateUI();
-    });
-  });
-}
-
-// ==================== 存档 ====================
-const SAVE_KEY = "zongmen_save_v1";
-
-function saveLocal() {
-  try {
-    const data = { ...state };
-    delete data._lastAutoRecruit;
-    delete data._lastEvent;
-    delete data._lastCultivate;
-    delete data._lastSaveTick;
-    delete data._lastGoldTick;
-    delete data._lastHerbTick;
-    delete data._lastInteraction;
-    delete data._lastLoyalty;
-    localStorage.setItem(SAVE_KEY, JSON.stringify(data));
-    state.lastSave = Date.now();
-  } catch (e) { console.warn("保存失败", e); }
-}
-
-function loadLocal() {
-  const saved = localStorage.getItem(SAVE_KEY);
-  if (!saved) return false;
-  try {
-    const data = JSON.parse(saved);
-    Object.assign(state, data);
-    state.lastTick = Date.now();
-    state._lastAutoRecruit = 0;
-    state._lastEvent = 0;
-    state._lastCultivate = 0;
-    state._lastGoldTick = 0;
-    state._lastHerbTick = 0;
-    state._lastLoyalty = 0;
-    return true;
-  } catch (e) { return false; }
-}
-
-// ==================== 离线收益 ====================
-function offlineEarnings() {
-  const last = state.lastSave || Date.now();
-  const now = Date.now();
-  const diffSec = Math.floor((now - last) / 1000);
-  if (diffSec < 60) return;
-  const capSec = Math.min(diffSec, 24 * 3600);
-  const hours = Math.floor(capSec / 3600);
-  const mins = Math.floor((capSec % 3600) / 60);
-  const timeStr = hours > 0 ? `${hours} 小时 ${mins} 分钟` : `${mins} 分钟`;
-
-  // 灵石
-  const goldGain = Math.floor(capSec / 5 * (state.buildings.farm * 10 + 10));
-  // 药材
-  const herbGain = Math.floor(capSec / 10 * state.buildings.garden * 5);
-  // 弟子经验
-  const discCount = state.disciples.filter(d => d.hp > 0 && d.role !== "长老").length;
-  const expGain = Math.floor(capSec / 10 * discCount * 0.3);
-  // 弟子死亡（离线）
-  const deadCount = { 天: 0, 地: 0, 玄: 0, 黄: 0 };
-  const aliveDisc = state.disciples.filter(d => d.hp > 0 && d.role !== "长老");
-  aliveDisc.forEach(d => {
-    if (Math.random() < 0.005) {
-      d.hp = 0;
-      deadCount[d.quality]++;
-    }
-  });
-
-  state.gold += goldGain;
-  state.herb += herbGain;
-
-  // 弹窗
-  const modal = document.createElement("div");
-  modal.className = "modal-bg";
-  modal.innerHTML = `
-    <div class="modal">
-      <h3>📦 离线收益汇总</h3>
-      <div class="row"><span>离线时长</span><span>${timeStr}</span></div>
-      <div class="row"><span>💎 灵石</span><span>+${fmt(goldGain)}</span></div>
-      <div class="row"><span>🌿 药材</span><span>+${fmt(herbGain)}</span></div>
-      <div class="row"><span>👤 弟子经验</span><span>+${fmt(expGain)}</span></div>
-      ${deadCount.天 > 0 ? `<div class="row" style="color:#ff6b6b;"><span>💀 天阶死亡</span><span>${deadCount.天} 人</span></div>` : ""}
-      ${deadCount.地 > 0 ? `<div class="row" style="color:#dcdcaa;"><span>💀 地阶死亡</span><span>${deadCount.地} 人</span></div>` : ""}
-      ${deadCount.玄 > 0 ? `<div class="row" style="color:#4ec9b0;"><span>💀 玄阶死亡</span><span>${deadCount.玄} 人</span></div>` : ""}
-      ${deadCount.黄 > 0 ? `<div class="row" style="color:#888;"><span>💀 黄阶死亡</span><span>${deadCount.黄} 人</span></div>` : ""}
-      <button class="close-btn" id="closeModal">领 取</button>
-    </div>
-  `;
-  document.body.appendChild(modal);
-  modal.querySelector("#closeModal").addEventListener("click", () => modal.remove());
-}
-
-// ==================== 主循环 ====================
-function tick() {
-  const now = Date.now();
-  const dt = (now - state.lastTick) / 1000;
-  state.lastTick = now;
-
-  // 任务结算
-  state.disciples.forEach(d => {
-    if (d.task && d.taskEnd && now >= d.taskEnd) {
-      finishTask(d);
-    }
-  });
-
-  // 自动派任务
-  if (now - (state._lastAssign || 0) > 5000) {
-    state._lastAssign = now;
-    autoAssignTasks();
-  }
-
-  // 修炼
-  cultivate();
-
-  // 产出
-  produce();
-
-  // 自动招募
-  autoRecruit();
-
-  // 忠诚
-  checkLoyalty();
-
-  // 事件
-  spawnEvent();
-
-  // 自动晋升
-  if (now - (state._lastPromote || 0) > 10000) {
-    state._lastPromote = now;
-    tryPromote();
-  }
-
-  // 宗门升级
-  const need = SECT_NEED[state.sectLevel];
-  if (state.sectExp >= need && state.sectLevel < SECT_LEVELS.length - 1) {
-    state.sectExp -= need;
-    state.sectLevel++;
-    log(`🎉 宗门升级！当前等级：${SECT_LEVELS[state.sectLevel]}`, "gold");
-    toast(`🎉 宗门升级！${SECT_LEVELS[state.sectLevel]}`);
-  }
-
-  updateUI();
-
-  // 自动存档
-  if (now - state.lastSave > 30000) {
-    saveLocal();
-  }
-}
-
-// ==================== 事件绑定 ====================
-document.querySelectorAll(".tab").forEach(tab => {
-  tab.addEventListener("click", () => {
-    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-    document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
-    tab.classList.add("active");
-    document.getElementById("panel-" + tab.dataset.tab).classList.add("active");
-  });
-});
-
-document.getElementById("meditateBtn").addEventListener("click", () => {
-  state.disciples.forEach(d => { if (d.hp > 0) d.level = Math.min(100, d.level + 1); });
-  log("全体弟子闭关修炼，等级 +1", "gold");
-  updateUI();
-});
-
-document.getElementById("autoRecruitBtn").addEventListener("click", () => {
-  state.autoRecruit = !state.autoRecruit;
-  updateUI();
-});
-
-document.getElementById("batchManageBtn").addEventListener("click", batchManage);
-
-document.getElementById("discipleFilter").addEventListener("click", e => {
-  if (e.target.tagName !== "BUTTON") return;
-  currentFilter = e.target.dataset.filter;
-  renderDisciples();
-});
-
-// ==================== 启动 ====================
-function init() {
-  const loaded = loadLocal();
-  if (!loaded) {
-    // 新档
-    addDisciple(generateDisciple());
-    log("你继承了一座破庙，开始了宗门经营之路……", "gold");
-    log("提示：弟子会自动修炼、自动接任务，事件会攒着等你处理。", "rare");
-  } else {
-    log("已从本地读取存档", "gold");
-    offlineEarnings();
-  }
-
-  updateUI();
-  setInterval(tick, 1000);
-}
-
-init();
-</script>
-</body>
-</html>
