@@ -7,7 +7,7 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
-    background: #0d0b08; color: #d4c8b8;
+    color: #d4c8b8;
     font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
     display: flex; justify-content: center; align-items: flex-start;
     min-height: 100vh; padding: 20px; user-select: none;
@@ -206,7 +206,6 @@
   .sync-status .dot { width: 8px; height: 8px; border-radius: 50%; background: #5a4a30; }
   .sync-status .dot.ok { background: #4ec9b0; box-shadow: 0 0 8px #4ec9b0; }
   .sync-status .dot.err { background: #f14c4c; box-shadow: 0 0 8px #f14c4c; }
-  
   .equip-slot {
     display: inline-block; padding: 4px 8px; margin: 2px; border-radius: 4px;
     background: #1a1610; border: 1px solid #3a3020; font-size: 11px;
@@ -338,7 +337,7 @@
 </div>
 
 <script>
- // ==================== 常量 ====================
+// ==================== 常量 ====================
 const SECT_LEVELS = [
   "九流一阶","九流二阶","九流三阶","九流四阶","九流五阶","九流六阶","九流七阶","九流八阶","九流九阶",
   "八流一阶","八流二阶","八流三阶","八流四阶","八流五阶","八流六阶","八流七阶","八流八阶","八流九阶",
@@ -514,6 +513,48 @@ function saveLocal() {
   } catch (e) { console.warn("本地保存失败", e); return false; }
 }
 
+function normalizeSkills(skills) {
+  const out = {};
+  Object.keys(skills || {}).forEach(k => {
+    const v = skills[k];
+    if (v === true) out[k] = { level: 1 };
+    else if (typeof v === "number") out[k] = { level: v };
+    else if (v && typeof v === "object") out[k] = { level: Number(v.level) || 0 };
+  });
+  return out;
+}
+
+function normalizeDisciples(list) {
+  return (list || []).map(d => ({
+    id: d.id || (Date.now() + Math.random()),
+    name: d.name || "无名",
+    gender: d.gender || "male",
+    quality: d.quality || "黄",
+    qualityMult: d.qualityMult || 1.0,
+    taskRate: typeof d.taskRate === "number" ? d.taskRate : 0.30,
+    deathMult: typeof d.deathMult === "number" ? d.deathMult : 1.0,
+    classKey: d.classKey || "jian",
+    className: d.className || "剑修",
+    classWeapon: d.classWeapon || "剑",
+    classArmor: d.classArmor || "轻甲",
+    classAccessory: d.classAccessory || "玉佩",
+    level: d.level || 1,
+    hp: typeof d.hp === "number" ? d.hp : 100,
+    maxHp: d.maxHp || 100,
+    loyalty: typeof d.loyalty === "number" ? d.loyalty : 70,
+    status: d.status || "修炼中",
+    role: d.role || "杂役",
+    task: d.task || null,
+    taskStart: d.taskStart || 0,
+    taskEnd: d.taskEnd || 0,
+    mapX: typeof d.mapX === "number" ? d.mapX : 0.30,
+    mapY: typeof d.mapY === "number" ? d.mapY : 0.80,
+    equipment: d.equipment || { weapon: null, armor: null, accessory: null },
+    partner: d.partner || null,
+    swornBrother: d.swornBrother || null,
+  }));
+}
+
 function loadLocal() {
   const saved = localStorage.getItem(SAVE_KEY);
   if (!saved) return false;
@@ -521,11 +562,13 @@ function loadLocal() {
     const data = JSON.parse(saved);
     Object.assign(state, data);
     state.events = (state.events || []).filter(e => typeof e.tplIdx === "number" && EVENT_TEMPLATES[e.tplIdx]);
-    Object.keys(state.skills || {}).forEach(k => {
-      if (state.skills[k] === true) state.skills[k] = { level: 1 };
-    });
+    state.skills = normalizeSkills(state.skills);
+    state.disciples = normalizeDisciples(state.disciples);
     state.inventory = Array.isArray(state.inventory) ? state.inventory : [];
     state.warHistory = Array.isArray(state.warHistory) ? state.warHistory : [];
+    state.buildings = state.buildings || {};
+    BUILDINGS.forEach(b => { if (typeof state.buildings[b.key] !== "number") state.buildings[b.key] = 0; });
+
     const hasElder = state.disciples.some(d => d.role === "长老");
     if (!hasElder) {
       const elder = generateDisciple();
@@ -640,7 +683,7 @@ function generateDisciple(forceQuality) {
     classAccessory: cls.accessory,
     level: 1, hp: 100, maxHp: 100, loyalty: 70,
     status: "修炼中", role: "杂役",
-    task: null, taskEnd: 0,
+    task: null, taskStart: 0, taskEnd: 0,
     mapX: 0.30, mapY: 0.80,
     equipment: { weapon: null, armor: null, accessory: null },
     partner: null,
@@ -649,7 +692,10 @@ function generateDisciple(forceQuality) {
 }
 
 function getDiscipleMax(role) {
-  const limits = { 杂役: 5 + state.buildings.dorm * 100, 外门: 300, 内门: 100, 核心: 20, 圣子: 6, 长老: 10 };
+  const limits = {
+    杂役: 10 + state.buildings.dorm * 100,
+    外门: 300, 内门: 100, 核心: 20, 圣子: 6, 长老: 10
+  };
   return limits[role] || 0;
 }
 function getDiscipleCount(role) {
@@ -666,9 +712,13 @@ function addDisciple(d, role = "杂役", ignoreLimit = false) {
 
 function getDisciplePower(d) {
   if (d.hp <= 0) return 0;
-  const cls = CLASSES.find(c => c.key === d.classKey);
+  const cls = CLASSES.find(c => c.key === d.classKey) || CLASSES[0];
   const base = 10 + d.level * 5;
-  let p = base * d.qualityMult * cls.powerMult;
+  const arenaBonus = 1 + state.buildings.arena * 0.03;
+  const skillBonus = getSkillBonus();
+  let p = base * d.qualityMult * cls.powerMult * arenaBonus;
+  p *= (1 + skillBonus.power);
+  if (d.classKey === "jian") p *= (1 + (skillBonus.jian || 0));
   if (d.loyalty >= 100) p *= 1.1;
   if (d.equipment) {
     ["weapon", "armor", "accessory"].forEach(slot => {
@@ -687,7 +737,7 @@ function getSkillBonus() {
   Object.entries(state.skills || {}).forEach(([key, data]) => {
     const s = SKILLS.find(x => x.key === key);
     if (!s) return;
-    const lv = data.level || 0;
+    const lv = (data && data.level) || 0;
     Object.entries(s.effect).forEach(([k, v]) => {
       bonus[k] = (bonus[k] || 0) + v * lv;
     });
@@ -779,7 +829,7 @@ function tryPromote() {
   }
   const cand4 = state.disciples.filter(d => d.role === "核心" && d.hp > 0 && d.level >= 100);
   cand4.sort((a, b) => getDisciplePower(b) - getDisciplePower(a));
-    for (const d of cand4) {
+  for (const d of cand4) {
     if (getDiscipleCount("圣子") >= getDiscipleMax("圣子")) break;
     d.role = "圣子";
   }
@@ -892,7 +942,14 @@ function autoRecruit() {
     d.quality = "玄"; d.qualityMult = 1.6;
     d.taskRate = 0.5; d.deathMult = 1.0;
   }
-  addDisciple(d);
+  const ok = addDisciple(d);
+  if (!ok) {
+    // 上限满了，不再刷屏，但偶尔提示一次
+    if (now - (state._lastFullWarn || 0) > 60000) {
+      state._lastFullWarn = now;
+      log("杂役已满，无法自动招募（升级弟子居可扩容）", "rare");
+    }
+  }
 }
 
 function checkLoyalty() {
@@ -941,14 +998,21 @@ function checkInteraction() {
 function doAlchemy() {
   if (state.herb < 100 || state.gold < 50) { log("药材或灵石不足", "danger"); return; }
   state.herb -= 100; state.gold -= 50;
-  const roll = Math.random();
+  const bonus = getSkillBonus();
+  const danMult = 1 + (bonus.dan || 0); // 丹药加成：影响成功率与效果
+  const roll = Math.random() * danMult;
   if (roll < 0.6) {
     state.disciples.forEach(d => { if (d.hp > 0) d.hp = d.maxHp; });
     log(`🧪 炼出【疗伤丹】，全体弟子恢复满血`, "gold");
     addCraftLog("🧪 疗伤丹 ×1", "gold");
   } else if (roll < 0.9) {
     const d = state.disciples.filter(x => x.hp > 0 && x.role !== "长老").sort((a, b) => a.level - b.level)[0];
-    if (d) { d.level = Math.min(100, d.level + 5); log(`🧪 炼出【聚气丹】，弟子【${d.name}】等级 +5`, "epic"); addCraftLog("🧪 聚气丹 ×1", "epic"); }
+    if (d) {
+      const add = Math.max(1, Math.floor(5 * danMult));
+      d.level = Math.min(100, d.level + add);
+      log(`🧪 炼出【聚气丹】，弟子【${d.name}】等级 +${add}`, "epic");
+      addCraftLog("🧪 聚气丹 ×1", "epic");
+    }
   } else {
     const d = state.disciples.filter(x => x.hp > 0 && x.role !== "长老" && x.quality !== "天").sort((a, b) => b.qualityMult - a.qualityMult)[0];
     if (d) {
@@ -1062,7 +1126,9 @@ function doReincarn() {
   state.generation++; state.legacyBonus += 0.1;
   state.disciples = coreDisciples.map(d => {
     d.role = "杂役"; d.level = 1; d.hp = 100; d.maxHp = 100;
-    d.task = null; d.status = "修炼中"; return d;
+    d.task = null; d.status = "修炼中";
+    d.mapX = 0.30; d.mapY = 0.80;
+    return d;
   });
   const elder = generateDisciple();
   elder.name = "太上长老·" + state.generation;
@@ -1078,12 +1144,14 @@ function doReincarn() {
 
 function recruitN(n) {
   let tian = 0, di = 0, xuan = 0, huang = 0;
+  const loyaltyBonus = getSkillBonus().loyalty || 0;
   for (let i = 0; i < n; i++) {
     state.recruitCount++; state.pityDi++; state.pityTian++;
     let forceQ = null;
     if (state.pityTian >= 100) { forceQ = "天"; state.pityTian = 0; }
     else if (state.pityDi >= 10) { forceQ = "地"; state.pityDi = 0; }
     const d = generateDisciple(forceQ);
+    if (loyaltyBonus > 0) d.loyalty = Math.min(100, d.loyalty + loyaltyBonus);
     if (d.quality === "天") { tian++; state.pityTian = 0; }
     else if (d.quality === "地") { di++; state.pityDi = 0; }
     else if (d.quality === "玄") xuan++;
@@ -1135,45 +1203,79 @@ function batchManage() {
 }
 
 const MAP_W = 900, MAP_H = 600;
+
+function onBuildingClick(b) {
+  const lv = state.buildings[b.key] || 0;
+  if (lv >= b.maxLv) { log(`${b.name} 已满级`, "danger"); return; }
+  const cost = b.baseCost * (lv + 1) * 1.5;
+  if (state.gold < cost) { log(`灵石不足（需要 ${fmt(cost)}）`, "danger"); return; }
+  state.gold -= cost; state.buildings[b.key]++;
+  log(`【${b.name}】升级到 Lv.${state.buildings[b.key]}`, "gold");
+  saveLocal(); scheduleCloudSave(); updateUI();
+}
+
+// 建筑只渲染一次，弟子点按 data-id 增删/移动
 function renderMap() {
   const map = document.getElementById("mapArea");
-  map.querySelectorAll(".building, .disciple-dot").forEach(el => el.remove());
-  BUILDINGS.forEach(b => {
-    const lv = state.buildings[b.key] || 0;
-    const el = document.createElement("div");
-    el.className = "building";
-    el.style.left = (b.x * MAP_W) + "px";
-    el.style.top = (b.y * MAP_H) + "px";
-    el.innerHTML = `<span class="b-icon">${b.icon}</span><div class="b-name">${b.name}</div><div class="b-lv">Lv.${lv}</div>`;
-    el.title = `${b.name} - ${b.desc}`;
-    el.addEventListener("click", () => {
-      if (lv >= b.maxLv) { log(`${b.name} 已满级`, "danger"); return; }
-      const cost = b.baseCost * (lv + 1) * 1.5;
-      if (state.gold < cost) { log(`灵石不足（需要 ${fmt(cost)}）`, "danger"); return; }
-      state.gold -= cost; state.buildings[b.key]++;
-      log(`【${b.name}】升级到 Lv.${state.buildings[b.key]}`, "gold");
-      saveLocal(); scheduleCloudSave(); updateUI();
+
+  // ---- 建筑：只初始化一次 ----
+  if (!map.dataset.buildingsDone) {
+    BUILDINGS.forEach(b => {
+      const el = document.createElement("div");
+      el.className = "building";
+      el.dataset.build = b.key;
+      el.style.left = (b.x * MAP_W) + "px";
+      el.style.top  = (b.y * MAP_H) + "px";
+      el.innerHTML = `<span class="b-icon">${b.icon}</span><div class="b-name">${b.name}</div><div class="b-lv">Lv.0</div>`;
+      el.title = `${b.name} - ${b.desc}`;
+      el.addEventListener("click", () => onBuildingClick(b));
+      map.appendChild(el);
     });
-    map.appendChild(el);
+    map.dataset.buildingsDone = "1";
+  }
+  // 更新建筑等级文字
+  BUILDINGS.forEach(b => {
+    const el = map.querySelector(`.building[data-build="${b.key}"] .b-lv`);
+    if (el) el.textContent = "Lv." + (state.buildings[b.key] || 0);
   });
+
+  // ---- 弟子点：用 data-id 对齐 ----
   const alive = state.disciples.filter(d => d.hp > 0).slice(0, 100);
+  const existing = new Map();
+  map.querySelectorAll(".disciple-dot").forEach(el => existing.set(el.dataset.id, el));
+
   alive.forEach(d => {
-    const el = document.createElement("div");
-    el.className = "disciple-dot " + d.quality + (d.gender === "male" ? " male" : "");
+    const key = String(d.id);
+    let el = existing.get(key);
+    if (!el) {
+      el = document.createElement("div");
+      el.className = "disciple-dot " + d.quality + (d.gender === "male" ? " male" : "");
+      el.dataset.id = key;
+      el.title = `${d.name} · ${d.role} · Lv.${d.level}`;
+      map.appendChild(el);
+    }
     el.style.left = (d.mapX * MAP_W) + "px";
-    el.style.top = (d.mapY * MAP_H) + "px";
+    el.style.top  = (d.mapY * MAP_H) + "px";
     el.title = `${d.name} · ${d.role} · Lv.${d.level}`;
-    map.appendChild(el);
+  });
+
+  existing.forEach((el, id) => {
+    if (!alive.some(d => String(d.id) === id)) el.remove();
   });
 }
+
+// 只更新位置，不重建
 function updateDisciplePositions() {
   const map = document.getElementById("mapArea");
-  const dots = map.querySelectorAll(".disciple-dot");
   const alive = state.disciples.filter(d => d.hp > 0).slice(0, 100);
-  dots.forEach((dot, i) => {
-    if (alive[i]) {
-      dot.style.left = (alive[i].mapX * MAP_W) + "px";
-      dot.style.top = (alive[i].mapY * MAP_H) + "px";
+  const idMap = new Map(alive.map(d => [String(d.id), d]));
+  map.querySelectorAll(".disciple-dot").forEach(el => {
+    const d = idMap.get(el.dataset.id);
+    if (d) {
+      el.style.left = (d.mapX * MAP_W) + "px";
+      el.style.top  = (d.mapY * MAP_H) + "px";
+    } else {
+      el.remove();
     }
   });
 }
@@ -1204,7 +1306,6 @@ function updateUI() {
   document.getElementById("craftOre").textContent = fmt(state.ore);
   renderMap(); renderDisciples(); renderEvents(); renderBuildings();
   renderSkills(); renderShop(); renderWar();
-  if (Date.now() - (window._lastSave || 0) > 3000) { window._lastSave = Date.now(); saveLocal(); }
 }
 
 function renderDisciples() {
@@ -1272,7 +1373,7 @@ function renderEvents() {
   const list = document.getElementById("eventList");
   list.innerHTML = "";
   if (state.events.length === 0) { list.innerHTML = '<div class="empty">暂无待处理事件</div>'; return; }
-  state.events.forEach((e, idx) => {
+  state.events.forEach((e) => {
     const tpl = EVENT_TEMPLATES[e.tplIdx];
     if (!tpl) return;
     const div = document.createElement("div");
@@ -1287,7 +1388,7 @@ function renderEvents() {
         const expGain = rand(10, 50);
         state.sectExp += expGain;
         log(`处理事件，声望 +${expGain}`, "gold");
-        state.events.splice(idx, 1);
+        state.events = state.events.filter(x => x !== e);
         saveLocal(); scheduleCloudSave(); updateUI();
       });
       optBox.appendChild(btn);
@@ -1310,13 +1411,7 @@ function renderBuildings() {
   list.querySelectorAll("[data-build]").forEach(btn => {
     btn.addEventListener("click", () => {
       const b = BUILDINGS.find(x => x.key === btn.dataset.build);
-      const lv = state.buildings[b.key];
-      if (lv >= b.maxLv) return;
-      const cost = b.baseCost * (lv + 1) * 1.5;
-      if (state.gold < cost) { log("灵石不足", "danger"); return; }
-      state.gold -= cost; state.buildings[b.key]++;
-      log(`【${b.name}】升级到 Lv.${state.buildings[b.key]}`, "gold");
-      saveLocal(); scheduleCloudSave(); updateUI();
+      onBuildingClick(b);
     });
   });
 }
@@ -1364,7 +1459,7 @@ function renderShop() {
   SHOP_ITEMS.forEach(s => {
     const div = document.createElement("div");
     div.className = "item";
-        div.innerHTML = `
+    div.innerHTML = `
       <div style="flex:1;">
         <div class="name">${s.name}</div>
         <div class="attr">${s.desc}</div>
@@ -1382,6 +1477,20 @@ function renderShop() {
       saveLocal(); scheduleCloudSave(); updateUI();
     });
   });
+}
+
+// ==================== 事件生成（修复：原代码缺失） ====================
+function spawnEvent() {
+  const now = Date.now();
+  if (now - state._lastEvent < 60000) return;
+  state._lastEvent = now;
+  if (state.events.length >= 10) return;
+  if (Math.random() < 0.35) {
+    const idx = rand(0, EVENT_TEMPLATES.length - 1);
+    state.events.push({ tplIdx: idx, at: now });
+    const tpl = EVENT_TEMPLATES[idx];
+    log(`📜 新事件：【${tpl.type}】${tpl.title}`, "rare");
+  }
 }
 
 // ==================== 离线收益 ====================
@@ -1405,9 +1514,10 @@ function offlineEarnings() {
 
   const deadCount = { 天: 0, 地: 0, 玄: 0, 黄: 0 };
   state.disciples.filter(d => d.hp > 0 && d.role !== "长老").forEach(d => {
-    if (Math.random() < 0.005) {
+    const deathChance = 0.005 * (d.deathMult || 1);
+    if (Math.random() < deathChance) {
       d.hp = 0;
-      deadCount[d.quality]++;
+      deadCount[d.quality] = (deadCount[d.quality] || 0) + 1;
       if (d.equipment) {
         ["weapon", "armor", "accessory"].forEach(slot => {
           if (d.equipment[slot]) { state.inventory.push(d.equipment[slot]); d.equipment[slot] = null; }
@@ -1459,9 +1569,12 @@ function tick() {
   tryPromote();
   checkWar();
 
-  const need = SECT_NEED[state.sectLevel];
-  if (state.sectExp >= need && state.sectLevel < SECT_LEVELS.length - 1) {
-    state.sectExp -= need;
+  // 境界升级：支持一次声望连续升级
+  while (
+    state.sectLevel < SECT_LEVELS.length - 1 &&
+    state.sectExp >= SECT_NEED[state.sectLevel]
+  ) {
+    state.sectExp -= SECT_NEED[state.sectLevel];
     state.sectLevel++;
     log(`🎉 宗门升级！当前等级：${SECT_LEVELS[state.sectLevel]}`, "gold");
     toast(`🎉 宗门升级！${SECT_LEVELS[state.sectLevel]}`);
@@ -1551,13 +1664,14 @@ async function init() {
       const cloudState = await cloudLoad();
       if (cloudState) {
         cloudState.events = (cloudState.events || []).filter(e => typeof e.tplIdx === "number" && EVENT_TEMPLATES[e.tplIdx]);
-        Object.keys(cloudState.skills || {}).forEach(k => {
-          if (cloudState.skills[k] === true) cloudState.skills[k] = { level: 1 };
-        });
+        cloudState.skills = normalizeSkills(cloudState.skills);
+        cloudState.disciples = normalizeDisciples(cloudState.disciples);
         log("本地无存档，从云端读取", "gold");
         Object.assign(state, cloudState);
         state.inventory = Array.isArray(state.inventory) ? state.inventory : [];
         state.warHistory = Array.isArray(state.warHistory) ? state.warHistory : [];
+        state.buildings = state.buildings || {};
+        BUILDINGS.forEach(b => { if (typeof state.buildings[b.key] !== "number") state.buildings[b.key] = 0; });
         state.lastTick = Date.now();
         state._lastAutoRecruit = 0; state._lastEvent = 0; state._lastCultivate = 0;
         state._lastGoldTick = 0; state._lastHerbTick = 0; state._lastLoyalty = 0;
@@ -1584,9 +1698,8 @@ async function init() {
       const cloudState = await cloudLoad();
       if (cloudState) {
         cloudState.events = (cloudState.events || []).filter(e => typeof e.tplIdx === "number" && EVENT_TEMPLATES[e.tplIdx]);
-        Object.keys(cloudState.skills || {}).forEach(k => {
-          if (cloudState.skills[k] === true) cloudState.skills[k] = { level: 1 };
-        });
+        cloudState.skills = normalizeSkills(cloudState.skills);
+        cloudState.disciples = normalizeDisciples(cloudState.disciples);
         const localTime = parseInt(localStorage.getItem(TIME_KEY) || "0", 10);
         const cloudTime = cloudState._saveTime || 0;
         if (cloudTime > localTime) {
@@ -1594,6 +1707,8 @@ async function init() {
           Object.assign(state, cloudState);
           state.inventory = Array.isArray(state.inventory) ? state.inventory : [];
           state.warHistory = Array.isArray(state.warHistory) ? state.warHistory : [];
+          state.buildings = state.buildings || {};
+          BUILDINGS.forEach(b => { if (typeof state.buildings[b.key] !== "number") state.buildings[b.key] = 0; });
           state.lastTick = Date.now();
           state._lastAutoRecruit = 0; state._lastEvent = 0; state._lastCultivate = 0;
           state._lastGoldTick = 0; state._lastHerbTick = 0; state._lastLoyalty = 0;
