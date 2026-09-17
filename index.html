@@ -243,6 +243,7 @@
         <div class="row"><span>弟子总数</span><span id="discipleTotal">0 / 1441</span></div>
         <button class="btn green" id="meditateBtn">全体弟子闭关修炼（1 分钟）</button>
         <button class="btn" id="autoRecruitBtn">自动招募：开</button>
+       <button class="btn" id="manualSaveBtn">手动保存（本地 + 云端）</button>
       </div>
 
       <div class="panel" id="panel-disciples">
@@ -1317,6 +1318,15 @@ document.getElementById("autoRecruitBtn").addEventListener("click", () => {
 });
 
 document.getElementById("batchManageBtn").addEventListener("click", batchManage);
+ document.getElementById("manualSaveBtn").addEventListener("click", async () => {
+  saveLocal();
+  if (cloudReady) {
+    await cloudSave();
+    log("手动保存：本地 + 云端已完成", "gold");
+  } else {
+    log("手动保存：本地已保存，云端未连接", "rare");
+  }
+});
 
 document.getElementById("discipleFilter").addEventListener("click", e => {
   if (e.target.tagName !== "BUTTON") return;
@@ -1345,53 +1355,65 @@ document.getElementById("discipleFilter3").addEventListener("click", e => {
 // ==================== 启动 ====================
 async function init() {
   const loaded = loadLocal();
+  
   if (!loaded) {
-    addDisciple(generateDisciple());
-    log("你继承了一座破庙，开始了宗门经营之路……", "gold");
-    log("提示：弟子会自动修炼、自动接任务，事件会攒着等你处理。", "rare");
-  } else {
-    log("已从本地读取存档", "gold");
-  }
-
-  updateUI();
-
-  updateSyncStatus("", "云端：连接中…");
-  try {
-    const cloudState = await cloudLoad();
-    if (cloudState) {
-      // 兼容旧存档
-      cloudState.events = (cloudState.events || []).filter(e => 
-        typeof e.tplIdx === "number" && EVENT_TEMPLATES[e.tplIdx]
-      );
-      Object.keys(cloudState.skills || {}).forEach(k => {
-        if (cloudState.skills[k] === true) cloudState.skills[k] = { level: 1 };
-      });
-
-      const localTime = parseInt(localStorage.getItem(TIME_KEY) || "0", 10);
-      const cloudTime = cloudState._saveTime || 0;
-      if (cloudTime > localTime) {
-        log("云端存档较新，使用云端存档", "gold");
+    // 本地无存档，先尝试读云端
+    updateSyncStatus("", "云端：读取中…");
+    try {
+      const cloudState = await cloudLoad();
+      if (cloudState) {
+        cloudState.events = (cloudState.events || []).filter(e => 
+          typeof e.tplIdx === "number" && EVENT_TEMPLATES[e.tplIdx]
+        );
+        Object.keys(cloudState.skills || {}).forEach(k => {
+          if (cloudState.skills[k] === true) cloudState.skills[k] = { level: 1 };
+        });
+        log("本地无存档，从云端读取", "gold");
         Object.assign(state, cloudState);
         state.lastTick = Date.now();
         state._lastAutoRecruit = 0; state._lastEvent = 0; state._lastCultivate = 0;
         state._lastGoldTick = 0; state._lastHerbTick = 0; state._lastLoyalty = 0;
         saveLocal();
-        updateUI();
       } else {
-        log("本地存档较新，跳过云端覆盖", "rare");
+        addDisciple(generateDisciple());
+        log("你继承了一座破庙，开始了宗门经营之路……", "gold");
+        log("提示：弟子会自动修炼、自动接任务，事件会攒着等你处理。", "rare");
       }
-    } else {
-      log("云端无存档，本地上传", "gold");
+    } catch (e) {
+      addDisciple(generateDisciple());
+      log("云端连接失败，开始新游戏", "danger");
     }
-  } catch (e) {
-    log("云端连接失败，仅使用本地存档", "danger");
+  } else {
+    log("已从本地读取存档", "gold");
+    try {
+      const cloudState = await cloudLoad();
+      if (cloudState) {
+        cloudState.events = (cloudState.events || []).filter(e => 
+          typeof e.tplIdx === "number" && EVENT_TEMPLATES[e.tplIdx]
+        );
+        Object.keys(cloudState.skills || {}).forEach(k => {
+          if (cloudState.skills[k] === true) cloudState.skills[k] = { level: 1 };
+        });
+        const localTime = parseInt(localStorage.getItem(TIME_KEY) || "0", 10);
+        const cloudTime = cloudState._saveTime || 0;
+        if (cloudTime > localTime) {
+          log("云端存档较新，使用云端存档", "gold");
+          Object.assign(state, cloudState);
+          state.lastTick = Date.now();
+          state._lastAutoRecruit = 0; state._lastEvent = 0; state._lastCultivate = 0;
+          state._lastGoldTick = 0; state._lastHerbTick = 0; state._lastLoyalty = 0;
+          saveLocal();
+        } else {
+          log("本地存档较新，跳过云端覆盖", "rare");
+        }
+      }
+    } catch (e) {}
   }
 
+  updateUI();
   cloudReady = true;
   updateSyncStatus("ok", "云端：已同步");
-
   offlineEarnings();
-
   setInterval(tick, 1000);
 }
 
